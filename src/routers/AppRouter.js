@@ -6,8 +6,10 @@ import NotFoundPage from "../components/NotFoundPage";
 import LoginPage from "../components/LoginPage";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
-import CreateActivity from "../components/CreateActivity"
-import EditActivity from "../components/EditActivity"
+import CreateActivity from "../components/CreateActivity";
+import EditActivity from "../components/EditActivity";
+import UsersList from "../components/UsersList";
+import UserItem from "../components/UserItem";
 
 export const history = createHistory();
 
@@ -19,6 +21,8 @@ const AppRouter = () => (
                 <PrivateRoute path="/dashboard" component={DashboardPage}/>
                 <PrivateRoute path="/create" component={CreateActivity}/>
                 <PrivateRoute path="/edit/:id" component={EditActivity}/>
+                <PrivateRoute path="/users" component={UsersList}/>
+                <PrivateRoute path="/users/:id" component={UserItem}/>
                 <Route component={NotFoundPage}/>
             </Switch>
         </div> 

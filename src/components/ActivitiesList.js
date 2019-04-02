@@ -6,6 +6,7 @@ import { Table } from 'reactstrap';
 import moment from "moment";
 import getVisibleActivities, { generateOptionTypeActivities } from "../selectors/activities";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { startGetAllUsers } from "../actions/user";
 
 var enumerateDaysBetweenDates = function(startDate, endDate) {
     var dates = [];
@@ -84,6 +85,7 @@ class ActivitiesList extends React.Component {
         });
 
         let borderBottomList = this.props.activities.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" }
+
         return (
             <div>
                 {
@@ -167,7 +169,7 @@ const mapStateToProps = (state) => {
     return {
         activities: selectActivity(state.activities, state.filters),
         filters: state.filters,
-        options: generateOptionTypeActivities(),
+        options: generateOptionTypeActivities()
     };
 }
 

@@ -46,23 +46,25 @@ firebase.auth().onAuthStateChanged((user) => {
             }
             var userData;
             if (!snapshot.exists()){
-                firebase.database().ref(`users/${user.uid}/userData`).set(defaultUserData).then(() => {
-                    store.dispatch(setUserInfo({
-                        ...defaultUserData
-                    }))
-                });
+                firebase.database().ref(`users/${user.uid}/userData`).set(defaultUserData);
                 userData = defaultUserData;
             }
             else {
                 userData = snapshot.val().userData;
             }
             store.dispatch(login(user.uid));
-            store.dispatch(getUserInfo(userData))
+            store.dispatch(getUserInfo(userData));
+            store.dispatch(startGetAllUsers());
 
             renderApp();
-            if(history.location.pathname === "/") {
-                history.push("/dashboard/admin");
+            if((history.location.pathname === "/")) {
+                history.push("/dashboard");
             }
+            // else {
+            //     history.push("/admin/dashboard")
+            // }
+
+            store.dispatch(startSetActivity(user.uid))
         });
     }
     else {
