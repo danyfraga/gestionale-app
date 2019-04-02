@@ -1,0 +1,29 @@
+.header {
+    background: $blue;
+}
+
+.header__content {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 2.5rem 0;
+    margin-bottom: $xl-size;
+}
+
+.header__title {
+    color: white;
+    h1 {
+        margin: 0;
+    }
+}
+
+.logout_icon {
+    color: white;
+    width: 5rem;
+    height: 5rem;
+    margin-right: $l-size;
+
+    &:hover {
+        color: #5db9ee;
+    }
+}

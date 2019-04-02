@@ -1,0 +1,30 @@
+.label {
+    margin: 0;
+    padding: 1rem;
+    height: 50px;
+    width: 100%;
+    border: 1px solid #cacccd;
+    border-radius: 5px;
+}
+
+.span {
+    padding-bottom: 1rem;
+    color: #495057;
+    display: block;
+}
+
+.span__filter {
+    padding: 1rem 2rem 0 2rem;
+    display: inline;
+}
+
+.span__typeActivity {
+    display: inline;
+    font-weight: 600;
+    color: #495057;
+}
+
+.span__typeWorking {
+    display: inline;
+    color: #666;
+}

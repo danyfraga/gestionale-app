@@ -1,0 +1,24 @@
+.form {
+    margin-top: 10rem;
+    display: flex;
+    flex-direction: column;
+    > * {
+        margin-bottom: $l-size;
+    }
+}
+
+.arrowLeft {
+    color: $blue;
+    width: 5rem;
+    height: 5rem;
+    margin-right: $l-size;
+
+    &:hover {
+        color: #5db9ee;
+    }
+}
+
+.createActivity__title {
+    color: #495057;
+    margin-left: $l-size;
+}

@@ -1,0 +1,27 @@
+.modal__header-remove {
+    background-color: #d65b5b;
+    height: 40px;
+}
+
+.modal__title-remove {
+    font-size: 1.8rem;
+    color: white;
+    line-height: normal;
+}
+
+.modal__header-save {
+    background-color: $blue;
+    height: 40px;
+}
+
+.modal__title-save {
+    font-size: 1.8rem;
+    color: white;
+    line-height: normal;
+}
+
+.modal__button {
+    width: 6rem;
+    height: 3rem;
+    font-size: 1.4rem;
+}

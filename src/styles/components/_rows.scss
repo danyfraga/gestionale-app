@@ -1,0 +1,26 @@
+.row__filter {
+    padding-bottom: $xl-size;
+    border-bottom: 1px solid $blue;
+}
+
+.row__table {
+    margin: $xl-size 0 $m-size 0;
+}
+
+.row__pagination {
+    padding-bottom: $l-size;
+    padding-right: 16px;
+}
+
+.row__buttonCreate {
+    padding: $xl-size;
+    border-top: 1px solid $blue;
+}
+
+.row__list-header {
+    margin-top: $xl-size;
+}
+
+.row__createActivity-header {
+    padding: 0 1.6rem
+}

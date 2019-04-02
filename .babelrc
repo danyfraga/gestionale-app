@@ -1,0 +1,11 @@
+{
+    "presets": [
+        "env",
+        "react"
+    ],
+    "plugins": [
+        "transform-class-properties",
+        // plugin che permette di scrivere la sintassi degli oggetti in spread
+        "transform-object-rest-spread"
+    ]
+}

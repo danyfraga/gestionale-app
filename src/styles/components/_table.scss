@@ -1,0 +1,42 @@
+//table
+.myTable {
+    margin-bottom: $s-size;
+}
+
+.tr-table__header {
+    background-color: $blue;
+}
+
+.th-table__header {
+    color: white;
+    font-weight: 400;
+    font-size: $font-size-large;
+}
+
+.th-table__typeActivity {
+    background-color:#b8e5ff4f;
+    color: $blue;
+    font-weight: 400;
+}
+
+.th-table__header-col1 {
+    width: 250px;
+}
+
+.td-table__body {
+    color: #495057;
+}
+
+//pagination
+.page-item.active .page-link {
+    background-color: $blue;
+    border-color: $blue;
+}
+
+.page-link {
+    color: $blue;
+}
+
+
+
+
