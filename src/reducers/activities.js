@@ -24,7 +24,7 @@ export const activitiesReducer = (state = defaultActivities, action) => {
                     return activity
                 }
             });
-        case "SET_ACTIVITY": 
+        case "SET_ACTIVITY":
             return action.activities;
         default:
             return state;

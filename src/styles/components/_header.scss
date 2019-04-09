@@ -4,16 +4,21 @@
 
 .header__content {
     align-items: center;
-    display: flex;
     justify-content: space-between;
     padding: 2.5rem 0;
     margin-bottom: $xl-size;
+    display: flex;
 }
 
 .header__title {
     color: white;
+    text-decoration: none;
+    display: inline-block;
     h1 {
         margin: 0;
+    }
+    &:hover {
+        color: #5db9ee;
     }
 }
 
@@ -27,3 +32,17 @@
         color: #5db9ee;
     }
 }
+
+.email_title {
+    margin: 1rem 0 0 8rem;
+    color: #666;
+}
+
+.navItemLink {
+    color: white;
+    font-size: 2rem;  
+    &:hover {
+        color: #5db9ee;
+    }
+}
+

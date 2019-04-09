@@ -11,16 +11,6 @@ class DashboardHeader extends React.Component {
         return (
             <div className="row d-flex justify-content-left">
                 <h1 className="dashboard-header__title">{(this.props.user.nameAndSurname).toUpperCase()}</h1>
-                {
-                    this.props.user.isAdmin ? (
-                        <div>
-                            <Link to="/users"><button>Users</button></Link>
-                            <button>Settings</button>
-                        </div>
-                    ) : (
-                        <p></p>
-                    )
-                }
             </div>
         )
     }

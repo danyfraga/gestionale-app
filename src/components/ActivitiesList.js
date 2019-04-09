@@ -7,6 +7,10 @@ import moment from "moment";
 import getVisibleActivities, { generateOptionTypeActivities } from "../selectors/activities";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { startGetAllUsers } from "../actions/user";
+import watch from "redux-watch";
+import store from "../store/configureStore";
+
+// let watchCustomer = watch(store.getState);
 
 var enumerateDaysBetweenDates = function(startDate, endDate) {
     var dates = [];
@@ -22,12 +26,22 @@ var enumerateDaysBetweenDates = function(startDate, endDate) {
 class ActivitiesList extends React.Component {
     constructor (props) {
         super(props);
+
         this.state = {
             currentPage: 0,
             startDate: this.props.filters.startDate,
-            endDate: this.props.filters.endDate
+            endDate: this.props.filters.endDate,
         };
+
+        // this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+        //     console.log(currentVal.filters.switchChecked);
+        //     this.setState({ switchChecked: currentVal.filters.switchChecked });
+        // })); 
     }
+
+    // componentWillUnmount(){
+    //     this.unsubscribe();
+    // }
 
     handleClick = (e, index) => {
         e.preventDefault();
@@ -38,7 +52,6 @@ class ActivitiesList extends React.Component {
    
    render() {
         let props = this.props;
-
         let startDate = moment(props.filters.startDate).format("LL");
         let endDate = moment(props.filters.endDate).format("LL");
         let filteredDates = startDate === endDate ? [moment(startDate).format("DD/MM/YYYY")] : [moment(props.filters.startDate).format("DD/MM/YYYY"), ...enumerateDaysBetweenDates(startDate, endDate), moment(props.filters.endDate).format("DD/MM/YYYY")];
@@ -84,7 +97,7 @@ class ActivitiesList extends React.Component {
             return <ActivityItem key={activity.idActivity} {...activity}/>
         });
 
-        let borderBottomList = this.props.activities.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" }
+        let borderBottomList = this.props.activities.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" };
 
         return (
             <div>
@@ -159,7 +172,7 @@ class ActivitiesList extends React.Component {
     //When change startDate or endDate, currentPage go to 0
     componentDidUpdate(prevProps) {
         if((prevProps.filters.startDate !== this.props.filters.startDate) || (prevProps.filters.endDate !== this.props.filters.endDate)) {
-            this.setState({ currentPage: 0})
+            this.setState({ currentPage: 0 })
         }
     }
 

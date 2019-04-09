@@ -3,35 +3,40 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import watch from "redux-watch";
 import store from "../store/configureStore";
-import UserItem from "../components/UserItem";
-
+import UserItemList from "./UserItemList";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 let watchCustomer = watch(store.getState);
 
-
 class UsersList extends React.Component {
     constructor(props) {
+        super(props);
+
         store.subscribe(watchCustomer((val) => {
-            console.log(val);
         }));
-        super(props)
     }
 
     render() {
         let thisProps = this.props;
         let borderBottomList = thisProps.users.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" }
         let usersList = thisProps.users.map((user) => {
-            return <UserItem key={user.userId} {...user}/>
+            return <UserItemList key={user.userId} {...user}/>
         });
 
         return (
-            <div className="content-container userslist-container">
-                <h1>USERS</h1>
+            <div className="content-container">
+                <div className="row row__createActivity-header">
+                    <Link to="/dashboard"><FontAwesomeIcon icon="arrow-left" className="arrowLeft" size="2x"/></Link>
+                    <div className="col-11 pl-0">
+                        <h1 className="createActivity__title">USERS</h1>
+                    </div>
+                </div>
                 <div className="list-header row row__list-header">
                     <div className="show-for-mobile">Activities</div>
-                    <div className="show-for-desktop col-4">Name</div>
-                    <div className="show-for-desktop col-5">Surname</div>
-                    <div className="show-for-desktop col-3 text-center">User Type</div>
+                    <div className="show-for-desktop col-3">Name</div>
+                    <div className="show-for-desktop col-3">Surname</div>
+                    <div className="show-for-desktop col-5">Email</div>
+                    <div className="show-for-desktop col-1">User Type</div>
                 </div>
                 <div className="scroll" style={borderBottomList}>
                     {usersList}

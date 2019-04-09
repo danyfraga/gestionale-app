@@ -13,7 +13,7 @@ export const userReducer = (state = defaultUserInfo, action) => {
                 ...state,
                 nameAndSurname: action.nameAndSurname,
                 email: action.email,
-                isAdmin: false
+                isAdmin: false,
             };
         case "GET_USER_INFO":
             return action.userData;

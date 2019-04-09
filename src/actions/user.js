@@ -17,7 +17,9 @@ export const getUserInfo = (userData) => {
 
 export const startGetUserInfo = (userId) => {
     return (dispatch) => {
+    console.log(userId)
         return database.ref(`users/${userId}/userData`).once("value").then((snapshot) => {
+            console.log(snapshot)
             let userData = snapshot.val();
             dispatch(getUserInfo(userData))
         });

@@ -62,9 +62,7 @@ firebase.auth().onAuthStateChanged((user) => {
             }
             // else {
             //     history.push("/admin/dashboard")
-            // }
-
-            store.dispatch(startSetActivity(user.uid))
+            // }            
         });
     }
     else {

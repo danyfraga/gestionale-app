@@ -53,23 +53,25 @@ export const startEditActivity = (idActivity, updates) => {
     };
 };
 
-export const setActivity = (activities) => ({
-    type: "SET_ACTIVITY",
-    activities
-});
+export const setActivity = (activities) => {
+    return {
+        type: "SET_ACTIVITY",
+        activities
+    }   
+};
 
-export const startSetActivity = () => {
-    return (dispatch, getState) => {
-        const uid = getState().auth.uid;
-        return database.ref(`users/${uid}/activities`).once("value").then((snapshot) => {
-            const activities = [];
+export const startSetActivity = (uid) => {
+    return (dispatch) => {
+        database.ref(`users/${uid}/activities`).once("value").then((snapshot) => {
+        const activities = [];
             snapshot.forEach((childSnapshot) => {
                 activities.push({
                     idActivity: childSnapshot.key,
                     ...childSnapshot.val()
                 });
             });
-            dispatch(setActivity(activities))
-        });
-    };
+            dispatch(setActivity(activities));
+        });  
+    }
 };
+

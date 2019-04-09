@@ -7,6 +7,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import Switch from "react-switch";
 import { generateOptionTypeActivities, generateOptionTypeWorking } from "../selectors/activities";
+import watch from "redux-watch";
+import store from "../store/configureStore";
+
+// let watchCustomer = watch(store.getState);
 
 class ActivitiesFilters extends React.Component {
     constructor(props) {
@@ -18,7 +22,15 @@ class ActivitiesFilters extends React.Component {
             typeActivity: "",
             dateRangePickerShow: false
         }
+
+        // this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+        //     this.setState({ switchChecked: false })
+        // })); 
     }
+
+    // componentWillUnmount(){
+    //     this.unsubscribe();
+    // }
 
     handleChange = () => {
         let currentSwitchState = this.state.switchChecked;
@@ -145,7 +157,7 @@ class ActivitiesFilters extends React.Component {
             ) : ( 
                 {}
             );
-            
+
         return (
                 <div className="row d-flex justify-content-center row__filter">
                     <div className="col-10 col-xl-2 col-lg-2 col-md-6 col-sm-8 form-group ">

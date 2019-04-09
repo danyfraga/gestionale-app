@@ -1,30 +1,65 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ActivitiesList from "../components/ActivitiesList";
+import ActivitiesFilters from "../components/ActivitiesFilters";
+import { connect } from "react-redux";
+import { startSetActivity } from "../actions/activities";
+import watch from "redux-watch";
+import store from "../store/configureStore";
+import UserItemHeader from "../components/UserItemHeader";
 
-export default class UserItem extends React.Component {
+let watchCustomer = watch(store.getState);
+
+class UserItem extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            switchChecked: this.props.filters.switchChecked,
+            typeWorking: this.props.filters.sortByTypeWorking,
+            typeActivity: this.props.filters.sortByActivity 
+         }
+        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+            this.setState({ activities: currentVal.activities})
+        })); 
+    }
+    componentWillMount() {
+        let userId = (this.props.location.pathname).split("/")[2];
+        console.log(userId);
+        this.props.startSetActivity(userId);
+    }
+
+    componentWillUnmount(){
+        this.unsubscribe();
     }
 
     render() {
-        let thisProps = this.props;
-        let nameAndSurname = (thisProps.nameAndSurname).split(" ");
-        let name = nameAndSurname[0].charAt(0) + nameAndSurname[0].slice(1).toLowerCase();
-        let surname = nameAndSurname[1].charAt(0) + nameAndSurname[1].slice(1).toLowerCase();
-        let typeUser = thisProps.isAdmin ? "Admin" : "User"
-
+        console.log(this.state)
+        let userId = (this.props.location.pathname).split("/")[2];
         return (
-            <Link className="list-item d-flex justify-content-between" style={{ textDecoration: 'none' }} to={`/edit/${this.props.idActivity}`}>
-                <div className="show-for-desktop col-4">
-                    <span className="span__typeActivity">{name}</span>
-                </div>
-                <div className="show-for-desktop col-5 text-left">
-                    <span className="span__typeActivity">{surname}</span>
-                </div>
-                <div className="show-for-desktop col-3 text-center">
-                    <span className="span__typeWorking">{typeUser}</span>
-                </div>
-            </Link>
+            <div className="content-container">
+                <UserItemHeader userId={userId}/>
+                <ActivitiesFilters/>
+                <ActivitiesList/>
+            </div>
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        filters: state.filters,
+        users: state.allUsers,
+        activities: state.activities
+    }
+ }
+ 
+ const mapDispatchToProp = (dispatch) => {
+    return {
+        switchCheck: (switchChecked) => dispatch(switchCheck(switchChecked)),
+        sortByActivity: (typeActivity) => dispatch(sortByActivity(typeActivity)),
+        sortByTypeWorking: (typeWorking) => dispatch(sortByTypeWorking(typeWorking)),
+        startSetActivity: (uid) => dispatch(startSetActivity(uid))
+    }
+};
+
+ export default connect(mapStateToProps, mapDispatchToProp)(UserItem);
