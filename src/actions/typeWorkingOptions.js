@@ -7,7 +7,7 @@ export const addOption = (option) => ({
 
 export const startAddOption = (option) => {
     return (dispatch) => {
-        return database.ref(`typeWorkingOptions/${option.title}`).set(option).then(() => {
+        return database.ref(`typeWorkingOptions/${(option.title).replace(" ", "")}`).set(option).then(() => {
             dispatch(addOption(option));
         });
     };
@@ -20,7 +20,7 @@ export const removeOption = (optionIndex) => ({
 
 export const startRemoveOption = (optionIndex) => {
     return (dispatch) => {
-        return database.ref(`typeWorkingOptions/${optionIndex}`).remove().then(() => {
+        return database.ref(`typeWorkingOptions/${optionIndex.replace(" ", "")}`).remove().then(() => {
             dispatch(removeOption(optionIndex));
         });
     };
