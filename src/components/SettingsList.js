@@ -50,8 +50,8 @@ class SettingsList extends React.Component {
                 if ( (this.state.options)[key].title === this.state.newOption) isEqual = true;
             }
 
-            if(titleOption.length > 3 || descriptionOption > 5) {
-                this.setState({ typeError: "inputLong", error: "Warning! Your type working name (max 20) or description (max 40) is too long"});
+            if(titleOption.length > 25 || descriptionOption > 60) {
+                this.setState({ typeError: "inputLong", error: "Warning! Your type working name (max 25) or description (max 40) is too long."});
                 
             }
             else {
@@ -60,12 +60,12 @@ class SettingsList extends React.Component {
                     this.setState({ newOption : "", newOptionDescription: "" });
                 }
                 else {
-                    this.setState({ typeError: "inputIsEqual", error: "Warning! Your type working name is already present"})
+                    this.setState({ typeError: "inputIsEqual", error: "Warning! Your type working name is already present."})
                 }
             }
         }
         else {
-            this.setState({ typeError: "emptyInput", error: "Error! Your type working input is empty"})
+            this.setState({ typeError: "emptyInput", error: "Error! Your type working input is empty."})
         }
     }
 
@@ -106,14 +106,12 @@ class SettingsList extends React.Component {
         };
 
         let borderBottomList = typeWorkingOption.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" };
+
         let errorColor = ""; 
-        switch (this.state.typeError) {
-            case this.state.typeError === "emptyInput":
-                errorColor = "danger";
-            case this.state.typeError === ("inputIsEqual" || "inputLong"):
-                errorColor = "warning"
-        }
-        console.log(errorColor)
+        if(this.state.typeError === "emptyInput") { errorColor = "danger" }
+        else if (this.state.typeError === "inputLong" ) { errorColor = "warning" }
+        else if(this.state.typeError === "inputIsEqual") { errorColor = "warning" }
+
         let errorMessageInputTypeWorking = <Alert color={errorColor}>{this.state.error}</Alert>
         
         return (
