@@ -8,6 +8,7 @@ const LoginPage = ({ startLogin }) => (
             <h1 className="box-layout__title">MGMTNet</h1>
             <p>Manage your activities</p>
             <button className="button" onClick={startLogin}>Login with Google</button>
+            <div id="errorAuth"></div>
         </div>
     </div>
 );

@@ -58,4 +58,20 @@
     }
 }
 
+.deleteOption {
+    background: rgba(0, 0, 0, 0);
+    color: rgb(214, 91, 91);
+    border: none;
+    padding: 0;
+
+    &:focus {
+        outline:0;
+    }
+}
+
+.deleteOptionDisabled {
+    @extend .button__disabled;
+    padding: 0;
+}
+
 

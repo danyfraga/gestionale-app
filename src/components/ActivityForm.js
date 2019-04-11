@@ -44,18 +44,6 @@ class ActivityForm extends React.Component {
             remove: false
         }
     }
-
-    prova = () => {
-        let typeActivities = this.props.typeActivities;
-        let typeWorking = this.props.typeWorking;
-        let assosiatedTypes = [];
-    
-        typeActivities.map((typeActivity, index) => {
-            assosiatedTypes[typeActivity] = (index === 0 ? typeWorking : ["-"])
-        });
-        console.log(assosiatedTypes)
-        return assosiatedTypes
-    }
     
     onSubmit = (e) => {
         e.preventDefault();
@@ -94,7 +82,7 @@ class ActivityForm extends React.Component {
     onHoursChange = (e) => {
         const hours = e.target.value;
         if(!hours || hours.match(/^[0-9]$|^[1][0-9]$|^[2][0-4]$/)) {
-            this.setState(() => ({ hours }))
+            this.setState(() => ({ hours }));
          }
     }
 

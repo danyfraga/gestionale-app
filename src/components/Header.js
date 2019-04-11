@@ -19,6 +19,10 @@ export class Header extends React.Component {
         this.props.switchCheck(this.state.switchChecked)
     }
 
+    startLogout = () => {
+        this.props.startLogout();
+    }
+
     render() {
         return (
             <div> 
@@ -35,7 +39,7 @@ export class Header extends React.Component {
                                         <Link to="/users" className="navItemLink" onClick={this.onClick}>USERS</Link>
                                     </div>
                                     <div className="col-6 text-center">
-                                        <Link to="/" className="navItemLink" onClick={this.onClick}>SETTINGS</Link>
+                                        <Link to="/settings" className="navItemLink" onClick={this.onClick}>SETTINGS</Link>
                                     </div>
                                     </div>
                                 ) : (
@@ -43,7 +47,7 @@ export class Header extends React.Component {
                                 )
                             } 
                             <div className="col-1 text-center">
-                                <FontAwesomeIcon icon="sign-out-alt" className="logout_icon" size="2x" onClick={startLogout} style={{ margin: "0" }}/>
+                                <FontAwesomeIcon icon="sign-out-alt" className="logout_icon" size="2x" onClick={this.startLogout} style={{ margin: "0" }}/>
                             </div>                           
                         </div>  
                     </div>
@@ -67,4 +71,3 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
-// mieigmentnet

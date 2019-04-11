@@ -4,6 +4,7 @@ import authReducer from "../reducers/auth";
 import { activitiesReducer } from "../reducers/activities";
 import filtersReducer from "../reducers/filters";
 import { userReducer, usersReducer } from "../reducers/user";
+import { typeWorkingOptionsReducer } from "../reducers/typeWorkingOptions";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -13,7 +14,8 @@ const store = createStore(
         activities: activitiesReducer,
         filters: filtersReducer,
         user: userReducer,
-        allUsers: usersReducer  
+        allUsers: usersReducer,
+        typeWorkingOptions: typeWorkingOptionsReducer  
     }),
     composeEnhancers(applyMiddleware(thunk))
 );

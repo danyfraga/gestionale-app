@@ -69,7 +69,7 @@ const mapDispatchToProp = (dispatch) => ({
    switchCheck: (switchChecked) => dispatch(switchCheck(switchChecked)),
    sortByActivity: (typeActivity) => dispatch(sortByActivity(typeActivity)),
    sortByTypeWorking: (typeWorking) => dispatch(sortByTypeWorking(typeWorking)),
-   startSetActivity: (uid) => dispatch(startSetActivity(uid))
+   startSetActivity: (emailId) => dispatch(startSetActivity(emailId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProp)(DashboardPage);

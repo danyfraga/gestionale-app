@@ -7,7 +7,7 @@ export const addActivity = (activity) => ({
 
 export const startAddActivity = (activityData = {}) => {
     return (dispatch, getState) => {
-        const uid = getState().auth.uid;
+        let uid = getState().auth.uid
         const {
             typeWorking = "",
             typeActivity = "working",
@@ -31,7 +31,7 @@ export const removeActivity = ({ idActivity } = {}) => ({
 
 export const startRemoveActivity = ({ idActivity } = {}) => {
     return (dispatch, getState) => {
-        const uid = getState().auth.uid;
+        let uid = getState().auth.uid
         return database.ref(`users/${uid}/activities/${idActivity}`).remove().then(() => {
             dispatch(removeActivity({ idActivity }));
         });
@@ -46,7 +46,7 @@ export const editActivity = (idActivity, updates) => ({
 
 export const startEditActivity = (idActivity, updates) => {
     return (dispatch, getState) => {
-        const uid = getState().auth.uid;
+        let uid = getState().auth.uid
         return database.ref(`users/${uid}/activities/${idActivity}`).update(updates).then(() => {
             dispatch(editActivity(idActivity, updates))
         });

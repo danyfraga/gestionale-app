@@ -1,6 +1,6 @@
 .box-layout {
     align-items: center;
-    background: url("/images/bg.jpg");
+    background: url("/images/Blue-Picture-Photo-Wallpapers-002.jpg");
     background-size: cover;
     display: flex;
     height: 100vh;
@@ -10,14 +10,29 @@
 
 .box-layout__box {
     background: fade-out(white, .15);
-    border-radius: 3px;
-    padding: $l-size $m-size;
+    border-radius: 5px;
+    padding: 10rem $xl-size;
     text-align: center;
-    width: 25rem;
+    height: 40rem;
+    width: 40rem;
+
+    p {
+        color: #495057;
+        margin-bottom: $l-size;
+    }
+
+    button {
+        border: 1px solid $blue;
+    }
 }
 
 .box-layout__title {
     margin: 0 0 $m-size 0;
     line-height: 1;
+    color: #495057;
+}
+
+.login_errorAuth {
+    margin-top: $l-size;
 }
 
