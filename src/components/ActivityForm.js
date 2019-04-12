@@ -7,31 +7,39 @@ import { startRemoveActivity } from "../actions/activities";
 import { Redirect } from "react-router-dom"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
-const typeWorkInActivity =[];
-typeWorkInActivity["working"] = [
-    { id: "option 1", description: "option 1" },
-    { id: "option 2", description: "option 2" },
-    { id: "option 3", description: "option 3" },
-];
-typeWorkInActivity["holiday"] = [
-    { id:"", description:"-"}
-];
-typeWorkInActivity["permit"] = [
-    { id:"", description:"-"}
-];
-typeWorkInActivity["default"] = [
-    { id:"", description:"-"}
-];
+// const typeWorkInActivity =[];
+// typeWorkInActivity["working"] = [
+//     { id: "option 1", description: "option 1" },
+//     { id: "option 2", description: "option 2" },
+//     { id: "option 3", description: "option 3" },
+// ];
+// typeWorkInActivity["holiday"] = [
+//     { id:"", description:"-"}
+// ];
+// typeWorkInActivity["permit"] = [
+//     { id:"", description:"-"}
+// ];
+// typeWorkInActivity["default"] = [
+//     { id:"", description:"-"}
+// ];
 
 class ActivityForm extends React.Component {
     constructor(props) {
         super(props);
         this._startRemoveActivity = this._startRemoveActivity.bind(this);
-        let typeActivity = props.activity ? props.activity.typeActivity: this.props.typeActivities[0]
-        let typesOfWorkOptions = typeWorkInActivity[typeActivity];
+
+        let typeActivities = this.props.typeActivityOptions;
+        let typeWorkingOpitonsObj = this.props.typeWorkingOptions;
+        let defaultTypeWorkingObj = typeWorkingOpitonsObj[0];
+        var defaultTypeActivity = typeActivities[0].title;
+        typeActivities.map(tipeActivity => tipeActivity.typeWorkingOption = typeWorkingOpitonsObj);
+        
+        let typeActivity = props.activity ? props.activity.typeActivity: defaultTypeActivity;
+        let typesOfWorkOptions = (typeActivities.find((activity)=> activity.title == typeActivity)).typeWorkingOption;
+        let typeWorking = props.activity ? props.activity.typeWorking : defaultTypeWorkingObj.title;
         this.state = {
-            typeWorking: props.activity ? props.activity.typeWorking : this.props.typeWorking[0],
-            typeActivity: typeActivity,
+            typeWorking,
+            typeActivity,
             createdAt: props.activity ? moment(props.activity.createdAt) : moment(),
             hours: props.activity ? props.activity.hours : "",
             typesOfWorkOptions: typesOfWorkOptions,
@@ -44,7 +52,7 @@ class ActivityForm extends React.Component {
             remove: false
         }
     }
-    
+
     onSubmit = (e) => {
         e.preventDefault();
     }
@@ -64,12 +72,10 @@ class ActivityForm extends React.Component {
 
     onChangeTypeActivity = (e) => {
         let typeActivity = e.target.value;
-        let typesOfWorkOptions = typeWorkInActivity[typeActivity];
-        let typeWorking = typesOfWorkOptions[0].description;
+        console.log(this.state.typesOfWorkOptions)
+        // let typeWorking = this.state.typesOfWorkOptions[0].description;
         this.setState({ 
-            typeActivity: typeActivity, 
-            typesOfWorkOptions: typesOfWorkOptions, 
-            typeWorking:typeWorking });
+            typeActivity: typeActivity});
     }
 
     onDateChange = (e, picker) => {
@@ -158,9 +164,21 @@ class ActivityForm extends React.Component {
         //     ) : (
         //         <option key="-" value="-">-</option>
         //     )
-        let workingOptions = this.state.typesOfWorkOptions.map(typeOfWork =>{
-            return <option key={typeOfWork.id} value={typeOfWork.id}>{(typeOfWork.description).charAt(0).toUpperCase() + (typeOfWork.description).slice(1) }</option>
-        }) 
+        // let workingOptions = this.state.typesOfWorkOptions.map(typeOfWork =>{
+        //     return <option key={typeOfWork.id} value={typeOfWork.id}>{(typeOfWork.description).charAt(0).toUpperCase() + (typeOfWork.description).slice(1) }</option>
+        // })
+        
+        let workingOptionsSelect = [];
+        for(var key in (this.state.typesOfWorkOptions)) {
+            var typeWorkingTitle = this.state.typesOfWorkOptions[key].title;
+            workingOptionsSelect.push(<option key={typeWorkingTitle} value={typeWorkingTitle}>{typeWorkingTitle}</option>)
+        //   for(var key2 in this.state.typesOfWorkOptions[key]) {
+        //       if(typeof (this.state.typesOfWorkOptions[key][key2]) === "string") break;
+        //       var typeWorkingTitle = this.state.typesOfWorkOptions[key][key2].title;
+        //       var typeWorkingDescription = this.state.typesOfWorkOptions[key][key2].title;
+        //       workingOptionsSelect.push(<option key={typeWorkingTitle} value={typeWorkingTitle}>{typeWorkingTitle}</option>)
+        //   }
+        }
 
         let selectDate = moment(this.state.createdAt).format("DD/MM/YYYY");
 
@@ -208,7 +226,7 @@ class ActivityForm extends React.Component {
                                         disabled={disableInputDescription()}
                                         className="select form-control"
                                     >
-                                        {workingOptions}
+                                        {workingOptionsSelect}
                                     </select>
                                 </div>
                             </div>
@@ -301,10 +319,12 @@ class ActivityForm extends React.Component {
     }
 }
 
-const mapStateToProps = () => {
+const mapStateToProps = (state) => {
     return {
         typeActivities: generateOptionTypeActivities(),
         typeWorking: generateOptionTypeWorking(),
+        typeWorkingOptions: state.typeWorkingOptions,
+        typeActivityOptions: state.typeActivityOptions
     }
 }
 

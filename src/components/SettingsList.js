@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TypeWorkingOptionItem from "../components/TypeWorkingOptionItem";
 import { startAddOption } from "../actions/typeWorkingOptions";
 import { Alert } from 'reactstrap';
+import UserItemList from "../components/UsersList";
 
 let watchCustomer = watch(store.getState);
 
@@ -113,7 +114,12 @@ class SettingsList extends React.Component {
         else if(this.state.typeError === "inputIsEqual") { errorColor = "warning" }
 
         let errorMessageInputTypeWorking = <Alert color={errorColor}>{this.state.error}</Alert>
+
+        let usersList = thisProps.users.map((user) => {
+            return <UserItemList key={user.userId} {...user}/>
+        });
         
+        console.log(usersList)
         return (
             <div className="content-container">
                 <div className="row row__createActivity-header">
@@ -153,7 +159,19 @@ class SettingsList extends React.Component {
                         </button>
                     </div>                    
                 </form>
-                {this.state.error ? errorMessageInputTypeWorking : <p></p>}  
+                {this.state.error ? errorMessageInputTypeWorking : <p></p>}
+
+                <h2 className="settings_subtitle">Setting type working</h2>
+                <div className="list-header row row__list-header">
+                    <div className="show-for-desktop col-5">Name</div>
+                    <div className="show-for-desktop col-5">Surname</div>
+                    <div className="show-for-desktop col-1 text-center">Admin</div>
+                    <div className="show-for-desktop col-1 text-center">Delete</div>
+                </div>
+               <div>
+                   {usersList}
+               </div>
+                
             </div>
         )
     }
