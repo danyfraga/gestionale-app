@@ -65,7 +65,7 @@ class TypeWorkingOptionItem extends React.Component {
                 >
                     <ModalHeader className="modal__header-remove"><span className="modal__title-remove">Remove type working option</span></ModalHeader>
                     <ModalBody>
-                        <p>Are you sure you want to delete this type working option?</p>
+                        <p>Are you sure you want to delete {(thisProps.optionTitle).toUpperCase()} option?</p>
                     </ModalBody>
                     <ModalFooter>
                         <Button style={{color: "white", backgroundColor: "#d65b5b", border: "none"}} className="modal__button" onClick={this.onClick}>Yes</Button>

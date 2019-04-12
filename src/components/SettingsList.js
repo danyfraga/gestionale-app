@@ -50,8 +50,8 @@ class SettingsList extends React.Component {
                 if ( (this.state.options)[key].title === this.state.newOption) isEqual = true;
             }
 
-            if(titleOption.length > 25 || descriptionOption > 60) {
-                this.setState({ typeError: "inputLong", error: "Warning! Your type working name (max 25) or description (max 40) is too long."});
+            if(titleOption.length > 25 || descriptionOption > 50) {
+                this.setState({ typeError: "inputLong", error: "Warning! Your type working name (max 25) or description (max 50) is too long."});
                 
             }
             else {
