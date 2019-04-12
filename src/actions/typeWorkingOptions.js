@@ -36,7 +36,7 @@ export const setOptions = (options) => {
 export const startSetOption = () => {
     return (dispatch) => {
         database.ref(`typeWorkingOptions`).once("value").then((snapshot) => {
-        const options = snapshot.val();
+        const options = Object.values(snapshot.val());
         dispatch(setOptions(options));
         });  
     }

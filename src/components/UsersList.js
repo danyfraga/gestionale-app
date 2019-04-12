@@ -20,6 +20,7 @@ class UsersList extends React.Component {
         let thisProps = this.props;
         let borderBottomList = thisProps.users.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" }
         let usersList = thisProps.users.map((user) => {
+            console.log(user)
             return <UserItemList key={user.userId} {...user}/>
         });
 

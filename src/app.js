@@ -12,6 +12,7 @@ import { login, logout } from "./actions/auth";
 import { getUserInfo, startGetAllUsers } from "./actions/user";
 import LoadingPage from "./components/LoadingPage";
 import { startSetOption } from "./actions/typeWorkingOptions";
+import { startSetOptionActivity } from "./actions/typeActivityOption";
 
 library.add(faArrowLeft);
 library.add(faSignOutAlt);
@@ -42,6 +43,17 @@ firebase.database().ref("typeWorkingOptions").once("value", snapshot => {
     }
     else {
         store.dispatch(startSetOption());
+    }
+});
+
+firebase.database().ref("typeActivityOptions").once("value", snapshot => {
+    if(!snapshot.exists()) {
+        firebase.database().ref(`typeActivityOptions/${"working"}`).set({"title":"working"});
+        firebase.database().ref(`typeActivityOptions/${"holiday"}`).set({"title":"holiday", "description": "-"});
+        firebase.database().ref(`typeActivityOptions/${"permit"}`).set({"title":"permit", "description": "-"});
+    }
+    else {
+        store.dispatch(startSetOptionActivity());
     }
 });
 
