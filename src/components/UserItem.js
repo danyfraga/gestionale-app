@@ -24,7 +24,6 @@ class UserItem extends React.Component {
     }
     componentWillMount() {
         let userId = (this.props.location.pathname).split("/")[2];
-        console.log(userId);
         this.props.startSetActivity(userId);
     }
 
@@ -33,7 +32,6 @@ class UserItem extends React.Component {
     }
 
     render() {
-        console.log(this.state)
         let userId = (this.props.location.pathname).split("/")[2];
         return (
             <div className="content-container">

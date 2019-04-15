@@ -11,7 +11,6 @@ export const startSetOptionActivity = () => {
     return (dispatch) => {
         database.ref(`typeActivityOptions`).once("value").then((snapshot) => {
         const options = Object.values(snapshot.val());
-        window.options = options;
         dispatch(setOptions(options));
         });  
     }

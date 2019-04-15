@@ -7,10 +7,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import Switch from "react-switch";
 import { generateOptionTypeActivities, generateOptionTypeWorking } from "../selectors/activities";
-import watch from "redux-watch";
-import store from "../store/configureStore";
-
-// let watchCustomer = watch(store.getState);
 
 class ActivitiesFilters extends React.Component {
     constructor(props) {
@@ -22,15 +18,7 @@ class ActivitiesFilters extends React.Component {
             typeActivity: "",
             dateRangePickerShow: false
         }
-
-        // this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
-        //     this.setState({ switchChecked: false })
-        // })); 
     }
-
-    // componentWillUnmount(){
-    //     this.unsubscribe();
-    // }
 
     handleChange = () => {
         let currentSwitchState = this.state.switchChecked;
@@ -123,12 +111,15 @@ class ActivitiesFilters extends React.Component {
                 "firstDay": 1
             }
         }
+        let typeActivities = thisProps.typeActivityOptions;
+        let typeWorkingOpitonsObj = thisProps.typeWorkingOptions;
 
-        let options = ["all", ...thisProps.typeActivities].map((item) => {
-            return <option key={item} value={item} >{item.charAt(0).toUpperCase() + item.slice(1)}</option>
+        let activitiesOptions = [{ "title": "all", "description": "-" }, ...typeActivities].map((item) => {
+            return <option key={item.title} value={item.title} >{(item.title).charAt(0).toUpperCase() + (item.title).slice(1)}</option>
         });
-        let workingOptions = ["all", ...thisProps.typeWorking].map((type) => {
-            return <option key={type} value={type} >{type.charAt(0).toUpperCase() + type.slice(1)}</option>
+
+        let workingOptions = [{ "title": "all", "description": "-" }, ...typeWorkingOpitonsObj].map((item) => {
+            return <option key={item.title} value={item.title} >{(item.title).charAt(0).toUpperCase() + (item.title).slice(1)}</option>
         })
 
         let showDataInput = () => {
@@ -168,7 +159,7 @@ class ActivitiesFilters extends React.Component {
                             disabled={showDataInput()}
                             className="select form-control text-center"
                         >
-                            { options }
+                            {activitiesOptions}
                         </select>
                     </div>
                     <div className="col-10 col-xl-2 col-lg-2 col-md-6 col-sm-8 form-group">
@@ -230,7 +221,9 @@ const mapStateToProps = (state) => {
     return {
         filters: state.filters,
         typeActivities: generateOptionTypeActivities(),
-        typeWorking: generateOptionTypeWorking()
+        typeWorking: generateOptionTypeWorking(),
+        typeWorkingOptions: state.typeWorkingOptions,
+        typeActivityOptions: state.typeActivityOptions
     };
 };
 

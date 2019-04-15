@@ -47,8 +47,9 @@ firebase.database().ref("typeWorkingOptions").once("value", snapshot => {
 });
 
 firebase.database().ref("typeActivityOptions").once("value", snapshot => {
+
     if(!snapshot.exists()) {
-        firebase.database().ref(`typeActivityOptions/${"working"}`).set({"title":"working"});
+        firebase.database().ref(`typeActivityOptions/${"working"}`).set({"title":"working", "description": "-"});
         firebase.database().ref(`typeActivityOptions/${"holiday"}`).set({"title":"holiday", "description": "-"});
         firebase.database().ref(`typeActivityOptions/${"permit"}`).set({"title":"permit", "description": "-"});
     }

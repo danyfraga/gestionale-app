@@ -87,24 +87,22 @@ class SettingsList extends React.Component {
     render() {
         let thisProps = this.props;
         let typeWorkingOptions = thisProps.typeWorkingOptions;
-        var typeWorkingOption = [];
         var isSingle = false;
-        var optionCounter = 0;
-        for (var key in typeWorkingOptions) optionCounter++;
-        for (var key in typeWorkingOptions){
-            let optionTitle = key;
-            let optionDescription = typeWorkingOptions[key].description
-            if(optionCounter === 1) isSingle = true; 
-            typeWorkingOption.push(
+        console.log(typeWorkingOptions);
+        let typeWorkingOption = typeWorkingOptions.map((option) => {
+            let optionTitle = option.title;
+            let optionDescription = option.description;
+            if(typeWorkingOptions.length === 1) isSingle = true; 
+            return (
                 <TypeWorkingOptionItem 
-                    key={`key + ${key}`} 
+                    key={optionTitle} 
                     optionTitle={optionTitle} 
-                    optionId={key}
+                    optionId={optionTitle}
                     optionDescription={optionDescription} 
                     isSingle={isSingle}
                 />
             )
-        };
+        });
 
         let borderBottomList = typeWorkingOption.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" };
 
@@ -115,11 +113,10 @@ class SettingsList extends React.Component {
 
         let errorMessageInputTypeWorking = <Alert color={errorColor}>{this.state.error}</Alert>
 
-        let usersList = thisProps.users.map((user) => {
-            return <UserItemList key={user.userId} {...user}/>
+        let usersList = this.state.options.map((user) => {
+            
         });
         
-        console.log(usersList)
         return (
             <div className="content-container">
                 <div className="row row__createActivity-header">
@@ -169,7 +166,7 @@ class SettingsList extends React.Component {
                     <div className="show-for-desktop col-1 text-center">Delete</div>
                 </div>
                <div>
-                   {usersList}
+                   
                </div>
                 
             </div>
