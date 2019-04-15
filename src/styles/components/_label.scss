@@ -27,4 +27,20 @@
 .span__typeWorking {
     display: inline;
     color: #666;
+    margin-right: 1rem;
 }
+
+.label__tooltip {
+    font-size: $s-size;
+}
+
+.label__tooltip > .tooltip-inner {
+    background-color: #1c88bf;
+    color: white;
+}
+    
+.label__tooltip > .tooltip-arrow {
+    background-color: rgb(134, 211, 255);
+    color: red;
+}
+
