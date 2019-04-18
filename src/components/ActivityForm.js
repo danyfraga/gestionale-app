@@ -11,23 +11,37 @@ class ActivityForm extends React.Component {
     constructor(props) {
         super(props);
         this._startRemoveActivity = this._startRemoveActivity.bind(this);
-
+        console.log(this.props)
         let typeActivities = this.props.typeActivityOptions;
         let typeWorkingOpitonsObj = this.props.typeWorkingOptions;
-        let defaultTypeWorkingObj = typeWorkingOpitonsObj[0];
+        let defaultTypeWorkingObj = {
+            "title" : ""
+        };
+        
         var defaultTypeActivity = typeActivities[0].title;
-        typeActivities.map(typeActivity => typeActivity.typeWorkingOption = typeWorkingOpitonsObj);
+
+        typeActivities.map((typeActivity) => {
+
+            if(typeActivity.hasTypeWork){
+                typeActivity.typeWorkingOption = typeWorkingOpitonsObj;
+                defaultTypeWorkingObj = typeWorkingOpitonsObj[0];
+            }
+            else {
+                typeActivity.typeWorkingOption = "-";
+                defaultTypeWorkingObj.title = "-"
+            }   
+        });
         
         let typeActivity = props.activity ? props.activity.typeActivity: defaultTypeActivity;
-        let typesOfWorkOptions = (typeActivities.find((activity)=> activity.title == typeActivity)).typeWorkingOption;
+        let typesOfWorkOptions = (typeActivities.find((activity)=> activity.title === typeActivity)).typeWorkingOption;
         let typeWorking = props.activity ? props.activity.typeWorking : defaultTypeWorkingObj.title;
-
+     
         this.state = {
             typeWorking,
             typeActivity,
             createdAt: props.activity ? moment(props.activity.createdAt) : moment(),
             hours: props.activity ? props.activity.hours : "",
-            typesOfWorkOptions: typesOfWorkOptions,
+            typesOfWorkOptions,
             calendarFocused: false,
             modalShow: false,
             modalSaveShow: false,
@@ -144,7 +158,14 @@ class ActivityForm extends React.Component {
         
         let workingOptionsSelect = [];
         for(var key in (this.state.typesOfWorkOptions)) {
-            var typeWorkingTitle = this.state.typesOfWorkOptions[key].title;
+            var typeWorkingTitle = "";
+            if(this.state.typesOfWorkOptions[key] === "-") {
+                typeWorkingTitle = "-"
+            }
+            else {
+                console.log(this.state.typesOfWorkOptions[key])
+                typeWorkingTitle = this.state.typesOfWorkOptions[key].title;
+            }
             workingOptionsSelect.push(<option key={typeWorkingTitle} value={typeWorkingTitle}>{typeWorkingTitle}</option>)
         }
 

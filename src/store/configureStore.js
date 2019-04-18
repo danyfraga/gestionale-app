@@ -6,6 +6,7 @@ import filtersReducer from "../reducers/filters";
 import { userReducer, usersReducer } from "../reducers/user";
 import { typeWorkingOptionsReducer } from "../reducers/typeWorkingOptions";
 import { typeActivityOptionsReducer } from "../reducers/typeActivityOption";
+import { userEmailListReducer } from "../reducers/userEmailList"
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -17,7 +18,8 @@ const store = createStore(
         user: userReducer,
         allUsers: usersReducer,
         typeWorkingOptions: typeWorkingOptionsReducer ,
-        typeActivityOptions: typeActivityOptionsReducer
+        typeActivityOptions: typeActivityOptionsReducer,
+        userEmailList: userEmailListReducer
     }),
     composeEnhancers(applyMiddleware(thunk))
 );

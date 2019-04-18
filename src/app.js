@@ -13,6 +13,7 @@ import { getUserInfo, startGetAllUsers } from "./actions/user";
 import LoadingPage from "./components/LoadingPage";
 import { startSetOption } from "./actions/typeWorkingOptions";
 import { startSetOptionActivity } from "./actions/typeActivityOption";
+import { startSetUserEmailList } from "./actions/userEmailList"
 
 library.add(faArrowLeft);
 library.add(faSignOutAlt);
@@ -20,7 +21,7 @@ library.add(faTimesCircle);
 library.add(faPlusCircle);
 library.add(faInfoCircle)
 
-let usersEmailId = ["pippo@gmail.com", "paperino@gmail.com", "daniele.fragale@edu.itspiemonte.it"];
+let usersEmailId = ["daniele.fragale@edu.itspiemonte.it"];
 
 const jsxApp = (
     <Provider store={store}>
@@ -48,17 +49,16 @@ firebase.database().ref("typeWorkingOptions").once("value", snapshot => {
 });
 
 firebase.database().ref("typeActivityOptions").once("value", snapshot => {
-
     if(!snapshot.exists()) {
-        firebase.database().ref(`typeActivityOptions/${"working"}`).set({"title":"working", "description": "-"});
-        firebase.database().ref(`typeActivityOptions/${"holiday"}`).set({"title":"holiday", "description": "-"});
-        firebase.database().ref(`typeActivityOptions/${"permit"}`).set({"title":"permit", "description": "-"});
+        firebase.database().ref(`typeActivityOptions/${"working"}`).set({"title":"working", "description": "-", "hasTypeWork":true});
+        firebase.database().ref(`typeActivityOptions/${"holiday"}`).set({"title":"holiday", "description": "-", "hasTypeWork":false});
+        firebase.database().ref(`typeActivityOptions/${"permit"}`).set({"title":"permit", "description": "-", "hasTypeWork":false});
     }
     else {
         store.dispatch(startSetOptionActivity());
     }
 });
-
+store.dispatch(startSetUserEmailList());
 firebase.auth().onAuthStateChanged((user) => {
     if(!user) {
         store.dispatch(logout());
@@ -68,14 +68,14 @@ firebase.auth().onAuthStateChanged((user) => {
     else {
         firebase.database().ref("usersEmailId").once("value", snapshot => {
             if(!snapshot.exists()) {
-                firebase.database().ref("usersEmailId").set(usersEmailId);
+                let email = "daniele.fragale@edu.itspiemonte.it";
+                firebase.database().ref(`usersEmailId`).push(email);
             }
             let emailExist = false;
             snapshot.forEach((snapshotChild) => {
                 if (user.email === snapshotChild.val()) emailExist = true;
             });
             if(emailExist) {
-                // ReactDOM.render(<p></p>, document.getElementById("errorAuth"));
                 //Controllo se è già presente un utente, se è non esiste aggiungi userData 
                 firebase.database().ref(`users/${user.uid}`).once("value", snapshot => {  
                     let defaultUserData = {

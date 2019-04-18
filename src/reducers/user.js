@@ -28,6 +28,19 @@ export const usersReducer = (state = defaultUsersArray, action) => {
     switch(action.type) {
         case "GET_ALL_USERS":
             return action.allUsers;
+        case "REMOVE_USER":
+            return state.filter((user) => {
+                return user.email !== action.userEmail
+            });
+        case "EDIT_IS_ADMIN_USER":
+            return state.map((user) => {
+                if(user.userId === action.updates.userId) {
+                    return {
+                        ...user,
+                        ...action.updates
+                    }
+                }
+            });
         default: 
             return state;
     }

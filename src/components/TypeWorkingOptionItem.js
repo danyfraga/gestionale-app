@@ -31,7 +31,7 @@ class TypeWorkingOptionItem extends React.Component {
 
     handleClose = () => {
         this.setState({ modalShow: false, modalSaveShow: false, modalDeleteShow: false });
-      }
+    }
 
     render() {
         let thisProps = this.props;

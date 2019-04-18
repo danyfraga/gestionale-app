@@ -8,24 +8,9 @@ import { connect } from "react-redux";
 class ActivityItem extends React.Component  {
     constructor (props) {
         super(props);
-        this.state = {
-            tooltipOpen: false
-        }
-    }
-    
-    toggle = () => {
-        this.setState({
-            tooltipOpen: !this.state.tooltipOpen
-        });
     }
 
     render () {
-        let thisProps = this.props;
-
-        let currentOption = thisProps.typeWorkingOptions.filter((option) => {
-            if(option.title === thisProps.typeWorking) return option.description
-        });
-
         return (
             <Link className="list-item d-flex justify-content-between" style={{ textDecoration: 'none' }} to={`/edit/${this.props.idActivity}`}>
                 <div className="show-for-desktop col-3">
@@ -36,16 +21,6 @@ class ActivityItem extends React.Component  {
                         <div>
                             <span className="span__typeActivity">{(this.props.typeActivity).charAt(0).toUpperCase() + (this.props.typeActivity).slice(1)}</span>
                             <span className="span__typeWorking">{this.props.typeWorking !== "-" ? " - " : ""}{this.props.typeWorking !== "-" ? (this.props.typeWorking).charAt(0).toUpperCase() + (this.props.typeWorking).slice(1) : ""}</span>
-                            <FontAwesomeIcon id={this.props.idActivity} icon="info-circle" className="infoCircle infoButton" size="1x" className=""/>
-                            <Tooltip 
-                                placement="right" 
-                                isOpen={this.state.tooltipOpen} 
-                                target={this.props.idActivity} 
-                                toggle={this.toggle} 
-                                className="label__tooltip"
-                            >
-                                {currentOption[0].description}
-                            </Tooltip>
                         </div>
                     }
                 </div>
