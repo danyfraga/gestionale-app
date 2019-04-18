@@ -193,7 +193,7 @@ class ActivitiesFilters extends React.Component {
                     <div className="col-10 col-xl-4 col-lg-4 col-md-6 col-sm-8 form-group">
                         <span className="span">Data View</span>
                         <label className="label text-center" style={labelStyle}>
-                            <span className="span span__filter" style={spanStyle}>Partial Data</span>
+                            <span className="span span__filter" style={spanStyle}>Activities List</span>
                             <Switch
                                 checked={this.state.switchChecked}
                                 onChange={this.handleChange}
@@ -209,7 +209,7 @@ class ActivitiesFilters extends React.Component {
                                 className="react-switch switch"
                                 id="material-switch"
                             />
-                            <span className="span span__filter" style={spanStyle}>Total Data</span>
+                            <span className="span span__filter" style={spanStyle}>Activities Table</span>
                         </label>
                     </div>
                 </div>            
