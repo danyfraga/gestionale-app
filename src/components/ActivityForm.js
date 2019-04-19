@@ -11,7 +11,7 @@ class ActivityForm extends React.Component {
     constructor(props) {
         super(props);
         this._startRemoveActivity = this._startRemoveActivity.bind(this);
-        console.log(this.props)
+
         let typeActivities = this.props.typeActivityOptions;
         let typeWorkingOpitonsObj = this.props.typeWorkingOptions;
         let defaultTypeWorkingObj = {
@@ -37,6 +37,7 @@ class ActivityForm extends React.Component {
         let typeWorking = props.activity ? props.activity.typeWorking : defaultTypeWorkingObj.title;
      
         this.state = {
+            linkPath: this.props.linkPath,
             typeWorking,
             typeActivity,
             createdAt: props.activity ? moment(props.activity.createdAt) : moment(),
@@ -163,7 +164,6 @@ class ActivityForm extends React.Component {
                 typeWorkingTitle = "-"
             }
             else {
-                console.log(this.state.typesOfWorkOptions[key])
                 typeWorkingTitle = this.state.typesOfWorkOptions[key].title;
             }
             workingOptionsSelect.push(<option key={typeWorkingTitle} value={typeWorkingTitle}>{typeWorkingTitle}</option>)
@@ -188,7 +188,7 @@ class ActivityForm extends React.Component {
 
         return (
             <div>
-                {this.state.remove && <Redirect to="/" push />}
+                {this.state.remove && <Redirect to={this.state.linkPath} push/>}
                 {
                     !this.state.remove && 
                     <div className="row d-flex justify-content-center">

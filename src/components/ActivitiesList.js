@@ -4,7 +4,7 @@ import  selectActivity from "../selectors/activities";
 import ActivityItem from "../components/ActivityItem";
 import { Table } from 'reactstrap';
 import moment from "moment";
-import getVisibleActivities, { generateOptionTypeActivities } from "../selectors/activities";
+import { generateOptionTypeActivities } from "../selectors/activities";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { startGetAllUsers } from "../actions/user";
 import watch from "redux-watch";
@@ -30,13 +30,15 @@ class ActivitiesList extends React.Component {
             currentPage: 0,
             startDate: this.props.filters.startDate,
             endDate: this.props.filters.endDate,
+            fromAdmin: this.props.fromAdmin,
+            userId: this.props.userId
         };
     }
 
     handleClick = (e, index) => {
         e.preventDefault();
         this.setState({
-          currentPage: index
+            currentPage: index
         }); 
     }
    
@@ -74,9 +76,9 @@ class ActivitiesList extends React.Component {
         let bodyRowTable = () => {
             let trRows = []
             for(var key in rows) {
-                let typeActivity = <th className="th-table__typeActivity">{key.charAt(0).toUpperCase() + key.slice(1)}</th>
+                let typeActivity = <th className="th-table__typeActivity text-center">{key.charAt(0).toUpperCase() + key.slice(1)}</th>
                 let hours = rows[key].map((hour, i) => {
-                    return <td className="td-table__body" key={ key + "_" + i + "td" }>{ hour }</td>
+                    return <td className="td-table__body text-center" key={ key + "_" + i + "td" }>{ hour }</td>
                 }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
                 trRows.push( <tr key={key + "_tr"}>{ typeActivity }{ hours }</tr>);
             }
@@ -84,7 +86,12 @@ class ActivitiesList extends React.Component {
         }
 
         let activitiesList = this.props.activities.map((activity) => {
-            return <ActivityItem key={activity.idActivity} {...activity}/>
+            return <ActivityItem 
+                key={activity.idActivity} 
+                {...activity} 
+                fromAdmin={this.state.fromAdmin} 
+                userId={this.state.userId}
+            />
         });
 
         let borderBottomList = this.props.activities.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" };
@@ -100,9 +107,9 @@ class ActivitiesList extends React.Component {
                         this.props.filters.switchChecked ? (
                             <div>
                                 <div className="row row__table">
-                                    <Table bordered >
+                                    <Table bordered className="table">
                                         <thead>
-                                            <tr className="tr-table__header">    
+                                            <tr className="tr-table__header text-center">    
                                                 <th className="th-table__header th-table__header-col1">Type Activity</th> 
                                                 {headerRowTable} 
                                             </tr>

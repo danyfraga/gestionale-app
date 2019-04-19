@@ -37,7 +37,7 @@ class UserItem extends React.Component {
             <div className="content-container">
                 <UserItemHeader userId={userId}/>
                 <ActivitiesFilters/>
-                <ActivitiesList/>
+                <ActivitiesList fromAdmin={true} userId={userId}/>
             </div>
         )
     }

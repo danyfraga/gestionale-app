@@ -59,7 +59,7 @@ export const startEditIsAdminUser = (updates) => {
     return (dispatch) => {
         let isAdmin = { isAdmin: updates.isAdmin }
         return database.ref(`users/${updates.userId}/userData`).update(isAdmin).then(() => {
-            dispatch(editIsAdminUser(updates))
+            dispatch(setUserInfo())
         })
     };
 };

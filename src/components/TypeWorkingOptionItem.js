@@ -2,13 +2,15 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from "react-redux";
 import { startRemoveOption } from "../actions/typeWorkingOptions";
+import { startEditHasTypeWork, startRemoveOptionActivity } from "../actions/typeActivityOption";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class TypeWorkingOptionItem extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = { 
+            isTypeActivity: this.props.isTypeActivity ? true : false,
+            hasTypeWork: this.props.hasTypeWork,
             modalShow: false,
             modalSaveShow: false,
             modalDeleteShow: false 
@@ -16,9 +18,24 @@ class TypeWorkingOptionItem extends React.Component {
     }
 
     onClick = () => {
-        this.props.startRemoveOption(this.props.optionId);
+        if(this.state.isTypeActivity) {
+            this.props.startRemoveOptionActivity(this.props.optionId)
+        }
+        else {
+            this.props.startRemoveOption(this.props.optionId);
+        }
     }
 
+    onChange = () => {
+        let hasTypeWork = !this.state.hasTypeWork;
+        this.setState({ hasTypeWork });
+        let updates = {
+            title: this.props.optionTitle,
+            hasTypeWork 
+        }
+        this.props.startEditHasTypeWork(updates);
+    }
+    
     handleShow = () => {
         this.setState({ modalShow: true})
         if(!this.state.modalSaveShow) {
@@ -37,6 +54,8 @@ class TypeWorkingOptionItem extends React.Component {
         let thisProps = this.props;
         let disabledRemoveButton = thisProps.isSingle ? true : false;
 
+        let hasTypeWorkHidden = this.state.isTypeActivity ? false : true
+
         return (
             <div
                 className="list-item d-flex justify-content-between" 
@@ -44,8 +63,11 @@ class TypeWorkingOptionItem extends React.Component {
                 <div className="show-for-desktop col-5">
                     <span className="span__typeActivity">{thisProps.optionTitle}</span>
                 </div>
-                <div className="show-for-desktop col-6">
+                <div className="show-for-desktop col-4">
                     <span className="span__typeWorking">{thisProps.optionDescription}</span>
+                </div>
+                <div className="show-for-desktop col-2 text-center">
+                    <input type="checkbox" checked={this.state.hasTypeWork} onChange={this.onChange} hidden={hasTypeWorkHidden}/>
                 </div>
                 <div className="show-for-desktop col-1 text-center">
                     <button 
@@ -80,7 +102,9 @@ class TypeWorkingOptionItem extends React.Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         startRemoveOption: (optionId) => dispatch(startRemoveOption(optionId)),
-        startSetOptions: (options) => dispatch(startSetOptions(options))
+        startSetOptions: (options) => dispatch(startSetOptions(options)),
+        startEditHasTypeWork: (updates) => dispatch(startEditHasTypeWork(updates)),
+        startRemoveOptionActivity: (typeActivityIndex) =>   dispatch(startRemoveOptionActivity(typeActivityIndex))
     }
 }
 

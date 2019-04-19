@@ -1,29 +1,29 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import watch from "redux-watch";
 import store from "../store/configureStore";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TypeWorkingOptionItem from "../components/TypeWorkingOptionItem";
-import { startAddOption } from "../actions/typeWorkingOptions";
+import { startAddOptionActivity } from "../actions/typeActivityOption";
 import { Alert } from 'reactstrap';
 
 let watchCustomer = watch(store.getState);
 
-class SettingTypeWorking extends React.Component {
+class SettingTypeActivity extends React.Component {
     constructor (props) {
         super(props);
 
         this.state = { 
-            options: this.props.typeWorkingOptions, 
+            options: this.props.typeActivityOptions, 
             newOption: "",
             newOptionDescription: "",
+            newOptionHasTypeWork: false,
             typeErrorNewOption: "",
             errorNewOption: "",
         };
 
         this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
-            if(currentVal) this.setState({ options: currentVal.typeWorkingOptions })
+            if(currentVal) this.setState({ options: currentVal.typeActivityOptions })
          })); 
 
     }
@@ -36,9 +36,11 @@ class SettingTypeWorking extends React.Component {
         e.preventDefault();
         let titleOption = this.state.newOption;
         let descriptionOption = this.state.newOptionDescription;
-        let objNewOption = {
+        let hasTypeWorkOption = this.state.newOptionHasTypeWork;
+        let typeActivity = {
             "title": titleOption,
-            "description": descriptionOption ? descriptionOption : "-"
+            "description": descriptionOption ? descriptionOption : "-",
+            "hasTypeWork": hasTypeWorkOption ? hasTypeWorkOption : false
         }
        
         if(this.state.newOption) {
@@ -47,13 +49,13 @@ class SettingTypeWorking extends React.Component {
                 if ( (this.state.options)[key].title === this.state.newOption) isEqual = true;
             }
 
-            if(titleOption.length > 25 || descriptionOption > 51) {
+            if(titleOption.length > 25 || descriptionOption.length > 50 ) {
                 this.setState({ typeErrorNewOption: "inputLong", errorNewOption: "Warning! Your type working name (max 25) or description (max 50) is too long."});
                 
             }
             else {
                 if(!isEqual) {
-                    this.props.startAddOption(objNewOption);
+                    this.props.startAddOptionActivity(typeActivity);
                     this.setState({ newOption : "", newOptionDescription: "" });
                 }
                 else {
@@ -82,24 +84,28 @@ class SettingTypeWorking extends React.Component {
 
     render() {
         let thisProps = this.props;
-        let typeWorkingOptions = thisProps.typeWorkingOptions;
+        let typeActivityOptions = thisProps.typeActivityOptions;
         var isSingle = false;
-        let typeWorkingOption = typeWorkingOptions.map((option) => {
+        let isTypeActivity = true;
+        let typeActivityOption = typeActivityOptions.map((option, index) => {
             let optionTitle = option.title;
             let optionDescription = option.description;
-            if(typeWorkingOptions.length === 1) isSingle = true; 
+            let optionHasTypeWork = option.hasTypeWork
+            if(typeActivityOptions.length === 1) isSingle = true; 
             return (
                 <TypeWorkingOptionItem 
-                    key={optionTitle} 
+                    key={optionTitle + index} 
                     optionTitle={optionTitle} 
                     optionId={optionTitle}
                     optionDescription={optionDescription} 
                     isSingle={isSingle}
+                    isTypeActivity={isTypeActivity}
+                    hasTypeWork={optionHasTypeWork}
                 />
             )
         });
 
-        let borderBottomList = typeWorkingOption.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" };
+        let borderBottomList = typeActivityOption.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" };
 
         let errorColor = ""; 
         if(this.state.typeErrorNewOption === "emptyInput") { errorColor = "danger" }
@@ -110,15 +116,16 @@ class SettingTypeWorking extends React.Component {
 
         return (
             <div>
-                <h2 className="settings_subtitle">Setting type working</h2>
+                <h2 className="settings_subtitle">Setting type activity</h2>
                 <div className="list-header row row__list-header">
                     <div className="show-for-mobile">Activities</div>
-                    <div className="show-for-desktop col-5">Type working name</div>
-                    <div className="show-for-desktop col-6">Description</div>
+                    <div className="show-for-desktop col-5">Type activity name</div>
+                    <div className="show-for-desktop col-4">Description</div>
+                    <div className="show-for-desktop col-2 text-center">Type Working visible</div>
                     <div className="show-for-desktop col-1 text-center">Remove</div>
                 </div>
                 <div id="typeWorkingOptions" className="scroll scrollTypeWorkingOptions" style={borderBottomList}>
-                    {typeWorkingOption}
+                    {typeActivityOption}
                 </div>
                 <form className="list-item d-flex justify-content-between insertOptionTW" onSubmit={this.onSubmit}>
                     <div className="show-for-desktop col-5">
@@ -149,15 +156,15 @@ class SettingTypeWorking extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        typeWorkingOptions: state.typeWorkingOptions,
+        typeActivityOptions: state.typeActivityOptions,
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        startAddOption: (option) => dispatch(startAddOption(option)),
+        startAddOptionActivity: (typeActivity) => dispatch(startAddOptionActivity(typeActivity)),
     }
 }
 
-const SettingsTypeWorkingConnect = connect(mapStateToProps, mapDispatchToProps)(SettingTypeWorking)
-export default SettingsTypeWorkingConnect;
+const SettingTypeActivityConnect = connect(mapStateToProps, mapDispatchToProps)(SettingTypeActivity)
+export default SettingTypeActivityConnect;

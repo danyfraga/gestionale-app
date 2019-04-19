@@ -8,11 +8,25 @@ import { connect } from "react-redux";
 class ActivityItem extends React.Component  {
     constructor (props) {
         super(props);
+
+        this.state = {
+            fromAdmin: this.props.fromAdmin,
+            userId: this.props.userId
+        }
     }
 
     render () {
         return (
-            <Link className="list-item d-flex justify-content-between" style={{ textDecoration: 'none' }} to={`/edit/${this.props.idActivity}`}>
+            <Link 
+                className="list-item d-flex justify-content-between" 
+                style={{ textDecoration: 'none' }} 
+                to={{
+                    pathname:`/edit/${this.props.idActivity}`,
+                    state: {
+                        fromAdmin: this.state.fromAdmin,
+                        userId: this.state.userId
+                    }
+                }}>
                 <div className="show-for-desktop col-3">
                     <span className="list-item__sub-title">{moment(this.props.createdAt).format("DD/MM/YYYY")}</span>
                 </div>

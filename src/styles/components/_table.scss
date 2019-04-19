@@ -1,6 +1,11 @@
 //table
-.myTable {
-    margin-bottom: $s-size;
+.table {
+    th {
+        padding: 1.6rem 3.2rem;
+    }
+    td {
+        padding: 1.6rem 3.2rem;
+    }
 }
 
 .tr-table__header {
@@ -16,7 +21,7 @@
 .th-table__typeActivity {
     background-color:#b8e5ff4f;
     color: $blue;
-    font-weight: 400;
+    font-weight: 600;
 }
 
 .th-table__header-col1 {

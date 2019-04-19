@@ -10,26 +10,30 @@ class EditActivity extends React.Component {
     constructor(props) {
         super(props);
 
+        let linkPath = this.props.location.state.fromAdmin ? `/user/${this.props.location.state.userId}` : "/dashboard";
+
         this.state = {
-            modalShow: false
+            modalShow: false,
+            linkPath
         }
     }
 
     onSubmit = (activity) => {
         this.props.startEditActivity(this.props.activity.idActivity, activity);
-        this.props.history.push("/");
+        this.props.history.push(this.state.linkPath);
     }
 
     render () {
         return (
             <div className="content-container">
                 <div className="row row__createActivity-header">
-                    <Link to="/dashboard"><FontAwesomeIcon icon="arrow-left" className="arrowLeft" size="2x"/></Link>
+                    <Link to={this.state.linkPath}><FontAwesomeIcon icon="arrow-left" className="arrowLeft" size="2x"/></Link>
                     <h1 className="createActivity__title">Edit Activity</h1>
                 </div>
                 <ActivityForm 
                     activity={this.props.activity}
                     onSubmit={this.onSubmit}
+                    linkPath={this.state.linkPath}
                 />
             </div>
         ) 
