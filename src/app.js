@@ -101,7 +101,7 @@ firebase.auth().onAuthStateChanged((user) => {
                 });
             }
             else {
-                history.push("/dashboard");
+                history.push("/?error=Not Authorized");
             }
         });
     }
