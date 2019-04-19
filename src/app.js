@@ -13,15 +13,13 @@ import { getUserInfo, startGetAllUsers } from "./actions/user";
 import LoadingPage from "./components/LoadingPage";
 import { startSetOption } from "./actions/typeWorkingOptions";
 import { startSetOptionActivity } from "./actions/typeActivityOption";
-import { startSetUserEmailList } from "./actions/userEmailList"
+import { startSetUserEmailList } from "./actions/userEmailList";
 
 library.add(faArrowLeft);
 library.add(faSignOutAlt);
 library.add(faTimesCircle);
 library.add(faPlusCircle);
 library.add(faInfoCircle)
-
-let usersEmailId = ["daniele.fragale@edu.itspiemonte.it"];
 
 const jsxApp = (
     <Provider store={store}>
@@ -51,7 +49,7 @@ firebase.database().ref("typeWorkingOptions").once("value", snapshot => {
 firebase.database().ref("typeActivityOptions").once("value", snapshot => {
     if(!snapshot.exists()) {
         firebase.database().ref(`typeActivityOptions/${"working"}`).set({"title":"working", "description": "Default option", "hasTypeWork":true});
-        firebase.database().ref(`typeActivityOptions/${"holiday"}`).set({"title":"holiday", "description": "-", "Default option":false});
+        firebase.database().ref(`typeActivityOptions/${"holiday"}`).set({"title":"holiday", "description": "Default option", "hasTypeWork":false});
         firebase.database().ref(`typeActivityOptions/${"permit"}`).set({"title":"permit", "description": "Default option", "hasTypeWork":false});
     }
     else {
@@ -59,6 +57,7 @@ firebase.database().ref("typeActivityOptions").once("value", snapshot => {
     }
 });
 store.dispatch(startSetUserEmailList());
+
 firebase.auth().onAuthStateChanged((user) => {
     if(!user) {
         store.dispatch(logout());
@@ -102,8 +101,7 @@ firebase.auth().onAuthStateChanged((user) => {
                 });
             }
             else {
-                console.log("Non sono abilitato");
-                history.push("/");
+                history.push("/dashboard");
             }
         });
     }

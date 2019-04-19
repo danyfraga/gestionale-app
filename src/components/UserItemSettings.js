@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { startEditIsAdminUser, startRemoveUser } from "../actions/user";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 import { startRemoveUserEmail } from "../actions/userEmailList"
 
 class UserItemSettings extends React.Component {
@@ -93,7 +93,7 @@ class UserItemSettings extends React.Component {
                     <span className="span__typeWorking">{this.state.email}</span>
                 </div>
                 <div className="show-for-desktop col-1 text-center">
-                    <form>
+                    <form >
                         <input type="checkbox" checked={this.state.isAdmin} onChange={this.onChange} disabled={this.state.logUser}/>
                     </form>
                 </div>

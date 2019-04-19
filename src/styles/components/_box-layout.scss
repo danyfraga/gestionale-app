@@ -1,6 +1,6 @@
 .box-layout {
     align-items: center;
-    background: url("/images/Blue-Picture-Photo-Wallpapers-002.jpg");
+    background: #b3daef54;
     background-size: cover;
     display: flex;
     height: 100vh;
@@ -15,7 +15,11 @@
     text-align: center;
     height: 40rem;
     width: 40rem;
-
+    -webkit-box-shadow: 0px 5px 12px -6px #878787;
+    -moz-box-shadow: 0px 5px 12px -6px #878787;
+    -o-box-shadow: 0px 5px 12px -6px #878787;
+    box-shadow: 0px 5px 12px -6px #878787;
+    
     p {
         color: #495057;
         margin-bottom: $l-size;
