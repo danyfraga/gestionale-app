@@ -4,30 +4,34 @@ import { startLogin } from "../actions/auth";
 import { Alert } from 'reactstrap';
 import store from "../store/configureStore";
 import watch from "redux-watch";
+import {history} from "../routers/AppRouter";
 
 let watchCustomer = watch(store.getState);
+const queryString = require('query-string');
 
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
 
+        const parsed = queryString.parse(location.search);
+
         this.state = {
-            error: this.props.location.search ? false : true
+            error: parsed.error
         }
 
         this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
-            // this.setState({ error: currentVal.error });
+            // if(currentVal) this.setState({ error: currentVal.error });
+            history.push("/");
          })); 
     }
 
     onClick = () => {
         this.props.startLogin();
+        history.push("/");
     }
 
     componentWillUnmount() {
         this.unsubscribe();
-        this.setState({ error: false})
-        console.log(this.state.error)
     }
 
     render() {
@@ -37,10 +41,10 @@ class LoginPage extends React.Component {
                     <h1 className="box-layout__title">MGMTNet</h1>
                     <p>Manage your activities</p>
                     <button className="button" onClick={this.onClick}>Login with Google</button>
-                    <div id="errorAuth" hidden={this.state.error}>
-                    <Alert color="danger">
-                        Error! Your account is not enabled to log in
-                    </Alert>
+                    <div id="errorAuth" hidden={this.state.error ? false : true} className="error-message">
+                        <Alert color="danger">
+                            {this.state.error}
+                        </Alert>
                     </div>
                 </div>
             </div>

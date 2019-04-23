@@ -53,7 +53,6 @@ class TypeWorkingOptionItem extends React.Component {
     render() {
         let thisProps = this.props;
         let disabledRemoveButton = thisProps.isSingle ? true : false;
-
         let hasTypeWorkHidden = this.state.isTypeActivity ? false : true
 
         return (
