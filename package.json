@@ -50,6 +50,7 @@
     "react-modal": "^3.0.0-rc2",
     "react-redux": "5.0.5",
     "react-router-dom": "4.2.2",
+    "react-sweet-progress": "^1.1.2",
     "react-switch": "^4.1.0",
     "reactstrap": "^7.1.0",
     "redux": "3.7.2",

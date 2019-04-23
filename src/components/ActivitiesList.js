@@ -59,11 +59,10 @@ class ActivitiesList extends React.Component {
             });
 
             activityForDate.forEach((activity) => {
-               let currentHours = rows[activity.typeActivity][index]
-               let totalHours = currentHours + parseInt(activity.hours);
-               rows[activity.typeActivity][index] = totalHours;
-            });
-            
+                let currentHours = rows[activity.typeActivity][index];
+                let totalHours = currentHours + parseInt(activity.hours);
+                rows[activity.typeActivity][index] = totalHours;
+            });            
         });
 
         let pageSize = 7;
@@ -73,17 +72,43 @@ class ActivitiesList extends React.Component {
         let headerRowTable = filteredDates.map((date, index) => {
                 return <th key = {date + index} className = "th-table__header ">{date}</th>
         }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
+
         let bodyRowTable = () => {
             let trRows = []
             for(var key in rows) {
                 let typeActivity = <th className="th-table__typeActivity text-center">{key.charAt(0).toUpperCase() + key.slice(1)}</th>
                 let hours = rows[key].map((hour, i) => {
+                    if(hour === 0) hour = "-";
                     return <td className="td-table__body text-center" key={ key + "_" + i + "td" }>{ hour }</td>
                 }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
                 trRows.push( <tr key={key + "_tr"}>{ typeActivity }{ hours }</tr>);
             }
             return trRows;
         }
+
+        let createRingValues = () => {
+            var totalHoursPerActivity = {}
+            activitiesArray.map((typeActivity) => {
+                return totalHoursPerActivity[typeActivity] = typeActivity;
+            });
+            for(var key in totalHoursPerActivity) {
+                var countHours = 0;
+                for(var key2 in rows) {
+                    
+                    rows[key2].map((hour) => {
+                        console.log(key2)
+                        countHours = countHours + hour;
+                    });
+                }
+                if(key === key2) {
+                    totalHoursPerActivity[key] = countHours;
+                }
+            }
+            return totalHoursPerActivity
+        }
+
+        let pippo = createRingValues();
+        console.log(pippo)
 
         let activitiesList = this.props.activities.map((activity) => {
             return <ActivityItem 
