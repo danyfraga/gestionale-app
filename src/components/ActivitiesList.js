@@ -6,10 +6,9 @@ import { Table } from 'reactstrap';
 import moment from "moment";
 import { generateOptionTypeActivities } from "../selectors/activities";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import { startGetAllUsers } from "../actions/user";
-import watch from "redux-watch";
-import store from "../store/configureStore";
-
+import RingProgressBar from "../components/RingProgressBar";
+import { Collapse, CardBody, Card } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 var enumerateDaysBetweenDates = function(startDate, endDate) {
     var dates = [];
@@ -31,7 +30,8 @@ class ActivitiesList extends React.Component {
             startDate: this.props.filters.startDate,
             endDate: this.props.filters.endDate,
             fromAdmin: this.props.fromAdmin,
-            userId: this.props.userId
+            userId: this.props.userId,
+            collapse: false
         };
     }
 
@@ -40,6 +40,12 @@ class ActivitiesList extends React.Component {
         this.setState({
             currentPage: index
         }); 
+    }
+
+    toggle = () => {
+        this.setState({
+            collapse: !this.state.collapse
+        });
     }
    
    render() {
@@ -73,42 +79,24 @@ class ActivitiesList extends React.Component {
                 return <th key = {date + index} className = "th-table__header ">{date}</th>
         }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
 
-        let bodyRowTable = () => {
-            let trRows = []
-            for(var key in rows) {
-                let typeActivity = <th className="th-table__typeActivity text-center">{key.charAt(0).toUpperCase() + key.slice(1)}</th>
-                let hours = rows[key].map((hour, i) => {
-                    if(hour === 0) hour = "-";
-                    return <td className="td-table__body text-center" key={ key + "_" + i + "td" }>{ hour }</td>
-                }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
-                trRows.push( <tr key={key + "_tr"}>{ typeActivity }{ hours }</tr>);
-            }
-            return trRows;
-        }
+        var totalHoursPerActivity = [];
+    
+        let trRows = [];
+        var totalHoursPerActivity = [];
+        for(var key in rows) {
+            var countHours = 0;
+            let typeActivity = <th className="th-table__typeActivity text-center">{key.charAt(0).toUpperCase() + key.slice(1)}</th>
+            let hours = rows[key].map((hour, i) => {
+                countHours = countHours + hour;
+                if(hour === 0) hour = "-";
+                return <td className="td-table__body text-center" key={ key + "_" + i + "td" }>{ hour }</td>
+            }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
+            trRows.push(<tr key={key + "_tr"}>{ typeActivity }{ hours }</tr>);
 
-        let createRingValues = () => {
-            var totalHoursPerActivity = {}
-            activitiesArray.map((typeActivity) => {
-                return totalHoursPerActivity[typeActivity] = typeActivity;
-            });
-            for(var key in totalHoursPerActivity) {
-                var countHours = 0;
-                for(var key2 in rows) {
-                    
-                    rows[key2].map((hour) => {
-                        console.log(key2)
-                        countHours = countHours + hour;
-                    });
-                }
-                if(key === key2) {
-                    totalHoursPerActivity[key] = countHours;
-                }
+            if(!totalHoursPerActivity.includes(key)) {
+                totalHoursPerActivity.push({ [key] : countHours });
             }
-            return totalHoursPerActivity
         }
-
-        let pippo = createRingValues();
-        console.log(pippo)
 
         let activitiesList = this.props.activities.map((activity) => {
             return <ActivityItem 
@@ -123,6 +111,19 @@ class ActivitiesList extends React.Component {
 
         return (
             <div>
+                <div className="row">
+                    <div className="col-4">
+                        <h2 className="settings_subtitle title-collapse">Activity summary</h2>
+                        {this.state.collapse ? <FontAwesomeIcon icon="angle-up" className="angle_up button-collapse" size="2x"  style={{ margin: "0" }} onClick={this.toggle} cursor="pointer"/> : <FontAwesomeIcon icon="angle-down" className="angle_down button-collapse" size="2x"  style={{ margin: "0" }} onClick={this.toggle} cursor="pointer"/>}
+                        <Collapse isOpen={this.state.collapse}>
+                            <Card>
+                                <CardBody>
+                                    <RingProgressBar totalHoursPerActivity={totalHoursPerActivity}/>
+                                </CardBody>
+                            </Card>
+                        </Collapse>
+                    </div>
+                </div>
                 {
                     this.props.activities.length === 0 ? (
                         <div className="row list-item--message d-flex justify-content-center noActivities__p">
@@ -140,7 +141,7 @@ class ActivitiesList extends React.Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {bodyRowTable()}                          
+                                            {trRows}                          
                                         </tbody>
                                     </Table>
                                 </div>

@@ -1,14 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { Tooltip } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from "react-redux";
 
 class ActivityItem extends React.Component  {
     constructor (props) {
         super(props);
-
+        
         this.state = {
             fromAdmin: this.props.fromAdmin,
             userId: this.props.userId

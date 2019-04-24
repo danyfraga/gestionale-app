@@ -7,7 +7,7 @@ import "react-dates/lib/css/_datepicker.css";
 import { firebase } from "./firebase/firebase";
 import "./styles/styles.scss";
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faArrowLeft, faSignOutAlt, faTimesCircle, faPlusCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faSignOutAlt, faTimesCircle, faPlusCircle, faInfoCircle, faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { login, logout } from "./actions/auth";
 import { getUserInfo, startGetAllUsers } from "./actions/user";
 import LoadingPage from "./components/LoadingPage";
@@ -19,7 +19,9 @@ library.add(faArrowLeft);
 library.add(faSignOutAlt);
 library.add(faTimesCircle);
 library.add(faPlusCircle);
-library.add(faInfoCircle)
+library.add(faInfoCircle);
+library.add(faAngleDown);
+library.add(faAngleUp)
 
 const jsxApp = (
     <Provider store={store}>
