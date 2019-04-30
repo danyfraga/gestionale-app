@@ -6,9 +6,7 @@ import { Table } from 'reactstrap';
 import moment from "moment";
 import { generateOptionTypeActivities } from "../selectors/activities";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import RingProgressBar from "../components/RingProgressBar";
-import { Collapse, CardBody, Card } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ActivitySummary from "../components/ActivitySummary";
 
 var enumerateDaysBetweenDates = function(startDate, endDate) {
     var dates = [];
@@ -30,8 +28,7 @@ class ActivitiesList extends React.Component {
             startDate: this.props.filters.startDate,
             endDate: this.props.filters.endDate,
             fromAdmin: this.props.fromAdmin,
-            userId: this.props.userId,
-            collapse: false
+            userId: this.props.userId
         };
     }
 
@@ -92,12 +89,11 @@ class ActivitiesList extends React.Component {
                 return <td className="td-table__body text-center" key={ key + "_" + i + "td" }>{ hour }</td>
             }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
             trRows.push(<tr key={key + "_tr"}>{ typeActivity }{ hours }</tr>);
-
             if(!totalHoursPerActivity.includes(key)) {
                 totalHoursPerActivity.push({ [key] : countHours });
             }
         }
-
+        
         let activitiesList = this.props.activities.map((activity) => {
             return <ActivityItem 
                 key={activity.idActivity} 
@@ -111,19 +107,6 @@ class ActivitiesList extends React.Component {
 
         return (
             <div>
-                <div className="row">
-                    <div className="col-4">
-                        <h2 className="settings_subtitle title-collapse">Activity summary</h2>
-                        {this.state.collapse ? <FontAwesomeIcon icon="angle-up" className="angle_up button-collapse" size="2x"  style={{ margin: "0" }} onClick={this.toggle} cursor="pointer"/> : <FontAwesomeIcon icon="angle-down" className="angle_down button-collapse" size="2x"  style={{ margin: "0" }} onClick={this.toggle} cursor="pointer"/>}
-                        <Collapse isOpen={this.state.collapse}>
-                            <Card>
-                                <CardBody>
-                                    <RingProgressBar totalHoursPerActivity={totalHoursPerActivity}/>
-                                </CardBody>
-                            </Card>
-                        </Collapse>
-                    </div>
-                </div>
                 {
                     this.props.activities.length === 0 ? (
                         <div className="row list-item--message d-flex justify-content-center noActivities__p">
@@ -188,6 +171,7 @@ class ActivitiesList extends React.Component {
                         )
                     )
                 }
+                <ActivitySummary fromAdmin={this.state.fromAdmin} totalHoursPerActivity={totalHoursPerActivity}/>
             </div>
         )
     } 

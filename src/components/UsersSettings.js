@@ -117,7 +117,7 @@ class UsersSettings extends React.Component {
         let borderBottomList = usersList.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" };
 
         return (
-            <div>
+            <div className="usersSettings__container">
                 <h2 className="settings_subtitle">Users settings</h2>
                 <div className="list-header row row__list-header">
                     <div className="show-for-desktop col-2">Name</div>

@@ -8,7 +8,7 @@
 }
 
 .row__pagination {
-    padding-bottom: $l-size;
+    // padding-bottom: $l-size;
     padding-right: 16px;
 }
 
@@ -23,4 +23,9 @@
 
 .row__createActivity-header {
     padding: 0 1.6rem
+}
+
+.row__ringProgressBar {
+    margin: $xl-size 0;
+    border-top: 1px solid $blue;
 }

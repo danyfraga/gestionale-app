@@ -1,6 +1,6 @@
 .content-container {
     margin: 0 auto;
-    padding: 0 $m-size;
+    padding: 0 $xl-size;
     max-width: 150rem;
 }
 
@@ -8,4 +8,8 @@
     margin: 0 auto;
     padding: 0 $m-size;
     max-width: 100rem;
+}
+
+.usersSettings__container {
+    margin-bottom: 8rem;
 }

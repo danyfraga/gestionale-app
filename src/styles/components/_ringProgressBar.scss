@@ -1,27 +1,47 @@
-.popover {
-    min-width: 500px !important;
-    min-height: auto !important;
-}
-
-.ring-container {
-    margin: 2rem 0;
-    width: auto;
-    height: auto;
-}
-
-.popover-title {
-    color: #495057;
-    font-weight: 400;
-    font-size: 1.8rem;
-
-}
-
 .title-collapse {
     display: inline-block;
-    margin-right: 20px;
+    margin: 0 20px 0 0;
 }
 
 .button-collapse {
     width: 10rem;
     vertical-align: middle;
+    color: #495057;
+}
+
+.card-activitySummary {
+    border: none;
+}
+
+.ul-legend {
+    list-style-type: none;
+    padding: 0;
+}
+
+.bullet-legend__li {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+}
+
+.label-legend__li {
+    display: inline-block;
+    color: #495057;
+
+    &:hover {
+        font-weight: 600;    
+    }  
+}
+
+.graphicCol {
+    canvas {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+.collapse__container {
+    margin-bottom: $xl-size;
 }

@@ -49,8 +49,8 @@ class SettingTypeActivity extends React.Component {
                 if ( (this.state.options)[key].title === this.state.newOption) isEqual = true;
             }
 
-            if(titleOption.length > 25 || descriptionOption.length > 50 ) {
-                this.setState({ typeErrorNewOption: "inputLong", errorNewOption: "Warning! Your type working name (max 25) or description (max 50) is too long."});
+            if(titleOption.length > 20 || descriptionOption.length > 50 ) {
+                this.setState({ typeErrorNewOption: "inputLong", errorNewOption: "Warning! Your type activity name (max 20) or description (max 50) is too long."});
                 
             }
             else {
