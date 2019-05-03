@@ -4,7 +4,6 @@ import  selectActivity from "../selectors/activities";
 import ActivityItem from "../components/ActivityItem";
 import { Table } from 'reactstrap';
 import moment from "moment";
-import { generateOptionTypeActivities } from "../selectors/activities";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import ActivitySummary from "../components/ActivitySummary";
 
@@ -28,7 +27,8 @@ class ActivitiesList extends React.Component {
             startDate: this.props.filters.startDate,
             endDate: this.props.filters.endDate,
             fromAdmin: this.props.fromAdmin,
-            userId: this.props.userId
+            userId: this.props.userId,
+            typeActivityOptions: this.props.typeActivityOptions
         };
     }
 
@@ -50,11 +50,20 @@ class ActivitiesList extends React.Component {
         let startDate = moment(props.filters.startDate).format("LL");
         let endDate = moment(props.filters.endDate).format("LL");
         let filteredDates = startDate === endDate ? [moment(startDate).format("DD/MM/YYYY")] : [moment(props.filters.startDate).format("DD/MM/YYYY"), ...enumerateDaysBetweenDates(startDate, endDate), moment(props.filters.endDate).format("DD/MM/YYYY")];
-        let activitiesArray = props.options;
         let rows = {};
-        
-        activitiesArray.map((typeActivity) => {
-            rows[typeActivity] = filteredDates.map(()=> 0);
+
+        let typeActivityOptionsTitle = this.props.activities.map((activity, index) => {
+            if(activity.typeActivity !== this.props.activities[index-1]) {
+                return activity.typeActivity
+            }
+        })
+
+        this.state.typeActivityOptions.map((option) => {
+            typeActivityOptionsTitle.push(option.title)
+        });
+
+        typeActivityOptionsTitle.map((typeActivity) => {
+            rows[typeActivity] = filteredDates.map(() => 0);
         });
         filteredDates.forEach((date, index) => {
            let activityForDate = props.activities.filter((activity) => {
@@ -75,8 +84,6 @@ class ActivitiesList extends React.Component {
         let headerRowTable = filteredDates.map((date, index) => {
                 return <th key = {date + index} className = "th-table__header ">{date}</th>
         }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
-
-        var totalHoursPerActivity = [];
     
         let trRows = [];
         var totalHoursPerActivity = [];
@@ -171,7 +178,7 @@ class ActivitiesList extends React.Component {
                         )
                     )
                 }
-                <ActivitySummary fromAdmin={this.state.fromAdmin} totalHoursPerActivity={totalHoursPerActivity}/>
+                <ActivitySummary fromAdmin={this.state.fromAdmin}/>
             </div>
         )
     } 
@@ -186,10 +193,11 @@ class ActivitiesList extends React.Component {
 }
     
 const mapStateToProps = (state) => {
+    console.log("STAT222", state);
     return {
         activities: selectActivity(state.activities, state.filters),
         filters: state.filters,
-        options: generateOptionTypeActivities()
+        typeActivityOptions: state.typeActivityOptions
     };
 }
 

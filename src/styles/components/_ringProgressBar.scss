@@ -10,7 +10,7 @@
 }
 
 .card-activitySummary {
-    border: none;
+    width: 100%;
 }
 
 .ul-legend {
@@ -31,7 +31,8 @@
 
     &:hover {
         font-weight: 600;    
-    }  
+    } 
+    cursor: default; 
 }
 
 .graphicCol {
@@ -42,6 +43,13 @@
     }
 }
 
+.noDataShow__p {
+    font-size: 2rem;
+    color: $blue;
+    font-weight: 400;
+    margin: none;
+}
+
 .collapse__container {
-    margin-bottom: $xl-size;
+    width: 100%;
 }

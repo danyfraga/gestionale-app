@@ -13,14 +13,4 @@ const getVisibleActivities = (activities, { sortByTypeWorking, sortByActivity, s
     })
 }
 
-export const generateOptionTypeActivities = () => {
-    const typeActivities = ["working", "permit", "holiday"];
-    return typeActivities;
-}
-
-export const generateOptionTypeWorking = () => {
-    const typeWorking = ["option 1", "option 2", "option 3"];
-    return typeWorking;
-}
-
 export default getVisibleActivities;

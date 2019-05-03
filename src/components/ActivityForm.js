@@ -2,8 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import moment from "moment"
-import { generateOptionTypeActivities, generateOptionTypeWorking } from "../selectors/activities";
-import { startRemoveActivity } from "../actions/activities";
+import { startRemoveActivity, startSetActivity } from "../actions/activities";
 import { Redirect } from "react-router-dom"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
@@ -12,37 +11,29 @@ class ActivityForm extends React.Component {
         super(props);
         this._startRemoveActivity = this._startRemoveActivity.bind(this);
 
-        let typeActivities = this.props.typeActivityOptions;
-        let typeWorkingOpitonsObj = this.props.typeWorkingOptions;
-        let defaultTypeWorkingObj = {
-            "title" : ""
-        };
-        
-        var defaultTypeActivity = typeActivities[0].title;
-
-        typeActivities.map((typeActivity) => {
-
-            if(typeActivity.hasTypeWork){
-                typeActivity.typeWorkingOption = typeWorkingOpitonsObj;
-                defaultTypeWorkingObj = typeWorkingOpitonsObj[0];
-            }
-            else {
-                typeActivity.typeWorkingOption = "-";
-                defaultTypeWorkingObj.title = "-"
-            }   
+        let typeWorkInActivity = [];
+        var defaultTypeActivityOption = [];
+        this.props.typeActivityOptions.map((typeActivityOption, index) => {
+            if(index === 0) defaultTypeActivityOption.push(typeActivityOption.title);
+            return typeWorkInActivity[typeActivityOption.title] = typeActivityOption.hasTypeWork ? (this.props.typeWorkingOptions.map((typeWorkingOption) => {
+                    return typeWorkingOption;
+            })) : ([{ title : "-", description : "-" }]);
         });
-        
-        let typeActivity = props.activity ? props.activity.typeActivity: defaultTypeActivity;
-        let typesOfWorkOptions = (typeActivities.find((activity)=> activity.title === typeActivity)).typeWorkingOption;
-        let typeWorking = props.activity ? props.activity.typeWorking : defaultTypeWorkingObj.title;
-     
+
+        let typeActivity = props.activity ? props.activity.typeActivity : defaultTypeActivityOption[0];
+        let typesOfWorkOptions = typeWorkInActivity[typeActivity];
+        let typeWorking = props.activity ? props.activity.typeWorking : typesOfWorkOptions[0].title;
+
         this.state = {
-            linkPath: this.props.linkPath,
-            typeWorking,
+            typeWorkingOptions: this.props.typeWorkingOptions,
+            typeActivityOptions: this.props.typeActivityOptions,
+            typeWorkInActivity,
             typeActivity,
+            typeWorking,
+            typesOfWorkOptions,
+            linkPath: this.props.linkPath,
             createdAt: props.activity ? moment(props.activity.createdAt) : moment(),
             hours: props.activity ? props.activity.hours : "",
-            typesOfWorkOptions,
             calendarFocused: false,
             modalShow: false,
             modalSaveShow: false,
@@ -52,6 +43,11 @@ class ActivityForm extends React.Component {
             remove: false
         }
     }
+
+    componentWillMount() {
+        let userId = this.props.auth.uid;
+        this.props.startSetActivity(userId);
+     }
 
     onSubmit = (e) => {
         e.preventDefault();
@@ -72,8 +68,12 @@ class ActivityForm extends React.Component {
 
     onChangeTypeActivity = (e) => {
         let typeActivity = e.target.value;
+        let typesOfWorkOptions = this.state.typeWorkInActivity[typeActivity];
+        let typeWorking = typesOfWorkOptions[0].title;
         this.setState({ 
-            typeActivity: typeActivity
+            typeActivity, 
+            typesOfWorkOptions, 
+            typeWorking 
         });
     }
 
@@ -124,67 +124,65 @@ class ActivityForm extends React.Component {
 
     _startRemoveActivity(){
         this.props.startRemoveActivity({idActivity: this.props.activity.idActivity});
-        this.setState({remove:true});
-        
+        this.setState({ remove: true });
     }
-
+    
     render() {
-        
-        const disableSaveButton = () => {
-            if((this.state.typeActivity === "working") && 
-                (this.state.typeWorking && this.state.hours)){
-                return false;
-            }
-            else if ((this.state.typeActivity !== "working") && (this.state.hours)) {
-                return false;
-            }
-            else {
-                return true;
-            }
-            
+        const activity = {
+            idActivity: this.props.activity ? this.props.activity.idActivity : this.state.activityFromLocalStorage.idActivity ,
+            typeActivity: this.state.typeActivity,
+            typeWorking: this.state.typeWorking,
+            createdAt: this.state.createdAt,
+            hours: this.state.hours
         }
 
-        const disableInputDescription = () => {
-            if(this.state.typeActivity !== "working") {
-                return true
-            }
-            else {
-                return false;
-            }
-        }
-
-        let options = this.props.typeActivities.map((item) => {
-            return <option key={item} value={item}>{item.charAt(0).toUpperCase() + item.slice(1)}</option>
+        let currentTypeActivity = this.state.typeActivityOptions.find((element) => {
+            return element.title === this.state.typeActivity;
         });
-        
-        let workingOptionsSelect = [];
-        for(var key in (this.state.typesOfWorkOptions)) {
-            var typeWorkingTitle = "";
-            if(this.state.typesOfWorkOptions[key] === "-") {
-                typeWorkingTitle = "-"
+
+        var disabledTypeWorkingSelect = false;
+        var disabledTypeActivitySelect = false;
+        var disableSaveButton = true;
+        let typeActivitiesOptionsSelect = [];
+        let typeWorkingOptionsSelect = [];
+
+        if(currentTypeActivity) {
+            if(!currentTypeActivity.hasTypeWork) {
+                disabledTypeWorkingSelect = true;
             }
-            else {
-                typeWorkingTitle = this.state.typesOfWorkOptions[key].title;
-            }
-            workingOptionsSelect.push(<option key={typeWorkingTitle} value={typeWorkingTitle}>{typeWorkingTitle}</option>)
+            typeActivitiesOptionsSelect = this.state.typeActivityOptions.map((option) => {
+                option = option.title;
+                return <option key={option} value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
+            });
+
+            typeWorkingOptionsSelect = this.state.typesOfWorkOptions.map(typeOfWork => {
+                typeOfWork = typeOfWork.title;
+                return <option key={typeOfWork} value={typeOfWork}>{(typeOfWork).charAt(0).toUpperCase() + (typeOfWork).slice(1) }</option>
+            });
+        }
+        else {
+            typeActivitiesOptionsSelect = <option key={this.state.typeActivity} value={this.state.typeActivity}>{this.state.typeActivity.charAt(0).toUpperCase() + this.state.typeActivity.slice(1)}</option>
+            typeWorkingOptionsSelect = <option key={this.state.typeWorking} value={this.state.typeWorking}>{this.state.typeWorking.charAt(0).toUpperCase() + this.state.typeWorking.slice(1)}</option>
+            disabledTypeActivitySelect = true;
+            disabledTypeWorkingSelect = true;
         }
 
+        if(this.state.hours) {
+            disableSaveButton = false;
+        }
+        
         let selectDate = moment(this.state.createdAt).format("DD/MM/YYYY");
 
-        let buttonDateRangerPicker = this.state.dateRangePickerShow ? 
-            (
-                { backgroundColor: "#b8e5ff", border: "#1c88bf 1px solid", color: "#1c88bf", fontWeight: "500" }
-            ) : ( 
-                {}
-            );
-        
+        let buttonDateRangerPicker;
+        if(this.state.dateRangePickerShow) buttonDateRangerPicker = { backgroundColor: "#b8e5ff", border: "#1c88bf 1px solid", color: "#1c88bf", fontWeight: "500" }
+
         let hoursString = this.state.hours + (this.state.hours > 1 ? " hours" : " hour"); 
-        let typeActivityString = this.state.typeActivity;
+        let typeActivityString = this.state.typeActivity.charAt(0).toUpperCase() + this.state.typeActivity.slice(1);
         let typeWorkingInString = this.state.typeWorking === "-" ? "" : "in ";
-        let typeWorkingString = (this.state.typeWorking).replace("-","").toUpperCase();
-        if(typeWorkingString.trim() !== "") typeWorkingString+= " ";
+        let typeWorkingString = (this.state.typeWorking).replace("-", "").toUpperCase();
+        if(typeWorkingString.trim() !== "") typeWorkingString += " ";
         let dateString = moment(this.state.createdAt).format("DD/MM/YYYY")
-        let saveString =  `Are you sure you want to save ${hoursString} of ${typeActivityString} ${typeWorkingInString}${typeWorkingString}on ${dateString}`;
+        let saveString = `Are you sure you want to save ${hoursString} of ${typeActivityString} ${typeWorkingInString}${typeWorkingString}on ${dateString}`;
 
         return (
             <div>
@@ -200,8 +198,9 @@ class ActivityForm extends React.Component {
                                         value={this.state.typeActivity}
                                         onChange={this.onChangeTypeActivity}
                                         className="select form-control"
+                                        disabled={disabledTypeActivitySelect}
                                     >
-                                        {options}
+                                        {typeActivitiesOptionsSelect}
                                     </select>
                                 </div>    
                                 
@@ -212,10 +211,10 @@ class ActivityForm extends React.Component {
                                     <select
                                         value={this.state.typeWorking}
                                         onChange={this.onChangeTypeWorking}
-                                        disabled={disableInputDescription()}
+                                        disabled={disabledTypeWorkingSelect}
                                         className="select form-control"
                                     >
-                                        {workingOptionsSelect}
+                                        {typeWorkingOptionsSelect}
                                     </select>
                                 </div>
                             </div>
@@ -249,8 +248,8 @@ class ActivityForm extends React.Component {
                             <div className="row justify-content-center">
                                 <div className="col-6 text-center">
                                     <button 
-                                        disabled={disableSaveButton()}
-                                        className={disableSaveButton() ? "button__disabled" : "button"}
+                                        disabled={disableSaveButton}
+                                        className={disableSaveButton ? "button__disabled" : "button"}
                                         onClick={() => {
                                             this.setState({ modalSaveShow: true }, this.handleShow );
                                         }}
@@ -309,18 +308,18 @@ class ActivityForm extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state)
     return {
-        typeActivities: generateOptionTypeActivities(),
-        typeWorking: generateOptionTypeWorking(),
+        auth: state.auth,
         typeWorkingOptions: state.typeWorkingOptions,
-        typeActivityOptions: state.typeActivityOptions
+        typeActivityOptions: state.typeActivityOptions,
+        activities: state.activities
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    startRemoveActivity: (idActivity) => {
-        dispatch(startRemoveActivity(idActivity))
-    }
+    startRemoveActivity: (idActivity) => dispatch(startRemoveActivity(idActivity)),
+    startSetActivity: () => dispatch(startSetActivity())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityForm)

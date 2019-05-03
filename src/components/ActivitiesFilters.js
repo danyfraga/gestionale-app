@@ -6,13 +6,13 @@ import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import Switch from "react-switch";
-import { generateOptionTypeActivities, generateOptionTypeWorking } from "../selectors/activities";
 
 class ActivitiesFilters extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            typeActivityOptions: this.props.typeActivityOptions,
             switchChecked: false,
             typeWorking: "",
             typeActivity: "",
@@ -40,12 +40,8 @@ class ActivitiesFilters extends React.Component {
     }
 
     onSortChangeType = (e) => {
-        if(this.state.typeActivity === "working") {
-            this.setState({ typeWorking: ""})
-            this.props.sortByTypeWorking("all")
-        }
         this.setState({ typeActivity: e.target.value })
-        this.props.sortByActivity(e.target.value) 
+        this.props.sortByActivity(e.target.value); 
     }
 
     applyDates = (e, picker) => {
@@ -122,18 +118,20 @@ class ActivitiesFilters extends React.Component {
             return <option key={item.title} value={item.title} >{(item.title).charAt(0).toUpperCase() + (item.title).slice(1)}</option>
         })
 
-        let showDataInput = () => {
-            if(this.state.switchChecked) {
-                return true;
-            }
+        let showDataInput = false;
+        if(this.state.switchChecked) {
+            showDataInput = true;
         }
-
-        let disabledTypeWorking = () => {
-            if(this.state.typeActivity !== "working") {
-                return true;
+   
+        let disabledTypeWorking = true;
+        this.state.typeActivityOptions.map((option) => {
+            if(option.title === this.state.typeActivity){
+                if(option.hasTypeWork) {
+                    disabledTypeWorking = false;
+                }
             }
-        }
-        
+        });
+     
         //Calendar Button
         let startDate = moment(thisProps.filters.startDate).format("DD/MM/YYYY");
         let endDate = moment(thisProps.filters.endDate).format("DD/MM/YYYY");
@@ -141,13 +139,11 @@ class ActivitiesFilters extends React.Component {
 
         //Style
         let labelStyle = this.state.switchChecked ? { border: "#1c88bf 1px solid" } : { border: "#cacccd 1px solid" };
-        let spanStyle = this.state.switchChecked ? { color: "#1c88bf"} : { color: "#495057"};
-        let buttonDateRangerPicker = this.state.dateRangePickerShow ? 
-            (
-                { backgroundColor: "#b8e5ff", border: "#1c88bf 1px solid", color: "#1c88bf", fontWeight: "500"} 
-            ) : ( 
-                {}
-            );
+        let spanStyle = this.state.switchChecked ? { color: "#1c88bf"} : { color: "#495057" };
+        let buttonDateRangerPicker;
+        if(this.state.dateRangePickerShow) {
+            buttonDateRangerPicker = { backgroundColor: "#b8e5ff", border: "#1c88bf 1px solid", color: "#1c88bf", fontWeight: "500"}
+        }
 
         return (
                 <div className="row d-flex justify-content-center row__filter">
@@ -156,7 +152,7 @@ class ActivitiesFilters extends React.Component {
                         <select
                             value={this.props.filters.sortByActivity}
                             onChange={this.onSortChangeType}
-                            disabled={showDataInput()}
+                            disabled={showDataInput}
                             className="select form-control text-center"
                         >
                             {activitiesOptions}
@@ -167,7 +163,7 @@ class ActivitiesFilters extends React.Component {
                         <select
                                 value={this.props.filters.sortByTypeWorking}
                                 onChange={this.onSortChangeTypeWorking}
-                                disabled={disabledTypeWorking()}
+                                disabled={disabledTypeWorking}
                                 className="select form-control text-center"
                             >
                                 { workingOptions }
@@ -220,8 +216,6 @@ class ActivitiesFilters extends React.Component {
 const mapStateToProps = (state) => {
     return {
         filters: state.filters,
-        typeActivities: generateOptionTypeActivities(),
-        typeWorking: generateOptionTypeWorking(),
         typeWorkingOptions: state.typeWorkingOptions,
         typeActivityOptions: state.typeActivityOptions
     };
@@ -237,7 +231,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default  connect(mapStateToProps, mapDispatchToProps)(ActivitiesFilters);
+export default connect(mapStateToProps, mapDispatchToProps)(ActivitiesFilters);
 
 
                     

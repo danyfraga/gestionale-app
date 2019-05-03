@@ -38,8 +38,8 @@ class SettingTypeActivity extends React.Component {
         let descriptionOption = this.state.newOptionDescription;
         let hasTypeWorkOption = this.state.newOptionHasTypeWork;
         let typeActivity = {
-            "title": titleOption,
-            "description": descriptionOption ? descriptionOption : "-",
+            "title": titleOption.charAt(0).toUpperCase() + titleOption.slice(1),
+            "description": descriptionOption ? descriptionOption.charAt(0).toUpperCase() + descriptionOption.slice(1) : "-",
             "hasTypeWork": hasTypeWorkOption ? hasTypeWorkOption : false
         }
        

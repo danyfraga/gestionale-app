@@ -10,6 +10,7 @@
 .row__pagination {
     // padding-bottom: $l-size;
     padding-right: 16px;
+    margin-bottom: 2rem;
 }
 
 .row__buttonCreate {
@@ -26,6 +27,6 @@
 }
 
 .row__ringProgressBar {
-    margin: $xl-size 0;
+    padding: 3.2rem 1.6rem;
     border-top: 1px solid $blue;
 }

@@ -1,7 +1,6 @@
 import database from "../firebase/firebase";
 
 export const addOption = (option) => {
-    console.log(option)
     return {
         type: "ADD_OPTION",
         option

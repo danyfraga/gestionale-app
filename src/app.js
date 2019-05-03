@@ -50,9 +50,9 @@ firebase.database().ref("typeWorkingOptions").once("value", snapshot => {
 
 firebase.database().ref("typeActivityOptions").once("value", snapshot => {
     if(!snapshot.exists()) {
-        firebase.database().ref(`typeActivityOptions/${"working"}`).set({"title":"working", "description": "Default option", "hasTypeWork":true});
-        firebase.database().ref(`typeActivityOptions/${"holiday"}`).set({"title":"holiday", "description": "Default option", "hasTypeWork":false});
-        firebase.database().ref(`typeActivityOptions/${"permit"}`).set({"title":"permit", "description": "Default option", "hasTypeWork":false});
+        firebase.database().ref(`typeActivityOptions/${"working"}`).set({"title":"Working", "description": "Default option", "hasTypeWork":true});
+        firebase.database().ref(`typeActivityOptions/${"holiday"}`).set({"title":"Holiday", "description": "Default option", "hasTypeWork":false});
+        firebase.database().ref(`typeActivityOptions/${"permit"}`).set({"title":"Permit", "description": "Default option", "hasTypeWork":false});
     }
     else {
         store.dispatch(startSetOptionActivity());

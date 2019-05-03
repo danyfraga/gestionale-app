@@ -1,46 +1,28 @@
 import React from "react";
 import { connect } from "react-redux";
-import store from "../store/configureStore";
-import watch from "redux-watch";
-import { Pie } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import { Collapse, CardBody, Card } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import  selectActivity from "../selectors/activities";
 
-let watchCustomer = watch(store.getState);
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
 class ActivitySummary extends React.Component {
     constructor (props) {
         super(props);
-
+     
         this.state = {
-            totalHoursPerActivity: this.props.totalHoursPerActivity,
             fromAdmin: this.props.fromAdmin,
-            labels: [],
-            data: [],
-            colorPalette: ["#CC4347", "#456990", "#49C1AD", "#E26CB9","#EDAE50", "#66CC6B", "#9F76E2", "#E5E05E", "#CC0000"],
-            colors: [],
             collapse: false
         }
-
-
-
     } 
-    
-    componentDidUpdate(prevProps){
-        if (this.props.totalHoursPerActivity !== prevProps.totalHoursPerActivity){
-            this.setState({
-                totalHoursPerActivity: prevProps.totalHoursPerActivity
-            }, () => {
-                this.state.totalHoursPerActivity.map((typeActivity, index) => {
-                    if(Object.values(typeActivity)[0] != 0) {
-                        this.state.labels.push(Object.keys(typeActivity)[0]);
-                        this.state.colors.push(this.state.colorPalette[index])
-                        this.state.data.push(Object.values(typeActivity)[0]);
-                    }
-                });
-            });
-        }
-    }
     
     toggle = () => {
         this.setState({
@@ -48,59 +30,94 @@ class ActivitySummary extends React.Component {
         });
     }
 
-    render() {
-        let dataLengthArray = this.state.data.length;
+    render() { 
+        let typeActivityTitles = [];
+        this.props.activities.map((activity, index) => {
+            if(activity.typeActivity !== typeActivityTitles[index-1]) {
+                typeActivityTitles[activity.typeActivity] = 0;
+            }
+        });
+        this.props.activities.map((activity) => {
+            for (var title in typeActivityTitles) {
+                if(title === activity.typeActivity) {
+                    typeActivityTitles[activity.typeActivity] = typeActivityTitles[activity.typeActivity] + parseInt(activity.hours);
+                }
+            }
+        });
+
+        let data = [];
+        let labels = [];
+        let colors = [];
+
+        for(var title in typeActivityTitles) {
+            var randomColor = getRandomColor();
+            data.push(typeActivityTitles[title]);
+            labels.push(title);
+            colors.push(randomColor);
+        }
+        let dataLengthArray = data.length;
         let itemsPerCol = 10;
         let totalCol = Math.ceil(dataLengthArray/itemsPerCol);
         let colsComponent = [];
         
         for(var currentCol = 0; currentCol < totalCol; currentCol++) {
-            let colComponent = this.state.labels.map((label, index) => {
+            let colComponent = labels.map((label, index) => {
                 return (
                     <li key={label + index}>
-                        <div className="bullet-legend__li" style={{"backgroundColor":`${this.state.colors[index]}`}}></div>
+                        <div className="bullet-legend__li" style={{"backgroundColor":`${colors[index]}`}}></div>
                         <p className="label-legend__li">{label.charAt(0).toUpperCase() + label.slice(1)}</p> 
                     </li> 
                 )
             }).slice(currentCol * itemsPerCol, (currentCol + 1) * itemsPerCol);
-            console.log(colComponent)
             colsComponent.push(
                 <div className="col-2" key={currentCol}>
                     <ul className="ul-legend">
                         {colComponent}
                     </ul>
                 </div>
-            )
+            );
         }
-
         let graphicCol = "graphicCol";
         totalCol > 3 ? graphicCol = graphicCol + " col-4" : graphicCol = graphicCol + " col-6";
 
         return (
-            <div hidden={this.state.fromAdmin ? false : true} className="collapse__container">
+            <div className="row row__ringProgressBar" hidden={!this.state.fromAdmin}>
                 <h2 className="settings_subtitle title-collapse">Activity summary</h2>
                 {this.state.collapse ? <FontAwesomeIcon icon="angle-up" className="angle_up button-collapse" size="2x"  style={{ margin: "0" }} onClick={this.toggle} cursor="pointer"/> : <FontAwesomeIcon icon="angle-down" className="angle_down button-collapse" size="2x"  style={{ margin: "0" }} onClick={this.toggle} cursor="pointer"/>}
-                <Collapse isOpen={this.state.collapse}>
+                <Collapse isOpen={this.state.collapse} className="collapse__container">
                     <Card className="card-activitySummary">
-                        <CardBody>
-                            <div className="row justify-content-center">
-                                <div className={graphicCol}>
-                                    <Pie 
-                                        data={{
-                                            labels: this.state.labels,
-                                            datasets: [{
-                                                data: this.state.data,
-                                                backgroundColor: this.state.colors,
-                                                hoverBackgroundColor: this.state.colors
-                                            }]
-                                        }}
-                                        options={{
-                                            legend: { display: false }  
-                                        }}
-                                    />
+                        <CardBody >
+                            {dataLengthArray > 0 ? (
+                                <div className="row justify-content-center">
+                                    <div className={graphicCol}>
+                                        <Bar 
+                                            data={{
+                                                labels: labels,
+                                                datasets: [{
+                                                    data: data,
+                                                    backgroundColor: colors,
+                                                    hoverBackgroundColor: colors
+                                                }]
+                                            }}
+                                            options={{
+                                                legend: { display: false },
+                                                scales: {
+                                                    yAxes: [{
+                                                        display: true,
+                                                        ticks: {
+                                                            suggestedMin: 0,    
+                                                            beginAtZero: true   
+                                                        }
+                                                    }]
+                                            }}}
+                                        />
+                                    </div>
+                                    {colsComponent}                           
                                 </div>
-                                {colsComponent}                           
-                            </div>
+                            ) : (
+                                <p className="noDataShow__p text-center">No data to show</p>
+                            )}
+                            
                         </CardBody>
                     </Card>
                 </Collapse>
@@ -109,4 +126,9 @@ class ActivitySummary extends React.Component {
     }
 }
 
-export default connect()(ActivitySummary);
+const mapStateToProps = (state) => {
+   return {
+        activities: selectActivity(state.activities, state.filters)
+   }
+}
+export default connect(mapStateToProps)(ActivitySummary);

@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import watch from "redux-watch";
 import store from "../store/configureStore";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,8 +36,8 @@ class SettingTypeWorking extends React.Component {
         let titleOption = this.state.newOption;
         let descriptionOption = this.state.newOptionDescription;
         let objNewOption = {
-            "title": titleOption,
-            "description": descriptionOption ? descriptionOption : "-"
+            "title": titleOption.charAt(0).toUpperCase() + titleOption.slice(1),
+            "description": descriptionOption ? descriptionOption.charAt(0).toUpperCase() + descriptionOption.slice(1) : "-"
         }
        
         if(this.state.newOption) {
@@ -112,7 +111,6 @@ class SettingTypeWorking extends React.Component {
             <div>
                 <h2 className="settings_subtitle">Setting type working</h2>
                 <div className="list-header row row__list-header">
-                    <div className="show-for-mobile">Activities</div>
                     <div className="show-for-desktop col-5">Type working name</div>
                     <div className="show-for-desktop col-6">Description</div>
                     <div className="show-for-desktop col-1 text-center">Remove</div>
