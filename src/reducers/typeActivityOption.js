@@ -13,10 +13,7 @@ export const typeActivityOptionsReducer = (state = defaultTypeActivityOptions, a
                 return title !== action.typeActivityIndex
             });
         case "EDIT_HAS_TYPE_WORK":
-        console.log(action)
-        console.log(state)
             return state.map((option) => {
-                console.log(option)
                 if(option.title === action.updates.title) {
                     return {
                         ...option,

@@ -77,6 +77,7 @@ class UserItemSettings extends React.Component {
             userId: this.props.userObj.userId,
             isAdmin 
         }
+        // console.log(updates.userId)
         this.props.startEditIsAdminUser(updates);
     }
 

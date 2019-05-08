@@ -54,7 +54,6 @@ class TypeWorkingOptionItem extends React.Component {
         let thisProps = this.props;
         let disabledRemoveButton = thisProps.isSingle ? true : false;
         let hasTypeWorkHidden = this.state.isTypeActivity ? false : true
-
         return (
             <div
                 className="list-item d-flex justify-content-between" 

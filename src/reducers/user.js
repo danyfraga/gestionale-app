@@ -33,14 +33,16 @@ export const usersReducer = (state = defaultUsersArray, action) => {
                 return user.email !== action.userEmail
             });
         case "EDIT_IS_ADMIN_USER":
-            return state.map((user) => {
+            let newState = state.map((user) => {
                 if(user.userId === action.updates.userId) {
                     return {
                         ...user,
                         ...action.updates
                     }
                 }
+                return user;  
             });
+            return newState;
         default: 
             return state;
     }

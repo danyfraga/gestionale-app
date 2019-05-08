@@ -193,7 +193,6 @@ class ActivitiesList extends React.Component {
 }
     
 const mapStateToProps = (state) => {
-    console.log("STAT222", state);
     return {
         activities: selectActivity(state.activities, state.filters),
         filters: state.filters,

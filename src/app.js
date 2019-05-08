@@ -14,6 +14,7 @@ import LoadingPage from "./components/LoadingPage";
 import { startSetOption } from "./actions/typeWorkingOptions";
 import { startSetOptionActivity } from "./actions/typeActivityOption";
 import { startSetUserEmailList } from "./actions/userEmailList";
+import { startSetActivity } from "./actions/activities"
 
 library.add(faArrowLeft);
 library.add(faSignOutAlt);
@@ -50,9 +51,9 @@ firebase.database().ref("typeWorkingOptions").once("value", snapshot => {
 
 firebase.database().ref("typeActivityOptions").once("value", snapshot => {
     if(!snapshot.exists()) {
-        firebase.database().ref(`typeActivityOptions/${"working"}`).set({"title":"Working", "description": "Default option", "hasTypeWork":true});
-        firebase.database().ref(`typeActivityOptions/${"holiday"}`).set({"title":"Holiday", "description": "Default option", "hasTypeWork":false});
-        firebase.database().ref(`typeActivityOptions/${"permit"}`).set({"title":"Permit", "description": "Default option", "hasTypeWork":false});
+        firebase.database().ref(`typeActivityOptions/${"Working"}`).set({"title":"Working", "description": "Default option", "hasTypeWork":true});
+        firebase.database().ref(`typeActivityOptions/${"Holiday"}`).set({"title":"Holiday", "description": "Default option", "hasTypeWork":false});
+        firebase.database().ref(`typeActivityOptions/${"Permit"}`).set({"title":"Permit", "description": "Default option", "hasTypeWork":false});
     }
     else {
         store.dispatch(startSetOptionActivity());
@@ -93,6 +94,7 @@ firebase.auth().onAuthStateChanged((user) => {
                         userData = snapshot.val().userData;
                     }
                     store.dispatch(login(user.uid));
+                    store.dispatch(startSetActivity(user.uid));
                     store.dispatch(getUserInfo(userData));
                     store.dispatch(startGetAllUsers());
                     renderApp();

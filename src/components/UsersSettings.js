@@ -91,6 +91,7 @@ class UsersSettings extends React.Component {
                 isAdmin: false,
                 logUser: true
             }
+            // console.log(this.state.users)
             let user = this.state.users.find((user) => userEmail === user.email);
 
             // Risolvere problema relativo al cambio di stato della checkbox Admin

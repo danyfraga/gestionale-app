@@ -43,7 +43,7 @@ class SettingTypeWorking extends React.Component {
         if(this.state.newOption) {
             var isEqual = false;
             for(var key in this.state.options) { 
-                if ( (this.state.options)[key].title === this.state.newOption) isEqual = true;
+                if ( (this.state.options)[key].title.toLowerCase() === this.state.newOption.toLowerCase()) isEqual = true;
             }
 
             if(titleOption.length > 25 || descriptionOption > 51) {

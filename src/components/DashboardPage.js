@@ -20,20 +20,22 @@ class DashboardPage extends React.Component {
          typeWorking: this.props.filters.sortByTypeWorking,
          typeActivity: this.props.filters.sortByActivity,
       }
-
       this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
-         this.setState({ activities: currentVal.activities})
+         this.setState({ 
+            activities: currentVal.activities,
+            switchChecked: currentVal.filters.switchChecked
+         });
       })); 
   }
 
    onClick = () => {
-      this.setState({ switchChecked: false, sortByActivity: "all", sortByTypeWorking: "" });
+      this.setState({ sortByActivity: "all", sortByTypeWorking: "" });
       this.props.switchCheck(this.state.switchChecked);
       this.props.sortByActivity(this.state.typeActivity);
       this.props.sortByTypeWorking(this.state.typeWorking);
    }
 
-   componentWillMount() {
+   componentDidMount() {
       let userId = this.props.auth.uid;
       this.props.startSetActivity(userId);
    }

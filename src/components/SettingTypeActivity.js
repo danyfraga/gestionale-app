@@ -34,8 +34,8 @@ class SettingTypeActivity extends React.Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        let titleOption = this.state.newOption;
-        let descriptionOption = this.state.newOptionDescription;
+        let titleOption = this.state.newOption
+        let descriptionOption = this.state.newOptionDescription
         let hasTypeWorkOption = this.state.newOptionHasTypeWork;
         let typeActivity = {
             "title": titleOption.charAt(0).toUpperCase() + titleOption.slice(1),
@@ -46,7 +46,7 @@ class SettingTypeActivity extends React.Component {
         if(this.state.newOption) {
             var isEqual = false;
             for(var key in this.state.options) { 
-                if ( (this.state.options)[key].title === this.state.newOption) isEqual = true;
+                if ( (this.state.options)[key].title.toLowerCase() === this.state.newOption.toLowerCase()) isEqual = true;
             }
 
             if(titleOption.length > 20 || descriptionOption.length > 50 ) {

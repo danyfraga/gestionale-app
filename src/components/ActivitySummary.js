@@ -4,15 +4,10 @@ import { Bar } from 'react-chartjs-2';
 import { Collapse, CardBody, Card } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import  selectActivity from "../selectors/activities";
+import store from "../store/configureStore";
+import watch from "redux-watch";
 
-function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
+let watchCustomer = watch(store.getState);
 
 class ActivitySummary extends React.Component {
     constructor (props) {
@@ -20,9 +15,18 @@ class ActivitySummary extends React.Component {
      
         this.state = {
             fromAdmin: this.props.fromAdmin,
-            collapse: false
+            collapse: false,
+            activities: this.props.activities
         }
+        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+            this.setState({ 
+               activities: currentVal.activities,
+            });
+         })); 
     } 
+    componentWillUnmount(){
+        this.unsubscribe();
+     }
     
     toggle = () => {
         this.setState({
@@ -32,12 +36,12 @@ class ActivitySummary extends React.Component {
 
     render() { 
         let typeActivityTitles = [];
-        this.props.activities.map((activity, index) => {
+        this.state.activities.map((activity, index) => {
             if(activity.typeActivity !== typeActivityTitles[index-1]) {
                 typeActivityTitles[activity.typeActivity] = 0;
             }
         });
-        this.props.activities.map((activity) => {
+        this.state.activities.map((activity) => {
             for (var title in typeActivityTitles) {
                 if(title === activity.typeActivity) {
                     typeActivityTitles[activity.typeActivity] = typeActivityTitles[activity.typeActivity] + parseInt(activity.hours);
@@ -48,13 +52,28 @@ class ActivitySummary extends React.Component {
         let data = [];
         let labels = [];
         let colors = [];
+        let colorsPalette = [
+            "#071E55", 
+            "#2046A1", 
+            "#4476EB", 
+            "#618EF8", 
+            "#90B1FF", 
+            "#BFD2FF",
+            "#b3f4ff",
+            "#07fddb",
+            "#00e7ff"
+        ];
 
         for(var title in typeActivityTitles) {
-            var randomColor = getRandomColor();
+            var randomColor = "";
+            randomColor = colorsPalette[Math.floor(Math.random() * colorsPalette.length)];
+            var indexOfRandomColor = colorsPalette.indexOf(randomColor);
+            colorsPalette.splice(indexOfRandomColor, 1),
             data.push(typeActivityTitles[title]);
             labels.push(title);
             colors.push(randomColor);
         }
+
         let dataLengthArray = data.length;
         let itemsPerCol = 10;
         let totalCol = Math.ceil(dataLengthArray/itemsPerCol);
@@ -115,7 +134,7 @@ class ActivitySummary extends React.Component {
                                     {colsComponent}                           
                                 </div>
                             ) : (
-                                <p className="noDataShow__p text-center">No data to show</p>
+                                <p className="text-center noDataShow__p">No data to show</p>
                             )}
                             
                         </CardBody>

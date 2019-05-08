@@ -6,6 +6,10 @@ import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import Switch from "react-switch";
+import store from "../store/configureStore";
+import watch from "redux-watch";
+
+let watchCustomer = watch(store.getState);
 
 class ActivitiesFilters extends React.Component {
     constructor(props) {
@@ -18,18 +22,29 @@ class ActivitiesFilters extends React.Component {
             typeActivity: "",
             dateRangePickerShow: false
         }
+        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+            this.setState({ 
+               switchChecked: currentVal.filters.switchChecked,
+               typeActivityOptions: currentVal.typeActivityOptions,
+               typeActivity: currentVal.filters.sortByActivity,
+               typeWorking: currentVal.filters.sortByTypeWorking
+            });
+        })); 
+    }
+
+    componentWillUnmount(){
+        this.unsubscribe();
     }
 
     handleChange = () => {
         let currentSwitchState = this.state.switchChecked;
         if(currentSwitchState) {
-            this.setState({ switchChecked: false }) 
+            this.setState({ switchChecked: false }); 
         }
         else {
             this.setState({ switchChecked: true, typeWorking: "", typeActivity: "All" })
             this.props.sortByTypeWorking("all");
-            this.props.sortByActivity("all") 
-            
+            this.props.sortByActivity("all"); 
         }
         this.props.switchCheck(!currentSwitchState);
     }
@@ -40,7 +55,12 @@ class ActivitiesFilters extends React.Component {
     }
 
     onSortChangeType = (e) => {
-        this.setState({ typeActivity: e.target.value })
+        this.setState({ typeActivity: e.target.value });
+        this.state.typeActivityOptions.map((option) => {
+            if(!option.hasTypeWork) {
+                this.props.sortByTypeWorking("all");
+            }
+        })
         this.props.sortByActivity(e.target.value); 
     }
 
