@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export class CreateActivity extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props.filters)
+        
         let typeWorkInActivity = [];
         var defaultTypeActivityOption = [];
         this.props.typeActivityOptions.map((typeActivityOption, index) => {

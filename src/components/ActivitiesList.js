@@ -215,5 +215,3 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps)(ActivitiesList);
-
-

@@ -61,55 +61,63 @@ firebase.database().ref("typeActivityOptions").once("value", snapshot => {
 });
 store.dispatch(startSetUserEmailList());
 
-firebase.auth().onAuthStateChanged((user) => {
-    if(!user) {
-        store.dispatch(logout());
-        renderApp();
-        history.push("/");
-    }
-    else {
-        firebase.database().ref("usersEmailId").once("value", snapshot => {
-            if(!snapshot.exists()) {
-                let email = "daniele.fragale@edu.itspiemonte.it";
-                firebase.database().ref(`usersEmailId`).push(email);
-            }
-            let emailExist = false;
-            snapshot.forEach((snapshotChild) => {
-                if (user.email === snapshotChild.val()) emailExist = true;
-            });
-            if(emailExist) {
-                //Controllo se è già presente un utente, se è non esiste aggiungi userData 
-                firebase.database().ref(`users/${user.uid}`).once("value", snapshot => {  
-                    let defaultUserData = {
-                        nameAndSurname: user.displayName.toUpperCase(),
-                        email: user.email,
-                        isAdmin: false
-                    }
-                    var userData;
-                    if (!snapshot.exists()){
-                        firebase.database().ref(`users/${user.uid}/userData`).set(defaultUserData);
-                        userData = defaultUserData;
-                    }
-                    else {
-                        userData = snapshot.val().userData;
-                    }
-                    store.dispatch(login(user.uid));
-                    store.dispatch(startSetActivity(user.uid));
-                    store.dispatch(getUserInfo(userData));
-                    store.dispatch(startGetAllUsers());
-                    renderApp();
 
-                    if((history.location.pathname === "/")) {
-                        history.push("/dashboard");
-                    }           
+    firebase.auth().onAuthStateChanged((user) => {
+        if(!user) {
+            store.dispatch(logout());
+            renderApp();
+            history.push("/");
+        }
+        else {
+            firebase.database().ref("usersEmailId").once("value", snapshot => {
+                if(!snapshot.exists()) {
+                    let email = "daniele.fragale@edu.itspiemonte.it";
+                    firebase.database().ref(`usersEmailId`).push(email);
+                }
+                let emailExist = false;
+                snapshot.forEach((snapshotChild) => {
+                    if (user.email === snapshotChild.val()) emailExist = true;
                 });
-            }
-            else {
-                history.push("/?error=Not Authorized");
-            }
-        });
-    }
-});
+                if(emailExist) {
+                    //Controllo se è già presente un utente, se è non esiste aggiungi userData 
+                    firebase.database().ref(`users/${user.uid}`).once("value", snapshot => {  
+                        let defaultUserData = {
+                            nameAndSurname: user.displayName.toUpperCase(),
+                            email: user.email,
+                            isAdmin: false
+                        }
+                        var userData;
+                        if (!snapshot.exists()){
+                            firebase.database().ref(`users/${user.uid}/userData`).set(defaultUserData);
+                            userData = defaultUserData;
+                        }
+                        else {
+                            userData = snapshot.val().userData;
+                        }
+                        store.dispatch(login(user.uid));
+                        store.dispatch(startSetActivity(user.uid));
+                        store.dispatch(getUserInfo(userData));
+                        store.dispatch(startGetAllUsers());
+                        renderApp();
+    
+                        if((history.location.pathname === "/")) {
+                            history.push("/dashboard");
+                        }           
+                    });
+                }
+                else {
+                    localStorage.clear();
+                    history.push("/?error=Not Authorized");
+                }
+            });
+        }
+    });
+
+
+   
+    
+
+
 
 
 

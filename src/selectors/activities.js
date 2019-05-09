@@ -10,7 +10,7 @@ const getVisibleActivities = (activities, { sortByTypeWorking, sortByActivity, s
         }
     }).sort((a, b) => {
         return a.createdAt < b.createdAt ? 1 : -1;
-    })
+    });
 }
 
 export default getVisibleActivities;
