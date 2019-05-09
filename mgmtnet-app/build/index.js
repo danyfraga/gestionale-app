@@ -13,4 +13,5 @@ app.get('/', function (req, res) {
 app.listen(process.env.PORT || 3000, function () {
   return console.log("Listening to port 3000");
 });
+console.log("");
 //# sourceMappingURL=index.js.map
