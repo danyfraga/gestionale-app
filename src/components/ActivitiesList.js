@@ -6,6 +6,10 @@ import { Table } from 'reactstrap';
 import moment from "moment";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import ActivitySummary from "../components/ActivitySummary";
+import store from "../store/configureStore";
+import watch from "redux-watch";
+
+let watchCustomer = watch(store.getState);
 
 var enumerateDaysBetweenDates = function(startDate, endDate) {
     var dates = [];
@@ -28,8 +32,18 @@ class ActivitiesList extends React.Component {
             endDate: this.props.filters.endDate,
             fromAdmin: this.props.fromAdmin,
             userId: this.props.userId,
-            typeActivityOptions: this.props.typeActivityOptions
+            typeActivityOptions: this.props.typeActivityOptions,
+            switchChecked: this.props.filters.switchChecked
         };
+        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+            this.setState({ 
+               switchChecked: currentVal.filters.switchChecked
+            });
+         })); 
+    }
+
+    componentWillUnmount(){
+        this.unsubscribe();
     }
 
     handleClick = (e, index) => {
@@ -111,7 +125,7 @@ class ActivitiesList extends React.Component {
         });
 
         let borderBottomList = this.props.activities.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" };
-
+        
         return (
             <div>
                 {
@@ -120,7 +134,7 @@ class ActivitiesList extends React.Component {
                             <span>No activities</span>
                         </div>
                     ) : (
-                        this.props.filters.switchChecked ? (
+                        this.state.switchChecked ? (
                             <div>
                                 <div className="row row__table">
                                     <Table bordered className="table">

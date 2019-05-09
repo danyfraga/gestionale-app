@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import ActivityForm from "./ActivityForm";
 import { startAddActivity } from "../actions/activities";
 import { Link } from "react-router-dom";
-import moment from "moment"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import moment from "moment";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export class CreateActivity extends React.Component {
     constructor(props) {
         super(props);
-
+        console.log(this.props.filters)
         let typeWorkInActivity = [];
         var defaultTypeActivityOption = [];
         this.props.typeActivityOptions.map((typeActivityOption, index) => {
@@ -27,7 +27,7 @@ export class CreateActivity extends React.Component {
             typeActivity,
             typeWorking,
             createdAt: moment(),
-            hours: ""
+            hours: "",
         }
     }
     
@@ -47,7 +47,7 @@ export class CreateActivity extends React.Component {
         return (
             <div className="content-container">
                 <div className="row row__createActivity-header">
-                    <Link to="/dashboard"><FontAwesomeIcon icon="arrow-left" className="arrowLeft" size="2x"/></Link>
+                    <Link to="/dashboard"><FontAwesomeIcon icon="arrow-left" className="arrowLeft" size="2x" onClick={this.onClick}/></Link>
                     <h1 className="createActivity__title">Create Activity</h1>
                 </div>
                 <ActivityForm 
@@ -62,6 +62,7 @@ const mapStateToProps = (state) => {
     return({
         typeWorkingOptions: state.typeWorkingOptions,
         typeActivityOptions: state.typeActivityOptions,
+        filters: state.filters
     })
 }
 

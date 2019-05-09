@@ -28,12 +28,12 @@ class DashboardPage extends React.Component {
       })); 
   }
 
-   onClick = () => {
-      this.setState({ sortByActivity: "all", sortByTypeWorking: "" });
-      this.props.switchCheck(this.state.switchChecked);
-      this.props.sortByActivity(this.state.typeActivity);
-      this.props.sortByTypeWorking(this.state.typeWorking);
-   }
+   // onClick = () => {
+   //    this.setState({ switchChecked: false, sortByActivity: "all", sortByTypeWorking: "" });
+   //    this.props.switchCheck(this.state.switchChecked);
+   //    this.props.sortByActivity(this.state.typeActivity);
+   //    this.props.sortByTypeWorking(this.state.typeWorking);
+   // }
 
    componentDidMount() {
       let userId = this.props.auth.uid;
@@ -52,7 +52,7 @@ class DashboardPage extends React.Component {
             <ActivitiesList/>
             <div className="row d-flex justify-content-center row__buttonCreate">
                <div className="col-2 col-xl-2 col-lg-4 col-md-6 col-sm-6">
-                  <Link style={{ textDecoration: 'none' }} onClick={this.onClick} to="/create"><button className="button button__create">Add Activity</button></Link>
+                  <Link style={{ textDecoration: 'none' }} to="/create"><button className="button button__create">Add Activity</button></Link>
                </div>
             </div>
          </div>   

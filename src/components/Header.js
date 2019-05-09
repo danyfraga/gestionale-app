@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { startLogout } from "../actions/auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from "react-router-dom";
-import  { switchCheck } from "../actions/filters";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 export class Header extends React.Component {
@@ -11,30 +10,23 @@ export class Header extends React.Component {
         super(props);
         
         this.state = {
-            switchChecked: this.props.filters.switchChecked,
             modalShow: false,
             modalSaveShow: false,
             modalDeleteShow: false
         }
-    }
-    
-    onClick = () => {
-        this.setState({ switchChecked: false });
-        this.props.switchCheck(this.state.switchChecked)
     }
 
     startLogout = () => {
         this.props.startLogout();
     }
 
-
     handleShow = () => {
-        this.setState({ modalShow: true})
+        this.setState({ modalShow: true});
     }
 
     handleClose = () => {
         this.setState({ modalShow: false });
-      }
+    }
 
     onShow = () => {
         this.setState({dateRangePickerShow: true}); 
@@ -47,16 +39,16 @@ export class Header extends React.Component {
                     <div className="content-container">
                         <div className="row header__content">
                             <div className="col-9">
-                                <Link to="/dashboard" style={{ textDecoration: 'none' }} onClick={this.onClick}><h1 className="header__title">MGMTNet</h1></Link>
+                                <Link to="/dashboard" style={{ textDecoration: 'none' }}><h1 className="header__title">MGMTNet</h1></Link>
                             </div>
                             {
                                 this.props.user.isAdmin ? (
                                     <div className="row">
                                     <div className="col-6 text-center">
-                                        <Link to="/users" className="navItemLink" onClick={this.onClick}>USERS</Link>
+                                        <Link to="/users" className="navItemLink">USERS</Link>
                                     </div>
                                     <div className="col-6 text-center">
-                                        <Link to="/settings" className="navItemLink" onClick={this.onClick}>SETTINGS</Link>
+                                        <Link to="/settings" className="navItemLink">SETTINGS</Link>
                                     </div>
                                     </div>
                                 ) : (
@@ -96,7 +88,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     startLogout: () => dispatch(startLogout()),
-    switchCheck: (switchChecked) => dispatch(switchCheck(switchChecked))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

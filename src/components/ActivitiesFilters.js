@@ -6,10 +6,6 @@ import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import Switch from "react-switch";
-import store from "../store/configureStore";
-import watch from "redux-watch";
-
-let watchCustomer = watch(store.getState);
 
 class ActivitiesFilters extends React.Component {
     constructor(props) {
@@ -17,23 +13,11 @@ class ActivitiesFilters extends React.Component {
 
         this.state = {
             typeActivityOptions: this.props.typeActivityOptions,
-            switchChecked: false,
+            switchChecked: this.props.filters.switchChecked ? this.props.filters.switchChecked : false,
             typeWorking: "",
             typeActivity: "",
             dateRangePickerShow: false
         }
-        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
-            this.setState({ 
-               switchChecked: currentVal.filters.switchChecked,
-               typeActivityOptions: currentVal.typeActivityOptions,
-               typeActivity: currentVal.filters.sortByActivity,
-               typeWorking: currentVal.filters.sortByTypeWorking
-            });
-        })); 
-    }
-
-    componentWillUnmount(){
-        this.unsubscribe();
     }
 
     handleChange = () => {
