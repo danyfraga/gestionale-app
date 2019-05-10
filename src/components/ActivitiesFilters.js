@@ -13,6 +13,7 @@ class ActivitiesFilters extends React.Component {
 
         this.state = {
             typeActivityOptions: this.props.typeActivityOptions,
+            typeWorkingOptions: this.props.typeWorkingOptions,
             switchChecked: this.props.filters.switchChecked ? this.props.filters.switchChecked : false,
             typeWorking: "",
             typeActivity: "",
@@ -67,58 +68,54 @@ class ActivitiesFilters extends React.Component {
 
     render() {
         let thisProps = this.props;
-        const ranges = () => {
-            return {
-                "This Month": [moment().startOf('month'), moment().endOf('month')],
-                "Today": [moment(), moment()],
-                "Last 7 Days": [moment().subtract(6, 'days'), moment()],
-                "Last 30 Days": [moment().subtract(29, 'days'), moment()] 
-            }
+        const ranges = {
+            "This Month": [moment().startOf('month'), moment().endOf('month')],
+            "Today": [moment(), moment()],
+            "Last 7 Days": [moment().subtract(6, 'days'), moment()],
+            "Last 30 Days": [moment().subtract(29, 'days'), moment()] 
         }
-        const locale = () => {
-            return {
-                "format": "MM/DD/YYYY",
-                "separator": " - ",
-                "applyLabel": "Apply",
-                "cancelLabel": "Cancel",
-                "fromLabel": "",
-                "toLabel": "",
-                "customRangeLabel": "Select",
-                "weekLabel": "W",
-                "daysOfWeek": [
-                    "Su",
-                    "Mo",
-                    "Tu",
-                    "We",
-                    "Th",
-                    "Fr",
-                    "Sa"
-                ],
-                "monthNames": [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December"
-                ],
-                "firstDay": 1
-            }
+        const locale = {
+            "format": "MM/DD/YYYY",
+            "separator": " - ",
+            "applyLabel": "Apply",
+            "cancelLabel": "Cancel",
+            "fromLabel": "",
+            "toLabel": "",
+            "customRangeLabel": "Select",
+            "weekLabel": "W",
+            "daysOfWeek": [
+                "Su",
+                "Mo",
+                "Tu",
+                "We",
+                "Th",
+                "Fr",
+                "Sa"
+            ],
+            "monthNames": [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ],
+            "firstDay": 1
         }
-        let typeActivities = thisProps.typeActivityOptions;
-        let typeWorkingOpitonsObj = thisProps.typeWorkingOptions;
+        let typeActivities = this.state.typeActivityOptions;
+        let typeWorkingOptions = this.state.typeWorkingOptions;
 
-        let activitiesOptions = [{ "title": "all", "description": "-" }, ...typeActivities].map((item) => {
+        let activitiesOptions = [{"title": "all", "description": "-"}, ...typeActivities].map((item) => {
             return <option key={item.title} value={item.title} >{(item.title).charAt(0).toUpperCase() + (item.title).slice(1)}</option>
         });
 
-        let workingOptions = [{ "title": "all", "description": "-" }, ...typeWorkingOpitonsObj].map((item) => {
+        let workingOptions = [{"title": "all", "description": "-"}, ...typeWorkingOptions].map((item) => {
             return <option key={item.title} value={item.title} >{(item.title).charAt(0).toUpperCase() + (item.title).slice(1)}</option>
         })
 
@@ -142,12 +139,13 @@ class ActivitiesFilters extends React.Component {
         var rangeOfDate =  startDate === endDate ? startDate : <span>From {startDate} to {endDate}</span>;
 
         //Style
-        let labelStyle = this.state.switchChecked ? { border: "#1c88bf 1px solid" } : { border: "#cacccd 1px solid" };
-        let spanStyle = this.state.switchChecked ? { color: "#1c88bf"} : { color: "#495057" };
+        let labelStyle = this.state.switchChecked ? {border: "#1c88bf 1px solid"} : {border: "#cacccd 1px solid"};
+        let spanStyle = this.state.switchChecked ? {color: "#1c88bf"} : {color: "#495057"};
         let buttonDateRangerPicker;
         if(this.state.dateRangePickerShow) {
-            buttonDateRangerPicker = { backgroundColor: "#b8e5ff", border: "#1c88bf 1px solid", color: "#1c88bf", fontWeight: "500"}
+            buttonDateRangerPicker = {backgroundColor: "#b8e5ff", border: "#1c88bf 1px solid", color: "#1c88bf", fontWeight: "500"};
         }
+        let containerStyles = {display: "block"};
 
         return (
                 <div className="row d-flex justify-content-center row__filter">
@@ -170,7 +168,7 @@ class ActivitiesFilters extends React.Component {
                                 disabled={disabledTypeWorking}
                                 className="select form-control text-center"
                             >
-                                { workingOptions }
+                                {workingOptions}
                         </select>
                     </div>
                     <div className="col-10 col-xl-3 col-lg-3 col-md-6 col-sm-8 form-group">
@@ -181,11 +179,11 @@ class ActivitiesFilters extends React.Component {
                             startDate={this.props.filters.startDate}
                             endDate={this.props.filters.endDate}
                             showDropdowns={true}
-                            ranges={ranges()}
-                            locale={locale()}
+                            ranges={ranges}
+                            locale={locale}
                             onShow={this.onShow}
                             onHide={this.onHide}
-                            containerStyles={{ display: 'block' }}
+                            containerStyles={containerStyles}
                         >
                             <button onClick={this.onClick} className="button buttonDate" style={buttonDateRangerPicker}>{rangeOfDate}</button>
                         </DateRangePicker>

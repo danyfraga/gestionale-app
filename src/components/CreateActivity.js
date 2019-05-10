@@ -14,9 +14,13 @@ export class CreateActivity extends React.Component {
         var defaultTypeActivityOption = [];
         this.props.typeActivityOptions.map((typeActivityOption, index) => {
             if(index === 0) defaultTypeActivityOption.push(typeActivityOption.title);
-            return typeWorkInActivity[typeActivityOption.title] = typeActivityOption.hasTypeWork ? (this.props.typeWorkingOptions.map((typeWorkingOption) => {
+            return typeWorkInActivity[typeActivityOption.title] = typeActivityOption.hasTypeWork ? (
+                this.props.typeWorkingOptions.map((typeWorkingOption) => {
                     return typeWorkingOption;
-            })) : ([{ title : "-", description : "-" }]);
+                })
+            ) : (
+                [{title : "-", description : "-"}]
+            );
         });
 
         let typeActivity = defaultTypeActivityOption[0];
@@ -28,7 +32,7 @@ export class CreateActivity extends React.Component {
             typeWorking,
             createdAt: moment(),
             hours: "",
-        }
+        };
     }
     
     onSubmit = (activity) => {
@@ -42,7 +46,7 @@ export class CreateActivity extends React.Component {
             typeWorking: this.state.typeWorking,
             createdAt: this.state.createdAt,
             hours: this.state.hours
-        }
+        };
 
         return (
             <div className="content-container">
@@ -55,7 +59,8 @@ export class CreateActivity extends React.Component {
                     activity={activity}
                 />
             </div>
-        )}
+        )
+    }
 }
 
 const mapStateToProps = (state) => {
@@ -63,7 +68,7 @@ const mapStateToProps = (state) => {
         typeWorkingOptions: state.typeWorkingOptions,
         typeActivityOptions: state.typeActivityOptions,
         filters: state.filters
-    })
+    });
 }
 
 const mapDispatchToProp = (dispatch) => ({

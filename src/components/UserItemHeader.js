@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { startGetUserInfo } from "../actions/user";
 import watch from "redux-watch";
 import store from "../store/configureStore";
 
@@ -15,10 +14,10 @@ class UserItemHeader extends React.Component {
         this.state = {
             allUsers: store.getState().allUsers,
             currentUserId: this.props.userId
-        }
+        };
 
         this.unsubscribe =  store.subscribe(watchCustomer((currentVal) => {
-            this.setState({ allUsers: currentVal.allUsers})
+            this.setState({allUsers: currentVal.allUsers});
         }));
         
     }
@@ -28,11 +27,11 @@ class UserItemHeader extends React.Component {
 
     render() {
         let user = (this.state.allUsers).filter((user) => {
-            return user.userId === this.state.currentUserId
-        })[0]
+            return user.userId === this.state.currentUserId;
+        })[0];
         if(!user) return <div>No User</div>;
         let nameAndSurnameCurrentUser = user.nameAndSurname;
-        let emailCurrentUser = user.email
+        let emailCurrentUser = user.email;
     
         return (
             <div>
@@ -48,7 +47,7 @@ class UserItemHeader extends React.Component {
                     </div> 
                 </div>
             </div>
-        )
+        );
     }
 }
 
@@ -56,7 +55,7 @@ const mapStateToProps = (state) => {
     return {
         allUsers: state.allUsers,
         user: state.user
-    }
-}
+    };
+};
 
 export default connect(mapStateToProps)(UserItemHeader);

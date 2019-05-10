@@ -13,7 +13,7 @@ export class Header extends React.Component {
             modalShow: false,
             modalSaveShow: false,
             modalDeleteShow: false
-        }
+        };
     }
 
     startLogout = () => {
@@ -21,11 +21,11 @@ export class Header extends React.Component {
     }
 
     handleShow = () => {
-        this.setState({ modalShow: true});
+        this.setState({modalShow: true});
     }
 
     handleClose = () => {
-        this.setState({ modalShow: false });
+        this.setState({modalShow: false});
     }
 
     onShow = () => {
@@ -33,30 +33,32 @@ export class Header extends React.Component {
     }
 
     render() {
+        let linkStyle = {textDecoration: 'none'};
+        let iconStyle = {margin: "0"};
+        let buttonStartLogoutStyle = {color: "white", backgroundColor: "#1c88bf", border: "none"};
+        let adminMenu;
+        if(this.props.user.isAdmin) {
+            adminMenu = <div className="row">
+                            <div className="col-6 text-center">
+                                <Link to="/users" className="navItemLink">USERS</Link>
+                            </div>
+                            <div className="col-6 text-center">
+                                <Link to="/settings" className="navItemLink">SETTINGS</Link>
+                            </div>
+                        </div>
+        }
+
         return (
             <div> 
                 <header className="header">
                     <div className="content-container">
                         <div className="row header__content">
                             <div className="col-9">
-                                <Link to="/dashboard" style={{ textDecoration: 'none' }}><h1 className="header__title">MGMTNet</h1></Link>
+                                <Link to="/dashboard" style={linkStyle}><h1 className="header__title">MGMTNet</h1></Link>
                             </div>
-                            {
-                                this.props.user.isAdmin ? (
-                                    <div className="row">
-                                    <div className="col-6 text-center">
-                                        <Link to="/users" className="navItemLink">USERS</Link>
-                                    </div>
-                                    <div className="col-6 text-center">
-                                        <Link to="/settings" className="navItemLink">SETTINGS</Link>
-                                    </div>
-                                    </div>
-                                ) : (
-                                    false
-                                )
-                            } 
+                            {adminMenu} 
                             <div className="col-1 text-center">
-                                <FontAwesomeIcon icon="sign-out-alt" className="logout_icon" size="2x" onClick={this.handleShow} style={{ margin: "0" }}/>
+                                <FontAwesomeIcon icon="sign-out-alt" className="logout_icon" size="2x" onClick={this.handleShow} style={iconStyle}/>
                                 <Modal 
                                     isOpen={this.state.modalShow} 
                                     toggle={this.handleClose} 
@@ -66,7 +68,7 @@ export class Header extends React.Component {
                                         <p>Are you sure you want to log out?</p>
                                     </ModalBody>
                                     <ModalFooter>
-                                        <Button style={{color: "white", backgroundColor: "#  1c88bf", border: "none"}} className="modal__button" onClick={this.startLogout}>Yes</Button>
+                                        <Button style={buttonStartLogoutStyle} className="modal__button" onClick={this.startLogout}>Yes</Button>
                                         <Button className="modal__button" onClick={this.handleClose}>No</Button>
                                     </ModalFooter>    
                                 </Modal>
@@ -75,7 +77,7 @@ export class Header extends React.Component {
                     </div>
                 </header>
             </div>
-         )
+        );
     }
 }
 
@@ -83,12 +85,12 @@ const mapStateToProps = (state) => {
     return {
         user: state.user,
         filters: state.filters
-    }
-}
+    };
+};
 
 const mapDispatchToProps = (dispatch) => ({
     startLogout: () => dispatch(startLogout()),
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
 

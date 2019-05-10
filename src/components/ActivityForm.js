@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import DateRangePicker from 'react-bootstrap-daterangepicker';
-import moment from "moment"
+import moment from "moment";
 import { startRemoveActivity } from "../actions/activities";
-import { Redirect } from "react-router-dom"
+import { Redirect } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import store from "../store/configureStore";
 import watch from "redux-watch";
@@ -21,7 +21,7 @@ class ActivityForm extends React.Component {
         this.props.typeActivityOptions.map((typeActivityOption) => {
             return typeWorkInActivity[typeActivityOption.title] = typeActivityOption.hasTypeWork ? (this.props.typeWorkingOptions.map((typeWorkingOption) => {
                     return typeWorkingOption;
-            })) : ([{ title : "-", description : "-" }]);
+            })) : ([{title : "-", description : "-"}]);
         });
         
         let typeActivity = props.activity ? props.activity.typeActivity : "";
@@ -54,7 +54,7 @@ class ActivityForm extends React.Component {
         this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
             if(this.state.activities !== currentVal.activities) {
                 let currentActivity = currentVal.activities.find((activity) => {
-                    return activity.idActivity === this.props.activityLinkPath
+                    return activity.idActivity === this.props.activityLinkPath;
                 });
                 if(currentActivity) {
                     this.setState({ 
@@ -66,7 +66,7 @@ class ActivityForm extends React.Component {
                     });
                 }
             }
-         })); 
+        })); 
     }
 
     componentWillUnmount(){
@@ -130,17 +130,17 @@ class ActivityForm extends React.Component {
     }
 
     handleShow = () => {
-        this.setState({ modalShow: true})
+        this.setState({modalShow: true});
         if(!this.state.modalSaveShow) {
-            this.setState({ modalSaveShow: true, modalDeleteShow: false });
+            this.setState({modalSaveShow: true, modalDeleteShow: false});
         }
         else if (!this.state.modalDeleteShow) {
-            this.setState({ modalDeleteShow: true, modalSaveShow: false });
+            this.setState({modalDeleteShow: true, modalSaveShow: false});
         }
     }
 
     handleClose = () => {
-        this.setState({ modalShow: false, modalSaveShow: false, modalDeleteShow: false });
+        this.setState({modalShow: false, modalSaveShow: false, modalDeleteShow: false});
       }
 
     onShow = () => {
@@ -153,16 +153,16 @@ class ActivityForm extends React.Component {
 
     activeSaveButton = () => {
         if(this.state.hours) {
-            this.setState({ disableSaveButton: false})
+            this.setState({disableSaveButton: false});
         }
         else {
-            this.setState({ disableSaveButton: true})
+            this.setState({disableSaveButton: true});
         }
     }
 
     _startRemoveActivity(){
         this.props.startRemoveActivity({idActivity: this.props.activity.idActivity});
-        this.setState({ remove: true });
+        this.setState({remove: true});
     }
     
     render() {
@@ -191,24 +191,24 @@ class ActivityForm extends React.Component {
         if(typeActivityExistInDB) {
             typeActivitiesOptionsSelect = this.state.typeActivityOptions.map((option) => {
                 option = option.title;
-                return <option key={option} value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
+                return <option key={option} value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>;
             });
 
             if(!currentTypeActivityOption.hasTypeWork) {
                 disabledTypeWorkingSelect = true;
-                typeWorkingOptionsSelect = <option key={this.state.typeWorking} value={this.state.typeWorking}>{(this.state.typeWorking).charAt(0).toUpperCase() + (this.state.typeWorking).slice(1) }</option>
+                typeWorkingOptionsSelect = <option key={this.state.typeWorking} value={this.state.typeWorking}>{(this.state.typeWorking).charAt(0).toUpperCase() + (this.state.typeWorking).slice(1)}</option>;
             }
             else {
                 typeWorkingOptionsSelect = this.state.typeWorkingOptions.map((option) => {
                     option = option.title;
-                    return <option key={option} value={option}>{(option).charAt(0).toUpperCase() + (option).slice(1) }</option>
+                    return <option key={option} value={option}>{(option).charAt(0).toUpperCase() + (option).slice(1)}</option>;
                 });
             }
         }
 
         if(!typeWorkingExistInDB || !typeActivityExistInDB ) {
-            typeActivitiesOptionsSelect = <option key={this.state.typeActivity} value={this.state.typeActivity}>{this.state.typeActivity.charAt(0).toUpperCase() + this.state.typeActivity.slice(1)}</option>
-            typeWorkingOptionsSelect = <option key={this.state.typeWorking} value={this.state.typeWorking}>{this.state.typeWorking.charAt(0).toUpperCase() + this.state.typeWorking.slice(1)}</option>
+            typeActivitiesOptionsSelect = <option key={this.state.typeActivity} value={this.state.typeActivity}>{this.state.typeActivity.charAt(0).toUpperCase() + this.state.typeActivity.slice(1)}</option>;
+            typeWorkingOptionsSelect = <option key={this.state.typeWorking} value={this.state.typeWorking}>{this.state.typeWorking.charAt(0).toUpperCase() + this.state.typeWorking.slice(1)}</option>;
             disabledTypeWorkingSelect = true;
             disabledTypeActivitySelect = true;
         }
@@ -219,15 +219,21 @@ class ActivityForm extends React.Component {
         
         let selectDate = moment(this.state.createdAt).format("DD/MM/YYYY");
 
+        //Style
         let buttonDateRangerPicker;
-        if(this.state.dateRangePickerShow) buttonDateRangerPicker = { backgroundColor: "#b8e5ff", border: "#1c88bf 1px solid", color: "#1c88bf", fontWeight: "500" }
+        if(this.state.dateRangePickerShow) buttonDateRangerPicker = {backgroundColor: "#b8e5ff", border: "#1c88bf 1px solid", color: "#1c88bf", fontWeight: "500"};
+        let containerStyles = {display: 'block'};
+        let buttonRemoveActivityContainer;
+        if (window.location.pathname === "/create") buttonRemoveActivityContainer = {display: "none"};
+        let buttonStartRemoveActivity = {color: "white", backgroundColor: "#d65b5b", border: "none"};
+        let buttonSaveActivity = {color: "white", backgroundColor: "#1c88bf", border: "none"};
 
         let hoursString = this.state.hours + (this.state.hours > 1 ? " hours" : " hour"); 
         let typeActivityString = this.state.typeActivity.charAt(0).toUpperCase() + this.state.typeActivity.slice(1);
         let typeWorkingInString = this.state.typeWorking === "-" ? "" : "in ";
         let typeWorkingString = (this.state.typeWorking).replace("-", "").toUpperCase();
         if(typeWorkingString.trim() !== "") typeWorkingString += " ";
-        let dateString = moment(this.state.createdAt).format("DD/MM/YYYY")
+        let dateString = moment(this.state.createdAt).format("DD/MM/YYYY");
         let saveString = `Are you sure you want to save ${hoursString} of ${typeActivityString} ${typeWorkingInString}${typeWorkingString}on ${dateString}`;
 
         return (
@@ -268,7 +274,7 @@ class ActivityForm extends React.Component {
                                 <div className="col-12">
                                     <span className="span">Select Date</span>
                                     <DateRangePicker 
-                                        containerStyles={{ display: 'block' }}
+                                        containerStyles={containerStyles}
                                         singleDatePicker
                                         onApply={this.onDateChange}
                                         onShow={this.onShow}
@@ -299,18 +305,20 @@ class ActivityForm extends React.Component {
                                     <button 
                                         disabled={disableSaveButton}
                                         className={disableSaveButton ? "button__disabled" : "button"}
-                                        onClick={() => {
-                                            this.setState({ modalSaveShow: true }, this.handleShow );
-                                        }}
+                                        onClick={
+                                            () => {
+                                                this.setState({modalSaveShow: true}, this.handleShow);
+                                            }
+                                        }
                                     >
                                         Save Activity
                                     </button>
                                 </div>
-                                <div className="col-6 text-center" style={window.location.pathname === "/create" ? { display: "none" } : {}}>
+                                <div className="col-6 text-center" style={buttonRemoveActivityContainer}>
                                     <button 
                                         className="button removeButton"
                                         onClick={() => { 
-                                            this.setState({ modalDeleteShow: true }, this.handleShow);
+                                            this.setState({modalDeleteShow: true}, this.handleShow);
                                         }} 
                                     >
                                         Remove Activity
@@ -322,14 +330,15 @@ class ActivityForm extends React.Component {
                                 toggle={this.handleClose} 
                             >
                                 <div>
-                                    {this.state.modalSaveShow ? 
-                                        (   <div>
+                                    {
+                                        this.state.modalSaveShow ? (   
+                                            <div>
                                                 <ModalHeader className="modal__header-remove"><span className="modal__title-remove">Remove Activity</span></ModalHeader>
                                                 <ModalBody>
                                                     <p>Are you sure you want to delete this activity?</p>
                                                 </ModalBody>
                                                 <ModalFooter>
-                                                    <Button style={{color: "white", backgroundColor: "#d65b5b", border: "none"}} className="modal__button" onClick={this._startRemoveActivity}>Yes</Button>
+                                                    <Button style={buttonStartRemoveActivity} className="modal__button" onClick={this._startRemoveActivity}>Yes</Button>
                                                     <Button className="modal__button" onClick={this.handleClose}>No</Button>
                                                 </ModalFooter>
                                             </div>
@@ -340,7 +349,7 @@ class ActivityForm extends React.Component {
                                                     {saveString}
                                                 </ModalBody>
                                                 <ModalFooter>
-                                                    <Button style={{color: "white", backgroundColor: "#1c88bf", border: "none"}} className="modal__button" onClick={this.saveData}>Save</Button>
+                                                    <Button style={buttonSaveActivity} className="modal__button" onClick={this.saveData}>Save</Button>
                                                     <Button className="modal__button" color="link" onClick={this.handleClose}>Cancel</Button>
                                                 </ModalFooter>
                                             </div>

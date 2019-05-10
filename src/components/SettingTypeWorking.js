@@ -22,9 +22,8 @@ class SettingTypeWorking extends React.Component {
         };
 
         this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
-            if(currentVal) this.setState({ options: currentVal.typeWorkingOptions })
-         })); 
-
+            if(currentVal) this.setState({options: currentVal.typeWorkingOptions});
+        })); 
     }
 
     componentWillUnmount(){
@@ -38,30 +37,29 @@ class SettingTypeWorking extends React.Component {
         let objNewOption = {
             "title": titleOption.charAt(0).toUpperCase() + titleOption.slice(1),
             "description": descriptionOption ? descriptionOption.charAt(0).toUpperCase() + descriptionOption.slice(1) : "-"
-        }
+        };
        
         if(this.state.newOption) {
             var isEqual = false;
             for(var key in this.state.options) { 
-                if ( (this.state.options)[key].title.toLowerCase() === this.state.newOption.toLowerCase()) isEqual = true;
+                if ((this.state.options)[key].title.toLowerCase() === this.state.newOption.toLowerCase()) isEqual = true;
             }
 
             if(titleOption.length > 25 || descriptionOption > 51) {
-                this.setState({ typeErrorNewOption: "inputLong", errorNewOption: "Warning! Your type working name (max 25) or description (max 50) is too long."});
-                
+                this.setState({typeErrorNewOption: "inputLong", errorNewOption: "Error! Your type working name (max 25) or description (max 50) is too long."});
             }
             else {
                 if(!isEqual) {
                     this.props.startAddOption(objNewOption);
-                    this.setState({ newOption : "", newOptionDescription: "" });
+                    this.setState({newOption : "", newOptionDescription: ""});
                 }
                 else {
-                    this.setState({ typeErrorNewOption: "inputIsEqual", errorNewOption: "Warning! Your type working name is already present."})
+                    this.setState({typeErrorNewOption: "inputIsEqual", errorNewOption: "Error! Your type working name is already present."})
                 }
             }
         }
         else {
-            this.setState({ typeErrorNewOption: "emptyInput", errorNewOption: "Error! Your type working input is empty."})
+            this.setState({typeErrorNewOption: "emptyInput", errorNewOption: "Error! Your type working input is empty."})
         }
     }
 
@@ -71,12 +69,12 @@ class SettingTypeWorking extends React.Component {
 
     onChangeInputOption = (e) => {
         let newOption = e.target.value;
-        this.setState({ newOption, errorNewOption: "", typeErrorNewOption: "" });
+        this.setState({newOption, errorNewOption: "", typeErrorNewOption: ""});
     }
 
     onChangeInputDescriptionOption = (e) => {
         let newOptionDescription = e.target.value;
-        this.setState({ newOptionDescription });
+        this.setState({newOptionDescription});
     }
 
     render() {
@@ -95,17 +93,14 @@ class SettingTypeWorking extends React.Component {
                     optionDescription={optionDescription} 
                     isSingle={isSingle}
                 />
-            )
+            );
         });
 
-        let borderBottomList = typeWorkingOption.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" };
-
+        let borderBottomList = typeWorkingOption.length > 5 ? {borderBottom:"#cacccd 1px solid"} : {borderBottom: "none"};
+        let iconButtonAddTypeActivityStyle = {"backgroundColor":"rgba(0, 0, 0, 0)", "padding":"0", "border":"none"}; 
         let errorColor = ""; 
-        if(this.state.typeErrorNewOption === "emptyInput") { errorColor = "danger" }
-        else if (this.state.typeErrorNewOption === "inputLong" ) { errorColor = "warning" }
-        else if(this.state.typeErrorNewOption === "inputIsEqual") { errorColor = "warning" }
-
-        let errorMessageInputTypeWorking = <Alert color={errorColor}>{this.state.errorNewOption}</Alert>
+        if(this.state.typeErrorNewOption) {errorColor = "danger"};
+        let errorMessageInputTypeWorking = this.state.errorNewOption ? <Alert color={errorColor}>{this.state.errorNewOption}</Alert> : "";
 
         return (
             <div>
@@ -134,28 +129,30 @@ class SettingTypeWorking extends React.Component {
                         /> 
                     </div>
                     <div className="show-for-desktop col-1 text-center">
-                        <button style={{"backgroundColor" : "rgba(0, 0, 0, 0)", "padding":"0", "border":"none"}}>
+                        <button style={iconButtonAddTypeActivityStyle}>
                             <FontAwesomeIcon icon="plus-circle" className="plusCircle insertIcon" size="2x" onClick={this.onClick}/>
                         </button>
                     </div>                    
                 </form>
-                {this.state.errorNewOption ? errorMessageInputTypeWorking : ""}
+                <div className="alert__container">
+                    {errorMessageInputTypeWorking}
+                </div>            
             </div>
-        )
+        );
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        typeWorkingOptions: state.typeWorkingOptions,
-    }
+        typeWorkingOptions: state.typeWorkingOptions
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         startAddOption: (option) => dispatch(startAddOption(option)),
-    }
-}
+    };
+};
 
-const SettingsTypeWorkingConnect = connect(mapStateToProps, mapDispatchToProps)(SettingTypeWorking)
+const SettingsTypeWorkingConnect = connect(mapStateToProps, mapDispatchToProps)(SettingTypeWorking);
 export default SettingsTypeWorkingConnect;

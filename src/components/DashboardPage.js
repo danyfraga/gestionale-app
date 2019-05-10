@@ -28,13 +28,6 @@ class DashboardPage extends React.Component {
       })); 
   }
 
-   // onClick = () => {
-   //    this.setState({ switchChecked: false, sortByActivity: "all", sortByTypeWorking: "" });
-   //    this.props.switchCheck(this.state.switchChecked);
-   //    this.props.sortByActivity(this.state.typeActivity);
-   //    this.props.sortByTypeWorking(this.state.typeWorking);
-   // }
-
    componentDidMount() {
       let userId = this.props.auth.uid;
       this.props.startSetActivity(userId);
@@ -45,6 +38,8 @@ class DashboardPage extends React.Component {
    }
 
   render() {
+      let linkStyle = {textDecoration: 'none'};
+
       return (
          <div className="content-container">
             <DashboardHeader/>
@@ -52,11 +47,11 @@ class DashboardPage extends React.Component {
             <ActivitiesList/>
             <div className="row d-flex justify-content-center row__buttonCreate">
                <div className="col-2 col-xl-2 col-lg-4 col-md-6 col-sm-6">
-                  <Link style={{ textDecoration: 'none' }} to="/create"><button className="button button__create">Add Activity</button></Link>
+                  <Link style={linkStyle} to="/create"><button className="button button__create">Add Activity</button></Link>
                </div>
             </div>
          </div>   
-      )
+      );
    }
 }
 
@@ -64,8 +59,8 @@ const mapStateToProps = (state) => {
    return {
        filters: state.filters,
        auth: state.auth,
-   }
-}
+   };
+};
 
 const mapDispatchToProp = (dispatch) => ({
    switchCheck: (switchChecked) => dispatch(switchCheck(switchChecked)),

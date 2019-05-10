@@ -23,6 +23,6 @@ export default class SettingsList extends React.Component {
                 <SettingTypeWorking/>
                 <UsersSettings/>
             </div>
-        )
+        );
     }
 }

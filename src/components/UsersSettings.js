@@ -22,7 +22,7 @@ class UsersSettings extends React.Component {
         };
 
         this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
-            if(currentVal) this.setState({ userEmailList: currentVal.userEmailList, users: currentVal.allUsers})
+            if(currentVal) this.setState({userEmailList: currentVal.userEmailList, users: currentVal.allUsers})
         })); 
     }
 
@@ -43,29 +43,29 @@ class UsersSettings extends React.Component {
         
             this.state.userEmailList.map((email) => {
                 if(email === newUserEmail) isEqual = true;
-            })
-            let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            });
+            let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if(!emailRegex.test(newUserEmail)) {
-                this.setState({ typeErrorNewUserEmail: "notEmail", errorNewUserEmail: "Error! The email you entered is not valid (example@example.com)." });
+                this.setState({typeErrorNewUserEmail: "notEmail", errorNewUserEmail: "Error! The email you entered is not valid (example@example.com)."});
             }
             else {
                 if(!isEqual) {
                     this.props.startAddUserEmail(newUserEmail);
-                    this.setState({ typeErrorNewUserEmail: "", errorNewUserEmail: "", newUserEmail: "" });
+                    this.setState({typeErrorNewUserEmail: "", errorNewUserEmail: "", newUserEmail: ""});
                 }
                 else {
-                    this.setState({ typeErrorNewUserEmail: "emailIsEqual", errorNewUserEmail: "Warning! The email entered is already present." });
+                    this.setState({typeErrorNewUserEmail: "emailIsEqual", errorNewUserEmail: "Warning! The email entered is already present."});
                 }
             }
         }
         else {
-            this.setState({ typeErrorNewUserEmail: "emptyEmail", errorNewUserEmail: "Error! Your new user email input is empty." });
+            this.setState({typeErrorNewUserEmail: "emptyEmail", errorNewUserEmail: "Error! Your new user email input is empty."});
         }
     }
 
     onChangeInputUserEmail = (e) => {
         let newUserEmail = e.target.value;
-        this.setState({ newUserEmail, errorNewUserEmail: "", typeErrorNewUserEmail: "" });
+        this.setState({newUserEmail, errorNewUserEmail: "", typeErrorNewUserEmail: ""});
     }
 
     onClick = (e) => {
@@ -73,13 +73,9 @@ class UsersSettings extends React.Component {
     }
 
     render() {
-
         let errorColor = ""; 
-        if(this.state.typeErrorNewUserEmail === "notEmail") { errorColor = "danger" }
-        else if (this.state.typeErrorNewUserEmail === "emailIsEqual" ) { errorColor = "warning" }
-        else if(this.state.typeErrorNewUserEmail === "emptyEmail") { errorColor = "danger" }
-
-        let errorMessageInputNewUserEmail = <Alert color={errorColor}>{this.state.errorNewUserEmail}</Alert>
+        if(this.state.typeErrorNewUserEmail) {errorColor = "danger"}
+        let errorMessageInputNewUserEmail = this.state.errorNewUserEmail ? <Alert color={errorColor}>{this.state.errorNewUserEmail}</Alert> : "";
 
         let usersList = this.state.userEmailList.map((userEmail) => {
             var userObj = {
@@ -90,7 +86,7 @@ class UsersSettings extends React.Component {
                 userId: userEmail,
                 isAdmin: false,
                 logUser: true
-            }
+            };
 
             let user = this.state.users.find((user) => userEmail === user.email);
 
@@ -110,10 +106,11 @@ class UsersSettings extends React.Component {
                     key={userObj.userId}
                     userObj={userObj}
                 />
-            )
+            );
         });
 
-        let borderBottomList = usersList.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" };
+        let borderBottomList = usersList.length > 5 ? {borderBottom:"#cacccd 1px solid" } : {borderBottom:"none"};
+        let insertIconStyle = {"backgroundColor" : "rgba(0, 0, 0, 0)", "padding":"0", "border":"none"};
 
         return (
             <div className="usersSettings__container">
@@ -137,12 +134,12 @@ class UsersSettings extends React.Component {
                         />                       
                     </div>
                     <div className="show-for-desktop col-1 text-center">
-                        <button style={{"backgroundColor" : "rgba(0, 0, 0, 0)", "padding":"0", "border":"none"}}>
+                        <button style={insertIconStyle}>
                             <FontAwesomeIcon icon="plus-circle" className="plusCircle insertIcon" size="2x" onClick={this.onClick}/>
                         </button>
                     </div>                    
                 </form>
-                {this.state.errorNewUserEmail ? errorMessageInputNewUserEmail : ""}
+                {errorMessageInputNewUserEmail}
             </div>
         )
     }
@@ -152,15 +149,15 @@ const mapStateToProps = (state) => {
     return {
         users: state.allUsers,
         userEmailList: state.userEmailList
-    }
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         startAddUserEmail: (email) => dispatch(startAddUserEmail(email)),
         startSetUserEmailList: () => dispatch(startSetUserEmailList())
-    }
-}
+    };
+};
 
 const UsersSettingsConnect = connect(mapStateToProps, mapDispatchToProps)(UsersSettings)
 export default UsersSettingsConnect;

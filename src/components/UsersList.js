@@ -12,7 +12,7 @@ class UsersList extends React.Component {
     constructor(props) {
         super(props);
 
-        store.subscribe(watchCustomer((val) => {
+        store.subscribe(watchCustomer((currentVal) => {
         }));
     }
 
@@ -20,7 +20,7 @@ class UsersList extends React.Component {
         let thisProps = this.props;
         let borderBottomList = thisProps.users.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" }
         let usersList = thisProps.users.map((user) => {
-            return <UserItemList key={user.userId} {...user}/>
+            return <UserItemList key={user.userId} {...user}/>;
         });
 
         return (
@@ -32,7 +32,6 @@ class UsersList extends React.Component {
                     </div>
                 </div>
                 <div className="list-header row row__list-header">
-                    <div className="show-for-mobile">Activities</div>
                     <div className="show-for-desktop col-3">Name</div>
                     <div className="show-for-desktop col-3">Surname</div>
                     <div className="show-for-desktop col-5">Email</div>
@@ -42,14 +41,14 @@ class UsersList extends React.Component {
                     {usersList}
                 </div>
             </div>
-        )
+        );
     }
 }
 
 const mapStateToProps = (state) => {
     return {
         users: state.allUsers
-    }
+    };
 }
 
-export default connect(mapStateToProps)(UsersList)
+export default connect(mapStateToProps)(UsersList);

@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import ActivityForm from "../components/ActivityForm"
 import { startEditActivity } from "../actions/activities";
 import { connect } from "react-redux";
@@ -16,7 +16,7 @@ class EditActivity extends React.Component {
         this.state = {
             modalShow: false,
             linkPath
-        }
+        };
     }
 
     onSubmit = (activity) => {
@@ -43,7 +43,7 @@ class EditActivity extends React.Component {
                     activityLinkPath={this.props.activityLinkPath}
                 />
             </div>
-        ) 
+        ); 
     }
  
 }
@@ -56,9 +56,7 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    startEditActivity: (idActivity, updates) => {
-        dispatch(startEditActivity(idActivity, updates))
-    },
+    startEditActivity: (idActivity, updates) => dispatch(startEditActivity(idActivity, updates)),
     sortByTypeWorking: (typeWorking) => dispatch(sortByTypeWorking(typeWorking)),
     sortByActivity: (typeActivity) => dispatch(sortByActivity(typeActivity)),
 });

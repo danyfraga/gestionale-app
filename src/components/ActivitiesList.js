@@ -37,9 +37,9 @@ class ActivitiesList extends React.Component {
         };
         this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
             this.setState({ 
-               switchChecked: currentVal.filters.switchChecked
+                switchChecked: currentVal.filters.switchChecked
             });
-         })); 
+        })); 
     }
 
     componentWillUnmount(){
@@ -63,17 +63,21 @@ class ActivitiesList extends React.Component {
         let props = this.props;
         let startDate = moment(props.filters.startDate).format("LL");
         let endDate = moment(props.filters.endDate).format("LL");
-        let filteredDates = startDate === endDate ? [moment(startDate).format("DD/MM/YYYY")] : [moment(props.filters.startDate).format("DD/MM/YYYY"), ...enumerateDaysBetweenDates(startDate, endDate), moment(props.filters.endDate).format("DD/MM/YYYY")];
+        let filteredDates = startDate === endDate ? (
+                [moment(startDate).format("DD/MM/YYYY")]
+            ) : (
+                [moment(props.filters.startDate).format("DD/MM/YYYY"), ...enumerateDaysBetweenDates(startDate, endDate), moment(props.filters.endDate).format("DD/MM/YYYY")]
+            );
         let rows = {};
 
         let typeActivityOptionsTitle = this.props.activities.map((activity, index) => {
-            if(activity.typeActivity !== this.props.activities[index-1]) {
-                return activity.typeActivity
+            if(activity.typeActivity !== this.props.activities[index - 1]) {
+                return activity.typeActivity;
             }
         })
 
         this.state.typeActivityOptions.map((option) => {
-            typeActivityOptionsTitle.push(option.title)
+            typeActivityOptionsTitle.push(option.title);
         });
 
         typeActivityOptionsTitle.map((typeActivity) => {
@@ -96,18 +100,18 @@ class ActivitiesList extends React.Component {
         const { currentPage } = this.state;
 
         let headerRowTable = filteredDates.map((date, index) => {
-                return <th key = {date + index} className = "th-table__header ">{date}</th>
+                return <th key = {date + index} className = "th-table__header ">{date}</th>;
         }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
     
         let trRows = [];
         var totalHoursPerActivity = [];
         for(var key in rows) {
             var countHours = 0;
-            let typeActivity = <th className="th-table__typeActivity text-center">{key.charAt(0).toUpperCase() + key.slice(1)}</th>
+            let typeActivity = <th className="th-table__typeActivity text-center">{key.charAt(0).toUpperCase() + key.slice(1)}</th>;
             let hours = rows[key].map((hour, i) => {
                 countHours = countHours + hour;
                 if(hour === 0) hour = "-";
-                return <td className="td-table__body text-center" key={ key + "_" + i + "td" }>{ hour }</td>
+                return <td className="td-table__body text-center" key={ key + "_" + i + "td" }>{ hour }</td>;
             }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
             trRows.push(<tr key={key + "_tr"}>{ typeActivity }{ hours }</tr>);
             if(!totalHoursPerActivity.includes(key)) {
@@ -124,7 +128,7 @@ class ActivitiesList extends React.Component {
             />
         });
 
-        let borderBottomList = this.props.activities.length > 5 ? { borderBottom: "#cacccd 1px solid" } : { borderBottom: "none" };
+        let borderBottomList = this.props.activities.length > 5 ? {borderBottom: "#cacccd 1px solid"} : {borderBottom: "none"};
         
         return (
             <div>
@@ -162,7 +166,7 @@ class ActivitiesList extends React.Component {
                                             [...Array(pageCount)].map((page, i) => 
                                                 <PaginationItem active={i === currentPage} key={i}>
                                                     <PaginationLink onClick={e => this.handleClick(e, i)} href="#">
-                                                    {i + 1}
+                                                        {i + 1}
                                                     </PaginationLink>
                                                 </PaginationItem>
                                             )
@@ -180,7 +184,6 @@ class ActivitiesList extends React.Component {
                         ) : (
                             <div>
                                 <div className="list-header row row__list-header">
-                                    <div className="show-for-mobile">Activities</div>
                                     <div className="show-for-desktop col-4">Date</div>
                                     <div className="show-for-desktop col-4 text-center">Activity</div>
                                     <div className="show-for-desktop col-4 text-right">Hours</div>
@@ -200,7 +203,7 @@ class ActivitiesList extends React.Component {
     //When change startDate or endDate, currentPage go to 0
     componentDidUpdate(prevProps) {
         if((prevProps.filters.startDate !== this.props.filters.startDate) || (prevProps.filters.endDate !== this.props.filters.endDate)) {
-            this.setState({ currentPage: 0 })
+            this.setState({ currentPage: 0 });
         }
     }
 

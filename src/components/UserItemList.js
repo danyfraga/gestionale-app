@@ -11,12 +11,15 @@ export default class UserItemList extends React.Component {
         let nameAndSurname = (thisProps.nameAndSurname).split(" ");
         let name = nameAndSurname[0].charAt(0) + nameAndSurname[0].slice(1).toLowerCase();
         let surname = nameAndSurname[1].charAt(0) + nameAndSurname[1].slice(1).toLowerCase();
-        let typeUser = thisProps.isAdmin ? "Admin" : "User"
+        let typeUser = thisProps.isAdmin ? "Admin" : "User";
+
+        //Style 
+        let linkStyle = {textDecoration: 'none'};
         
         return (
             <Link 
                 className="list-item d-flex justify-content-between" 
-                style={{ textDecoration: 'none' }} 
+                style={linkStyle} 
                 to={`/user/${thisProps.userId}`}
             >
                 <div className="show-for-desktop col-3">
@@ -32,6 +35,6 @@ export default class UserItemList extends React.Component {
                     <span className="span__typeWorking">{typeUser}</span>
                 </div>
             </Link>
-        )
+        );
     }
 }

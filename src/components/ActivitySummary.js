@@ -18,15 +18,16 @@ class ActivitySummary extends React.Component {
             collapse: false,
             activities: this.props.activities
         }
+
         this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
             this.setState({ 
-               activities: currentVal.activities,
+               activities: currentVal.activities
             });
          })); 
     } 
     componentWillUnmount(){
         this.unsubscribe();
-     }
+    }
     
     toggle = () => {
         this.setState({
@@ -68,7 +69,7 @@ class ActivitySummary extends React.Component {
             var randomColor = "";
             randomColor = colorsPalette[Math.floor(Math.random() * colorsPalette.length)];
             var indexOfRandomColor = colorsPalette.indexOf(randomColor);
-            colorsPalette.splice(indexOfRandomColor, 1),
+            colorsPalette.splice(indexOfRandomColor, 1);
             data.push(typeActivityTitles[title]);
             labels.push(title);
             colors.push(randomColor);
@@ -84,9 +85,9 @@ class ActivitySummary extends React.Component {
                 return (
                     <li key={label + index}>
                         <div className="bullet-legend__li" style={{"backgroundColor":`${colors[index]}`}}></div>
-                        <p className="label-legend__li">{label.charAt(0).toUpperCase() + label.slice(1)}</p> 
+                        <p className="label-legend__li">{label.charAt(0).toUpperCase() + label.slice(1)}</p>
                     </li> 
-                )
+                );
             }).slice(currentCol * itemsPerCol, (currentCol + 1) * itemsPerCol);
             colsComponent.push(
                 <div className="col-2" key={currentCol}>
@@ -96,47 +97,54 @@ class ActivitySummary extends React.Component {
                 </div>
             );
         }
-        let graphicCol = "graphicCol";
-        totalCol > 3 ? graphicCol = graphicCol + " col-4" : graphicCol = graphicCol + " col-6";
+        
+        let graphicCol = totalCol > 3 ? "graphicCol col-4" : "graphicCol col-6";
+        let styleCollapseArrowIcon = {margin: "0"};
+        let collapseArrowIcon = this.state.collapse ? (
+            <FontAwesomeIcon icon="angle-up" className="angle_up button-collapse" size="2x"  style={styleCollapseArrowIcon} onClick={this.toggle} cursor="pointer"/>
+        ) : (
+            <FontAwesomeIcon icon="angle-down" className="angle_down button-collapse" size="2x"  style={styleCollapseArrowIcon} onClick={this.toggle} cursor="pointer"/>
+        );
 
         return (
             <div className="row row__ringProgressBar" hidden={!this.state.fromAdmin}>
                 <h2 className="settings_subtitle title-collapse">Activity summary</h2>
-                {this.state.collapse ? <FontAwesomeIcon icon="angle-up" className="angle_up button-collapse" size="2x"  style={{ margin: "0" }} onClick={this.toggle} cursor="pointer"/> : <FontAwesomeIcon icon="angle-down" className="angle_down button-collapse" size="2x"  style={{ margin: "0" }} onClick={this.toggle} cursor="pointer"/>}
+                {collapseArrowIcon}
                 <Collapse isOpen={this.state.collapse} className="collapse__container">
                     <Card className="card-activitySummary">
                         <CardBody >
-                            {dataLengthArray > 0 ? (
-                                <div className="row justify-content-center">
-                                    <div className={graphicCol}>
-                                        <Bar 
-                                            data={{
-                                                labels: labels,
-                                                datasets: [{
-                                                    data: data,
-                                                    backgroundColor: colors,
-                                                    hoverBackgroundColor: colors
-                                                }]
-                                            }}
-                                            options={{
-                                                legend: { display: false },
-                                                scales: {
-                                                    yAxes: [{
-                                                        display: true,
-                                                        ticks: {
-                                                            suggestedMin: 0,    
-                                                            beginAtZero: true   
-                                                        }
+                            {
+                                dataLengthArray > 0 ? (
+                                    <div className="row justify-content-center">
+                                        <div className={graphicCol}>
+                                            <Bar 
+                                                data={{
+                                                    labels: labels,
+                                                    datasets: [{
+                                                        data: data,
+                                                        backgroundColor: colors,
+                                                        hoverBackgroundColor: colors
                                                     }]
-                                            }}}
-                                        />
+                                                }}
+                                                options={{
+                                                    legend: { display: false },
+                                                    scales: {
+                                                        yAxes: [{
+                                                            display: true,
+                                                            ticks: {
+                                                                suggestedMin: 0,    
+                                                                beginAtZero: true   
+                                                            }
+                                                        }]
+                                                }}}
+                                            />
+                                        </div>
+                                        {colsComponent}                           
                                     </div>
-                                    {colsComponent}                           
-                                </div>
-                            ) : (
-                                <p className="text-center noDataShow__p">No data to show</p>
-                            )}
-                            
+                                ) : (
+                                    <p className="text-center noDataShow__p">No data to show</p>
+                                )
+                            }
                         </CardBody>
                     </Card>
                 </Collapse>
@@ -148,6 +156,6 @@ class ActivitySummary extends React.Component {
 const mapStateToProps = (state) => {
    return {
         activities: selectActivity(state.activities, state.filters)
-   }
+   };
 }
 export default connect(mapStateToProps)(ActivitySummary);

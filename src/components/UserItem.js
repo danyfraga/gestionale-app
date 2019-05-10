@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import ActivitiesList from "../components/ActivitiesList";
 import ActivitiesFilters from "../components/ActivitiesFilters";
 import { connect } from "react-redux";
@@ -17,9 +16,9 @@ class UserItem extends React.Component {
             switchChecked: this.props.filters.switchChecked,
             typeWorking: this.props.filters.sortByTypeWorking,
             typeActivity: this.props.filters.sortByActivity 
-         }
+         };
         this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
-            this.setState({ activities: currentVal.activities})
+            this.setState({activities: currentVal.activities});
         })); 
     }
     componentWillMount() {
@@ -33,13 +32,14 @@ class UserItem extends React.Component {
 
     render() {
         let userId = (this.props.location.pathname).split("/")[2];
+
         return (
             <div className="content-container">
                 <UserItemHeader userId={userId}/>
                 <ActivitiesFilters/>
                 <ActivitiesList fromAdmin={true} userId={userId}/>
             </div>
-        )
+        );
     }
 }
 
@@ -48,8 +48,8 @@ const mapStateToProps = (state) => {
         filters: state.filters,
         users: state.allUsers,
         activities: state.activities
-    }
- }
+    };
+ };
  
  const mapDispatchToProp = (dispatch) => {
     return {
@@ -57,7 +57,7 @@ const mapStateToProps = (state) => {
         sortByActivity: (typeActivity) => dispatch(sortByActivity(typeActivity)),
         sortByTypeWorking: (typeWorking) => dispatch(sortByTypeWorking(typeWorking)),
         startSetActivity: (uid) => dispatch(startSetActivity(uid))
-    }
+    };
 };
 
  export default connect(mapStateToProps, mapDispatchToProp)(UserItem);

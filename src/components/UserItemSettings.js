@@ -2,19 +2,19 @@ import React from "react";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { startEditIsAdminUser, startRemoveUser } from "../actions/user";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
-import { startRemoveUserEmail } from "../actions/userEmailList"
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { startRemoveUserEmail } from "../actions/userEmailList";
 
 class UserItemSettings extends React.Component {
     constructor(props) {
-
         super(props);
+
         var allUsers = this.props.users;
         var userIndex = 0;
         let currentUserEmailAndId = allUsers.map((user, index) => {
             if(user.email === this.props.userObj.email){
                 userIndex = index;
-                return user.email + " " + user.userId
+                return user.email + " " + user.userId;
             }
         })[userIndex];
 
@@ -36,38 +36,38 @@ class UserItemSettings extends React.Component {
             allUsers,
             currentUserEmailAndId,
             classDisabledButtonDeleteUser: ""
-        }
+        };
         
         if(this.state.email === this.props.user.email) this.state.disabledButtonDeleteUser = true;
         this.state.disabledButtonDeleteUser ? this.state.classDisabledButtonDeleteUser = "deleteOptionDisabled" : this.state.classDisabledButtonDeleteUser = "deleteOption";
     }
 
-    onClick = () => {
+    buttonDeleteUserModalClick = () => {
         this.props.startRemoveUser(this.state.currentUserEmailAndId);
-        this.props.startRemoveUserEmail(this.state.email)
+        this.props.startRemoveUserEmail(this.state.email);
     }
 
-    onClick2 = () => { 
+    buttonDeleteUserClick = () => { 
         if(!this.state.logUser) {
-            this.setState({ modalDeleteShow: true }, this.handleShow);
+            this.setState({modalDeleteShow: true}, this.handleShow);
         } 
         else {
-            this.props.startRemoveUserEmail(this.state.email)
+            this.props.startRemoveUserEmail(this.state.email);
         }
     } 
 
     handleShow = () => {
-        this.setState({ modalShow: true})
+        this.setState({modalShow: true});
         if(!this.state.modalSaveShow) {
-            this.setState({ modalSaveShow: true, modalDeleteShow: false });
+            this.setState({modalSaveShow: true, modalDeleteShow: false});
         }
         else if (!this.state.modalDeleteShow) {
-            this.setState({ modalDeleteShow: true, modalSaveShow: false });
+            this.setState({modalDeleteShow: true, modalSaveShow: false});
         }
     }
 
     handleClose = () => {
-        this.setState({ modalShow: false, modalSaveShow: false, modalDeleteShow: false });
+        this.setState({modalShow: false, modalSaveShow: false, modalDeleteShow: false});
     }
 
     onChange = () => {
@@ -76,11 +76,15 @@ class UserItemSettings extends React.Component {
         let updates = {
             userId: this.props.userObj.userId,
             isAdmin 
-        }
+        };
         this.props.startEditIsAdminUser(updates);
     }
 
     render() {
+        let disabledButtonDeleteUserStyle = {"backgroundColor":"rgba(0, 0, 0, 0)", "padding":"0"};
+        let disabledButtonDeleteUserStyleModal = {color: "white", backgroundColor: "#d65b5b", border: "none"};
+        let deteleUserMessageModal = <p>Are you sure you want to delete {this.state.name + " " + this.state.surname} with {this.state.email} email? This action is final.</p>;
+
         return (
             <div className="list-item d-flex justify-content-between">
                 <div className="show-for-desktop col-2">
@@ -101,8 +105,8 @@ class UserItemSettings extends React.Component {
                     <button 
                         disabled={this.state.disabledButtonDeleteUser}
                         className={this.state.classDisabledButtonDeleteUser}
-                        style={{"backgroundColor" : "rgba(0, 0, 0, 0)", "padding":"0"}}
-                        onClick={this.onClick2} 
+                        style={disabledButtonDeleteUserStyle}
+                        onClick={this.buttonDeleteUserClick} 
                     >
                         <FontAwesomeIcon icon="times-circle" className="timesCircle" size="2x"/>
                     </button>
@@ -113,15 +117,15 @@ class UserItemSettings extends React.Component {
                 >
                     <ModalHeader className="modal__header-remove"><span className="modal__title-remove">Delete User</span></ModalHeader>
                     <ModalBody>
-                        <p>Are you sure you want to delete {this.state.name + " " + this.state.surname} with {this.state.email} email? This action is final.</p>
+                        {deteleUserMessageModal}
                     </ModalBody>
                     <ModalFooter>
-                        <Button style={{color: "white", backgroundColor: "#d65b5b", border: "none"}} className="modal__button" onClick={this.onClick}>Yes</Button>
+                        <Button style={disabledButtonDeleteUserStyleModal} className="modal__button" onClick={this.buttonDeleteUserModalClick}>Yes</Button>
                         <Button className="modal__button" onClick={this.handleClose}>No</Button>
                     </ModalFooter>
                 </Modal>
             </div>
-        )
+        );
     }
 }
 
@@ -130,7 +134,7 @@ const mapStateToProps = (state) => {
         users: state.allUsers,
         typeWorkingOptions: state.typeWorkingOptions,
         user: state.user
-    }
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -138,9 +142,9 @@ const mapDispatchToProps = (dispatch) => {
         startEditIsAdminUser: (updates) => dispatch(startEditIsAdminUser(updates)),
         startRemoveUser: (userId) => dispatch(startRemoveUser(userId)),
         startRemoveUserEmail: (email) => dispatch(startRemoveUserEmail(email))
-    }
-}
+    };
+};
 
-const UserItemSettingsConnect = connect(mapStateToProps, mapDispatchToProps)(UserItemSettings)
+const UserItemSettingsConnect = connect(mapStateToProps, mapDispatchToProps)(UserItemSettings);
 export default UserItemSettingsConnect;
 

@@ -14,10 +14,12 @@ class ActivityItem extends React.Component  {
     }
 
     render () {
+        let linkStyle = {textDecoration: 'none'};
+
         return (
             <Link 
                 className="list-item d-flex justify-content-between" 
-                style={{ textDecoration: 'none' }} 
+                style={linkStyle} 
                 to={{
                     pathname:`/edit/${this.props.idActivity}`,
                     state: {

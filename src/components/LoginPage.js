@@ -17,12 +17,11 @@ class LoginPage extends React.Component {
 
         this.state = {
             error: parsed.error
-        }
+        };
 
         this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
-            // if(currentVal) this.setState({ error: currentVal.error });
             history.push("/");
-         })); 
+        })); 
     }
 
     onClick = () => {
@@ -48,7 +47,7 @@ class LoginPage extends React.Component {
                     </div>
                 </div>
             </div>
-        )
+        );
     }    
 };
 
