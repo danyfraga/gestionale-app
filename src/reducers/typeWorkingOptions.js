@@ -9,8 +9,8 @@ export const typeWorkingOptionsReducer = (state = defaultTypeWorkingOptions, act
                 action.option
             ];
         case "REMOVE_OPTION":
-            return state.filter(({ title }) => {
-                return title !== action.optionIndex
+            return state.filter(({ key }) => {
+                return key !== action.optionIndex
             });
         case "SET_OPTIONS":
             return action.options;

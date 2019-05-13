@@ -36,10 +36,12 @@ class SettingTypeActivity extends React.Component {
         let titleOption = this.state.newOption;
         let descriptionOption = this.state.newOptionDescription;
         let hasTypeWorkOption = this.state.newOptionHasTypeWork;
+        const keyOption = require('uuid/v1');
         let typeActivity = {
             "title": titleOption.charAt(0).toUpperCase() + titleOption.slice(1),
             "description": descriptionOption ? descriptionOption.charAt(0).toUpperCase() + descriptionOption.slice(1) : "-",
-            "hasTypeWork": hasTypeWorkOption ? hasTypeWorkOption : false
+            "hasTypeWork": hasTypeWorkOption ? hasTypeWorkOption : false,
+            "key": keyOption()
         };
        
         if(this.state.newOption) {
@@ -86,6 +88,7 @@ class SettingTypeActivity extends React.Component {
         var isSingle = false;
         let isTypeActivity = true;
         let typeActivityOption = typeActivityOptions.map((option, index) => {
+            let optionKey = option.key
             let optionTitle = option.title;
             let optionDescription = option.description;
             let optionHasTypeWork = option.hasTypeWork;
@@ -94,7 +97,7 @@ class SettingTypeActivity extends React.Component {
                 <TypeWorkingOptionItem 
                     key={optionTitle + index} 
                     optionTitle={optionTitle} 
-                    optionId={optionTitle}
+                    optionId={optionKey}
                     optionDescription={optionDescription} 
                     isSingle={isSingle}
                     isTypeActivity={isTypeActivity}

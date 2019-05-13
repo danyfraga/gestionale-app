@@ -30,7 +30,7 @@ class TypeWorkingOptionItem extends React.Component {
         let hasTypeWork = !this.state.hasTypeWork;
         this.setState({hasTypeWork});
         let updates = {
-            title: this.props.optionTitle,
+            key: this.props.optionId,
             hasTypeWork 
         };
         this.props.startEditHasTypeWork(updates);

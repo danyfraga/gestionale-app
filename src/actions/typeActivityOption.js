@@ -23,7 +23,7 @@ export const addOptionActivity = (typeActivity) => ({
 
 export const startAddOptionActivity = (typeActivity) => {
     return (dispatch) => {
-        return database.ref(`typeActivityOptions/${(typeActivity.title).replace(" ", "")}`).set(typeActivity).then(() => {
+        return database.ref(`typeActivityOptions/${(typeActivity.key)}`).set(typeActivity).then(() => {
             dispatch(addOptionActivity(typeActivity));
         });
     };
@@ -36,7 +36,7 @@ export const removeOptionActivity = (typeActivityIndex) => ({
 
 export const startRemoveOptionActivity = (typeActivityIndex) => {
     return (dispatch) => {
-        return database.ref(`typeActivityOptions/${typeActivityIndex.replace(" ", "")}`).remove().then(() => {
+        return database.ref(`typeActivityOptions/${typeActivityIndex}`).remove().then(() => {
             dispatch(removeOptionActivity(typeActivityIndex));
         });
     };
@@ -49,8 +49,8 @@ export const editHasTypeWork = (updates) => ({
 
 export const startEditHasTypeWork = (updates) => {
     return (dispatch) => {
-        let hasTypeWork = { hasTypeWork: updates.hasTypeWork }
-        return database.ref(`typeActivityOptions/${updates.title}`).update(hasTypeWork).then(() => {
+        let hasTypeWork = {hasTypeWork: updates.hasTypeWork}
+        return database.ref(`typeActivityOptions/${updates.key}`).update(hasTypeWork).then(() => {
             dispatch(startSetOptionActivity())
         })
     };

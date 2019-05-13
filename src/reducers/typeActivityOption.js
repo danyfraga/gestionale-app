@@ -9,12 +9,12 @@ export const typeActivityOptionsReducer = (state = defaultTypeActivityOptions, a
                 action.typeActivity
             ];
         case "REMOVE_OPTION_ACTIVITY":
-            return state.filter(({ title }) => {
-                return title !== action.typeActivityIndex
+            return state.filter(({ key }) => {
+                return key !== action.typeActivityIndex
             });
         case "EDIT_HAS_TYPE_WORK":
             return state.map((option) => {
-                if(option.title === action.updates.title) {
+                if(option.key === action.updates.key) {
                     return {
                         ...option,
                         ...action.updates

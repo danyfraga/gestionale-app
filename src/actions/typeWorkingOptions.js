@@ -9,7 +9,7 @@ export const addOption = (option) => {
 
 export const startAddOption = (option) => {
     return (dispatch) => {
-        return database.ref(`typeWorkingOptions/${(option.title).replace(" ", "")}`).set(option).then(() => {
+        return database.ref(`typeWorkingOptions/${(option.key).replace(" ", "")}`).set(option).then(() => {
             dispatch(addOption(option));
         });
     };

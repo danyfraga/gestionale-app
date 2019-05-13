@@ -34,9 +34,11 @@ class SettingTypeWorking extends React.Component {
         e.preventDefault();
         let titleOption = this.state.newOption;
         let descriptionOption = this.state.newOptionDescription;
+        const keyOption = require('uuid/v1');
         let objNewOption = {
             "title": titleOption.charAt(0).toUpperCase() + titleOption.slice(1),
-            "description": descriptionOption ? descriptionOption.charAt(0).toUpperCase() + descriptionOption.slice(1) : "-"
+            "description": descriptionOption ? descriptionOption.charAt(0).toUpperCase() + descriptionOption.slice(1) : "-",
+            "key": keyOption()
         };
        
         if(this.state.newOption) {
@@ -82,6 +84,7 @@ class SettingTypeWorking extends React.Component {
         let typeWorkingOptions = thisProps.typeWorkingOptions;
         var isSingle = false;
         let typeWorkingOption = typeWorkingOptions.map((option) => {
+            let optionKey = option.key;
             let optionTitle = option.title;
             let optionDescription = option.description;
             if(typeWorkingOptions.length === 1) isSingle = true; 
@@ -89,7 +92,7 @@ class SettingTypeWorking extends React.Component {
                 <TypeWorkingOptionItem 
                     key={optionTitle} 
                     optionTitle={optionTitle} 
-                    optionId={optionTitle}
+                    optionId={optionKey}
                     optionDescription={optionDescription} 
                     isSingle={isSingle}
                 />
