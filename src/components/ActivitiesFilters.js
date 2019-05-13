@@ -18,16 +18,16 @@ class ActivitiesFilters extends React.Component {
             typeWorking: "",
             typeActivity: "",
             dateRangePickerShow: false
-        }
+        };
     }
 
     handleChange = () => {
         let currentSwitchState = this.state.switchChecked;
         if(currentSwitchState) {
-            this.setState({ switchChecked: false }); 
+            this.setState({switchChecked: false}); 
         }
         else {
-            this.setState({ switchChecked: true, typeWorking: "", typeActivity: "All" })
+            this.setState({switchChecked: true, typeWorking: "", typeActivity: "All"})
             this.props.sortByTypeWorking("all");
             this.props.sortByActivity("all"); 
         }
@@ -35,17 +35,17 @@ class ActivitiesFilters extends React.Component {
     }
 
     onSortChangeTypeWorking = (e) => {
-        this.setState({ typeWorking: e.target.value });
+        this.setState({typeWorking: e.target.value});
         this.props.sortByTypeWorking(e.target.value);
     }
 
     onSortChangeType = (e) => {
-        this.setState({ typeActivity: e.target.value });
+        this.setState({typeActivity: e.target.value});
         this.state.typeActivityOptions.map((option) => {
             if(!option.hasTypeWork) {
                 this.props.sortByTypeWorking("all");
             }
-        })
+        });
         this.props.sortByActivity(e.target.value); 
     }
 

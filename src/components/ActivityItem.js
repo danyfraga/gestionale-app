@@ -10,7 +10,7 @@ class ActivityItem extends React.Component  {
         this.state = {
             fromAdmin: this.props.fromAdmin,
             userId: this.props.userId
-        }
+        };
     }
 
     render () {
@@ -49,7 +49,7 @@ class ActivityItem extends React.Component  {
 const mapStateToProps = (state) => {
     return {
         typeWorkingOptions: state.typeWorkingOptions
-    }
+    };
 }
 
 export default connect(mapStateToProps)(ActivityItem);

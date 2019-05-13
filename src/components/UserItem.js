@@ -21,6 +21,7 @@ class UserItem extends React.Component {
             this.setState({activities: currentVal.activities});
         })); 
     }
+    
     componentWillMount() {
         let userId = (this.props.location.pathname).split("/")[2];
         this.props.startSetActivity(userId);

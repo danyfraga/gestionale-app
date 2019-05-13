@@ -12,21 +12,30 @@ let watchCustomer = watch(store.getState);
 class ActivitySummary extends React.Component {
     constructor (props) {
         super(props);
-     
+
         this.state = {
             fromAdmin: this.props.fromAdmin,
             collapse: false,
             activities: this.props.activities
-        }
+        } 
 
         this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
             this.setState({ 
-               activities: currentVal.activities
+                switchChecked: currentVal.filters.switchChecked
             });
-         })); 
+        })); 
     } 
+
     componentWillUnmount(){
         this.unsubscribe();
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.props.activities !== prevProps.activities) {
+            this.setState({
+                activities: this.props.activities
+            });
+        }
     }
     
     toggle = () => {
@@ -36,6 +45,7 @@ class ActivitySummary extends React.Component {
     }
 
     render() { 
+
         let typeActivityTitles = [];
         this.state.activities.map((activity, index) => {
             if(activity.typeActivity !== typeActivityTitles[index-1]) {
@@ -127,7 +137,7 @@ class ActivitySummary extends React.Component {
                                                     }]
                                                 }}
                                                 options={{
-                                                    legend: { display: false },
+                                                    legend: {display: false},
                                                     scales: {
                                                         yAxes: [{
                                                             display: true,
@@ -136,7 +146,8 @@ class ActivitySummary extends React.Component {
                                                                 beginAtZero: true   
                                                             }
                                                         }]
-                                                }}}
+                                                    }
+                                                }}
                                             />
                                         </div>
                                         {colsComponent}                           
@@ -149,7 +160,7 @@ class ActivitySummary extends React.Component {
                     </Card>
                 </Collapse>
             </div>
-        )
+        );
     }
 }
 

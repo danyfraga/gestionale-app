@@ -35,11 +35,19 @@ class ActivitiesList extends React.Component {
             typeActivityOptions: this.props.typeActivityOptions,
             switchChecked: this.props.filters.switchChecked
         };
+
         this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
             this.setState({ 
                 switchChecked: currentVal.filters.switchChecked
             });
         })); 
+    }
+
+    //When change startDate or endDate, currentPage go to 0
+    componentDidUpdate(prevProps) {
+        if((prevProps.filters.startDate !== this.props.filters.startDate) || (prevProps.filters.endDate !== this.props.filters.endDate)) {
+            this.setState({currentPage: 0});
+        }
     }
 
     componentWillUnmount(){
@@ -74,7 +82,7 @@ class ActivitiesList extends React.Component {
             if(activity.typeActivity !== this.props.activities[index - 1]) {
                 return activity.typeActivity;
             }
-        })
+        });
 
         this.state.typeActivityOptions.map((option) => {
             typeActivityOptionsTitle.push(option.title);
@@ -111,11 +119,11 @@ class ActivitiesList extends React.Component {
             let hours = rows[key].map((hour, i) => {
                 countHours = countHours + hour;
                 if(hour === 0) hour = "-";
-                return <td className="td-table__body text-center" key={ key + "_" + i + "td" }>{ hour }</td>;
+                return <td className="td-table__body text-center" key={ key + "_" + i + "td" }>{hour}</td>;
             }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
-            trRows.push(<tr key={key + "_tr"}>{ typeActivity }{ hours }</tr>);
+            trRows.push(<tr key={key + "_tr"}>{typeActivity}{hours}</tr>);
             if(!totalHoursPerActivity.includes(key)) {
-                totalHoursPerActivity.push({ [key] : countHours });
+                totalHoursPerActivity.push({[key] : countHours});
             }
         }
         
@@ -199,14 +207,6 @@ class ActivitiesList extends React.Component {
             </div>
         )
     } 
-
-    //When change startDate or endDate, currentPage go to 0
-    componentDidUpdate(prevProps) {
-        if((prevProps.filters.startDate !== this.props.filters.startDate) || (prevProps.filters.endDate !== this.props.filters.endDate)) {
-            this.setState({ currentPage: 0 });
-        }
-    }
-
 }
     
 const mapStateToProps = (state) => {
