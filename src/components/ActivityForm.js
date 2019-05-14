@@ -115,17 +115,24 @@ class ActivityForm extends React.Component {
             hoursError: "",
             hoursErrorIsHidden: true 
         });
-        if(hours > 24) {
-            this.setState({ 
-                hoursError: "Error! Input entered is greater than 24.",
-                hoursErrorIsHidden: false
-            });
+        let regex = /^\d+(?:[,.][05])?$/;
+        let hoursInString = hours + "";
+        let checkHours = regex.test(hoursInString);
+        if(hours > 24 || hours <= 0) {
+            if(hours) {
+                this.setState({ 
+                    hoursError: "Error! Input must be between 1 and 24.",
+                    hoursErrorIsHidden: false
+                });
+            }
         }
-        else if(hours < 0) {
-            this.setState({ 
-                hoursError: "Error! Input entered is less than 0.",
-                hoursErrorIsHidden: false
-            });
+        if(hoursInString){
+            if(!checkHours) {
+                this.setState({ 
+                    hoursError: "Error! Only half hours are accepted (ex. 7.5).",
+                    hoursErrorIsHidden: false
+                });
+            }
         }
     }
 
@@ -213,7 +220,10 @@ class ActivityForm extends React.Component {
             disabledTypeActivitySelect = true;
         }
 
-        if(this.state.hours && (this.state.hours < 25) || (this.state.hours < 0)) {
+        let regex = /^((0\.[5-9])|(([1-9](\.[5-9])?)|(1[0-9](\.[5-9])?)|(2[0-3](\.[5-9])?)|24))$/
+        let hoursInString = this.state.hours + "";
+        let checkHours = regex.test(hoursInString);
+        if(this.state.hours && ((this.state.hours < 25) || (this.state.hours < 0)) && checkHours) {
             disableSaveButton = false;
         }
         

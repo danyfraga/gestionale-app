@@ -55,7 +55,7 @@ class ActivitySummary extends React.Component {
         this.state.activities.map((activity) => {
             for (var title in typeActivityTitles) {
                 if(title === activity.typeActivity) {
-                    typeActivityTitles[activity.typeActivity] = typeActivityTitles[activity.typeActivity] + parseInt(activity.hours);
+                    typeActivityTitles[activity.typeActivity] = typeActivityTitles[activity.typeActivity] + parseFloat(activity.hours);
                 }
             }
         });

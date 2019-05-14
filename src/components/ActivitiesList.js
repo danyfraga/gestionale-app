@@ -16,7 +16,7 @@ var enumerateDaysBetweenDates = function(startDate, endDate) {
     var currDate = moment(startDate);
     var lastDate = moment(endDate);
 
-    while(currDate.add(1, 'days').diff(lastDate) < 0) { // Inserire starDate e endDate dentro questa funzione 
+    while(currDate.add(1, 'days').diff(lastDate) < 0) { 
         dates.push(currDate.clone().format("DD/MM/YYYY"));
     }
     return dates;
@@ -98,14 +98,14 @@ class ActivitiesList extends React.Component {
 
             activityForDate.forEach((activity) => {
                 let currentHours = rows[activity.typeActivity][index];
-                let totalHours = currentHours + parseInt(activity.hours);
+                let totalHours = currentHours + parseFloat(activity.hours);
                 rows[activity.typeActivity][index] = totalHours;
             });            
         });
 
         let pageSize = 7;
         let pageCount = Math.ceil(filteredDates.length / pageSize);
-        const { currentPage } = this.state;
+        const {currentPage} = this.state;
 
         let headerRowTable = filteredDates.map((date, index) => {
                 return <th key = {date + index} className = "th-table__header ">{date}</th>;
@@ -119,7 +119,7 @@ class ActivitiesList extends React.Component {
             let hours = rows[key].map((hour, i) => {
                 countHours = countHours + hour;
                 if(hour === 0) hour = "-";
-                return <td className="td-table__body text-center" key={ key + "_" + i + "td" }>{hour}</td>;
+                return <td className="td-table__body text-center" key={key + "_" + i + "td"}>{hour}</td>;
             }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
             trRows.push(<tr key={key + "_tr"}>{typeActivity}{hours}</tr>);
             if(!totalHoursPerActivity.includes(key)) {
