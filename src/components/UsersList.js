@@ -6,13 +6,13 @@ import store from "../store/configureStore";
 import UserItemList from "./UserItemList";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-let watchCustomer = watch(store.getState);
+let watchState = watch(store.getState);
 
 class UsersList extends React.Component {
     constructor(props) {
         super(props);
 
-        store.subscribe(watchCustomer((currentVal) => {
+        store.subscribe(watchState((currentVal) => {
         }));
     }
 

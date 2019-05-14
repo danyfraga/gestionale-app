@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import watch from "redux-watch";
 import store from "../store/configureStore";
 
-let watchCustomer = watch(store.getState);
+let watchState = watch(store.getState);
 
 class UserItemHeader extends React.Component {
     constructor(props) {
@@ -16,7 +16,7 @@ class UserItemHeader extends React.Component {
             currentUserId: this.props.userId
         };
 
-        this.unsubscribe =  store.subscribe(watchCustomer((currentVal) => {
+        this.unsubscribe =  store.subscribe(watchState((currentVal) => {
             this.setState({allUsers: currentVal.allUsers});
         }));
         

@@ -7,7 +7,7 @@ import { Alert } from 'reactstrap';
 import UserItemSettings from "../components/UserItemSettings";
 import { startAddUserEmail, startSetUserEmailList } from "../actions/userEmailList";
 
-let watchCustomer = watch(store.getState);
+let watchState = watch(store.getState);
 
 class UsersSettings extends React.Component {
     constructor (props) {
@@ -21,7 +21,7 @@ class UsersSettings extends React.Component {
             users: this.props.users 
         };
 
-        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+        this.unsubscribe = store.subscribe(watchState((currentVal) => {
             if(currentVal) this.setState({userEmailList: currentVal.userEmailList, users: currentVal.allUsers})
         })); 
     }

@@ -9,7 +9,7 @@ import store from "../store/configureStore";
 import watch from "redux-watch";
 import { Alert } from 'reactstrap';
 
-let watchCustomer = watch(store.getState);
+let watchState = watch(store.getState);
 
 class ActivityForm extends React.Component {
     constructor(props) {
@@ -51,7 +51,7 @@ class ActivityForm extends React.Component {
             hoursErrorIsHidden: true,
             hoursError: ""
         }
-        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+        this.unsubscribe = store.subscribe(watchState((currentVal) => {
             if(this.state.activities !== currentVal.activities) {
                 let currentActivity = currentVal.activities.find((activity) => {
                     return activity.idActivity === this.props.activityLinkPath;
@@ -226,7 +226,6 @@ class ActivityForm extends React.Component {
         if(this.state.hours && ((this.state.hours < 25) || (this.state.hours < 0)) && checkHours) {
             disableSaveButton = false;
         }
-        
         let selectDate = moment(this.state.createdAt).format("DD/MM/YYYY");
 
         //Style

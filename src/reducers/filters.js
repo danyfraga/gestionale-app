@@ -35,6 +35,8 @@ const filtersReducer = (state = defaultFilters, action) => {
                 ...state,
                 switchChecked: action.switchChecked
             }
+        case "SET_FILTERS":
+            return action.filters
         default:
             return state;
     }

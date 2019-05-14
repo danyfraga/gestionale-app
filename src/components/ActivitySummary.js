@@ -7,7 +7,7 @@ import  selectActivity from "../selectors/activities";
 import store from "../store/configureStore";
 import watch from "redux-watch";
 
-let watchCustomer = watch(store.getState);
+let watchState = watch(store.getState);
 
 class ActivitySummary extends React.Component {
     constructor (props) {
@@ -19,7 +19,7 @@ class ActivitySummary extends React.Component {
             activities: this.props.activities
         } 
 
-        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+        this.unsubscribe = store.subscribe(watchState((currentVal) => {
             this.setState({ 
                 switchChecked: currentVal.filters.switchChecked
             });

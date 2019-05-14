@@ -7,7 +7,7 @@ import TypeWorkingOptionItem from "../components/TypeWorkingOptionItem";
 import { startAddOptionActivity } from "../actions/typeActivityOption";
 import { Alert } from 'reactstrap';
 
-let watchCustomer = watch(store.getState);
+let watchState = watch(store.getState);
 
 class SettingTypeActivity extends React.Component {
     constructor (props) {
@@ -22,7 +22,7 @@ class SettingTypeActivity extends React.Component {
             errorNewOption: "",
         };
 
-        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+        this.unsubscribe = store.subscribe(watchState((currentVal) => {
             if(currentVal) this.setState({options: currentVal.typeActivityOptions});
         })); 
     }

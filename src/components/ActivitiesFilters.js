@@ -1,61 +1,78 @@
 import React from "react";
 import moment from "moment";
-import { connect } from "react-redux";
-import  { sortByTypeWorking, sortByActivity, setStartDate, setEndDate, switchCheck } from "../actions/filters";
+import {connect} from "react-redux";
+import  {sortByTypeWorking, sortByActivity, setStartDate, setEndDate, switchCheck, setFilters} from "../actions/filters";
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import Switch from "react-switch";
+import store from "../store/configureStore";
+import watch from "redux-watch";
+
+let watchState = watch(store.getState);
 
 class ActivitiesFilters extends React.Component {
     constructor(props) {
         super(props);
 
+        let filters = {
+            sortByActivity: "all",
+            sortByTypeWorking: "all",
+            startDate: moment().startOf('month'),
+            endDate: moment().endOf('month'),
+            switchChecked: this.props.filters.switchChecked || false,
+        }
+
         this.state = {
             typeActivityOptions: this.props.typeActivityOptions,
             typeWorkingOptions: this.props.typeWorkingOptions,
-            switchChecked: this.props.filters.switchChecked ? this.props.filters.switchChecked : false,
-            typeWorking: "",
-            typeActivity: "",
+            filters,
             dateRangePickerShow: false
         };
+
+        this.unsubscribe = store.subscribe(watchState((currentVal) => {
+            this.setState({ 
+                filters: currentVal.filters
+            });
+        }));
+    }
+
+    componentWillUnmount(){
+        this.unsubscribe();
+    }
+
+    componentDidMount(){
+        let tmpFilters = {...this.state.filters};
+        this.props.setFilters(tmpFilters);
     }
 
     handleChange = () => {
-        let currentSwitchState = this.state.switchChecked;
-        if(currentSwitchState) {
-            this.setState({switchChecked: false}); 
-        }
-        else {
-            this.setState({switchChecked: true, typeWorking: "", typeActivity: "All"})
-            this.props.sortByTypeWorking("all");
-            this.props.sortByActivity("all"); 
-        }
-        this.props.switchCheck(!currentSwitchState);
+        let tmpFilters = {...this.state.filters};
+        let currentSwitchState = tmpFilters.switchChecked;
+        tmpFilters.sortByActivity = "all";
+        tmpFilters.sortByTypeWorking = "all";
+        tmpFilters.switchChecked = !currentSwitchState;
+        this.props.setFilters(tmpFilters)
     }
 
     onSortChangeTypeWorking = (e) => {
-        this.setState({typeWorking: e.target.value});
-        this.props.sortByTypeWorking(e.target.value);
+        let tmpFilters = {...this.state.filters};
+        tmpFilters.sortByTypeWorking = e.target.value;
+        this.props.setFilters(tmpFilters);
     }
 
     onSortChangeType = (e) => {
-        this.setState({typeActivity: e.target.value});
-        this.state.typeActivityOptions.map((option) => {
-            if(!option.hasTypeWork) {
-                this.props.sortByTypeWorking("all");
-            }
-        });
-        this.props.sortByActivity(e.target.value); 
+        let tmpFilters = {...this.state.filters};
+        tmpFilters.sortByTypeWorking = "all";
+        tmpFilters.sortByActivity = e.target.value;
+        this.props.setFilters(tmpFilters); 
     }
 
     applyDates = (e, picker) => {
-        this.props.setStartDate(picker.startDate);
-        this.props.setEndDate(picker.endDate);
-    }
-
-    onClick = (e) => {
-        e.preventDefault();
+        let tmpFilters = {...this.state.filters};
+        tmpFilters.startDate = picker.startDate;
+        tmpFilters.endDate = picker.endDate;
+        this.props.setFilters(tmpFilters);
     } 
 
     onShow = () => {
@@ -67,7 +84,6 @@ class ActivitiesFilters extends React.Component {
     }
 
     render() {
-        let thisProps = this.props;
         const ranges = {
             "This Month": [moment().startOf('month'), moment().endOf('month')],
             "Today": [moment(), moment()],
@@ -117,16 +133,16 @@ class ActivitiesFilters extends React.Component {
 
         let workingOptions = [{"title": "all", "description": "-"}, ...typeWorkingOptions].map((item) => {
             return <option key={item.title} value={item.title} >{(item.title).charAt(0).toUpperCase() + (item.title).slice(1)}</option>
-        })
+        });
 
         let showDataInput = false;
-        if(this.state.switchChecked) {
+        if(this.state.filters.switchChecked) {
             showDataInput = true;
         }
    
         let disabledTypeWorking = true;
         this.state.typeActivityOptions.map((option) => {
-            if(option.title === this.state.typeActivity){
+            if(option.title === this.state.filters.sortByActivity){
                 if(option.hasTypeWork) {
                     disabledTypeWorking = false;
                 }
@@ -134,13 +150,13 @@ class ActivitiesFilters extends React.Component {
         });
      
         //Calendar Button
-        let startDate = moment(thisProps.filters.startDate).format("DD/MM/YYYY");
-        let endDate = moment(thisProps.filters.endDate).format("DD/MM/YYYY");
+        let startDate = moment(this.state.filters.startDate).format("DD/MM/YYYY");
+        let endDate = moment(this.state.filters.endDate).format("DD/MM/YYYY");
         var rangeOfDate =  startDate === endDate ? startDate : <span>From {startDate} to {endDate}</span>;
 
         //Style
-        let labelStyle = this.state.switchChecked ? {border: "#1c88bf 1px solid"} : {border: "#cacccd 1px solid"};
-        let spanStyle = this.state.switchChecked ? {color: "#1c88bf"} : {color: "#495057"};
+        let labelStyle = this.state.filters.switchChecked ? {border: "#1c88bf 1px solid"} : {border: "#cacccd 1px solid"};
+        let spanStyle = this.state.filters.switchChecked ? {color: "#1c88bf"} : {color: "#495057"};
         let buttonDateRangerPicker;
         if(this.state.dateRangePickerShow) {
             buttonDateRangerPicker = {backgroundColor: "#b8e5ff", border: "#1c88bf 1px solid", color: "#1c88bf", fontWeight: "500"};
@@ -152,7 +168,7 @@ class ActivitiesFilters extends React.Component {
                     <div className="col-10 col-xl-2 col-lg-2 col-md-6 col-sm-8 form-group ">
                         <span className="span">Type Activity</span>
                         <select
-                            value={this.props.filters.sortByActivity}
+                            value={this.state.filters.sortByActivity}
                             onChange={this.onSortChangeType}
                             disabled={showDataInput}
                             className="select form-control text-center"
@@ -163,7 +179,7 @@ class ActivitiesFilters extends React.Component {
                     <div className="col-10 col-xl-2 col-lg-2 col-md-6 col-sm-8 form-group">
                         <span className="span">Type Work Activity</span>
                         <select
-                                value={this.props.filters.sortByTypeWorking}
+                                value={this.state.filters.sortByTypeWorking}
                                 onChange={this.onSortChangeTypeWorking}
                                 disabled={disabledTypeWorking}
                                 className="select form-control text-center"
@@ -176,8 +192,8 @@ class ActivitiesFilters extends React.Component {
                         <DateRangePicker
                             alwaysShowCalendars 
                             onApply={this.applyDates}
-                            startDate={this.props.filters.startDate}
-                            endDate={this.props.filters.endDate}
+                            startDate={this.state.filters.startDate}
+                            endDate={this.state.filters.endDate}
                             showDropdowns={true}
                             ranges={ranges}
                             locale={locale}
@@ -185,7 +201,7 @@ class ActivitiesFilters extends React.Component {
                             onHide={this.onHide}
                             containerStyles={containerStyles}
                         >
-                            <button onClick={this.onClick} className="button buttonDate" style={buttonDateRangerPicker}>{rangeOfDate}</button>
+                            <button className="button buttonDate" style={buttonDateRangerPicker}>{rangeOfDate}</button>
                         </DateRangePicker>
                     </div>
                     <div className="col-10 col-xl-4 col-lg-4 col-md-6 col-sm-8 form-group">
@@ -193,7 +209,7 @@ class ActivitiesFilters extends React.Component {
                         <label className="label text-center" style={labelStyle}>
                             <span className="span span__filter" style={spanStyle}>Activities List</span>
                             <Switch
-                                checked={this.state.switchChecked}
+                                checked={this.state.filters.switchChecked}
                                 onChange={this.handleChange}
                                 onColor="#86d3ff"
                                 onHandleColor="#2693e6"
@@ -229,7 +245,8 @@ const mapDispatchToProps = (dispatch) => {
         sortByActivity: (typeActivity) => dispatch(sortByActivity(typeActivity)),
         setStartDate: (startDate) => dispatch(setStartDate(startDate)),
         setEndDate: (endDate) => dispatch(setEndDate(endDate)),
-        switchCheck: (switchChecked) => dispatch(switchCheck(switchChecked))
+        switchCheck: (switchChecked) => dispatch(switchCheck(switchChecked)),
+        setFilters: (filtersObj) => dispatch(setFilters(filtersObj))
     }
 }
 

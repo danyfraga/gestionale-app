@@ -9,7 +9,7 @@ import ActivitySummary from "../components/ActivitySummary";
 import store from "../store/configureStore";
 import watch from "redux-watch";
 
-let watchCustomer = watch(store.getState);
+let watchState = watch(store.getState);
 
 var enumerateDaysBetweenDates = function(startDate, endDate) {
     var dates = [];
@@ -36,9 +36,10 @@ class ActivitiesList extends React.Component {
             switchChecked: this.props.filters.switchChecked
         };
 
-        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+        this.unsubscribe = store.subscribe(watchState((currentVal) => {
             this.setState({ 
-                switchChecked: currentVal.filters.switchChecked
+                switchChecked: currentVal.filters.switchChecked,
+
             });
         })); 
     }

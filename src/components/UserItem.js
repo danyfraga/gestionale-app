@@ -7,7 +7,7 @@ import watch from "redux-watch";
 import store from "../store/configureStore";
 import UserItemHeader from "../components/UserItemHeader";
 
-let watchCustomer = watch(store.getState);
+let watchState = watch(store.getState);
 
 class UserItem extends React.Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class UserItem extends React.Component {
             typeWorking: this.props.filters.sortByTypeWorking,
             typeActivity: this.props.filters.sortByActivity 
          };
-        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+        this.unsubscribe = store.subscribe(watchState((currentVal) => {
             this.setState({activities: currentVal.activities});
         })); 
     }

@@ -6,7 +6,7 @@ import store from "../store/configureStore";
 import watch from "redux-watch";
 import {history} from "../routers/AppRouter";
 
-let watchCustomer = watch(store.getState);
+let watchState = watch(store.getState);
 const queryString = require('query-string');
 
 class LoginPage extends React.Component {
@@ -19,7 +19,7 @@ class LoginPage extends React.Component {
             error: parsed.error
         };
 
-        this.unsubscribe = store.subscribe(watchCustomer((currentVal) => {
+        this.unsubscribe = store.subscribe(watchState((currentVal) => {
             history.push("/");
         })); 
     }
