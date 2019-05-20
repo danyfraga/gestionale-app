@@ -29,7 +29,7 @@ class ActivityForm extends React.Component {
         let typeWorking = props.activity ? props.activity.typeWorking : "";
         let createdAt = props.activity ? moment(props.activity.createdAt): moment();
         let hours = props.activity ? props.activity.hours : "";
-
+        
         this.state = {
             typeWorkingOptions: this.props.typeWorkingOptions,
             typeActivityOptions: this.props.typeActivityOptions,
@@ -51,6 +51,7 @@ class ActivityForm extends React.Component {
             hoursErrorIsHidden: true,
             hoursError: ""
         }
+
         this.unsubscribe = store.subscribe(watchState((currentVal) => {
             if(this.state.activities !== currentVal.activities) {
                 let currentActivity = currentVal.activities.find((activity) => {
@@ -82,7 +83,7 @@ class ActivityForm extends React.Component {
             typeWorking: this.state.typeWorking,
             typeActivity: this.state.typeActivity,
             createdAt: this.state.createdAt.valueOf(),
-            hours: this.state.hours
+            hours: parseFloat(this.state.hours).toFixed(1) + ""
         });
     }
 
@@ -104,38 +105,36 @@ class ActivityForm extends React.Component {
     onDateChange = (e, picker) => {
         const date = picker.startDate;
         if(picker) {
-            this.setState({ createdAt: date});
+            this.setState({createdAt: date});
         }
     }
 
     onHoursChange = (e) => {
-        const hours = e.target.value;
+        let hours = e.target.value;
         this.setState({ 
             hours,
             hoursError: "",
             hoursErrorIsHidden: true 
         });
-        let regex = /^\d+(?:[,.][05])?$/;
-        let hoursInString = hours + "";
-        let checkHours = regex.test(hoursInString);
-        if(hours > 24 || hours <= 0) {
-            if(hours) {
-                this.setState({ 
-                    hoursError: "Error! Input must be between 1 and 24.",
-                    hoursErrorIsHidden: false
-                });
-            }
+        let notAcceptedChar = hours.includes("e");
+        let parseHours = hours.replace(",", ".");
+        let floatHours = parseFloat(parseHours);
+        let splittedHours = parseHours.split(".");
+        if(notAcceptedChar) floatHours = "";
+        if(floatHours < 1 || floatHours > 24) {
+            this.setState({ 
+                hoursError: "Error! Input must be between 1 and 24.",
+                hoursErrorIsHidden: false
+            });
         }
-        if(hoursInString){
-            if(!checkHours) {
-                this.setState({ 
-                    hoursError: "Error! Only half hours are accepted (ex. 7.5).",
-                    hoursErrorIsHidden: false
-                });
-            }
+        else if(splittedHours.length > 1 && (splittedHours[1] !== "0" && splittedHours[1] !== "5")) {
+            this.setState({ 
+                hoursError: "Error! Only half hours are accepted.",
+                hoursErrorIsHidden: false
+            });
         }
     }
-
+            
     handleShow = () => {
         this.setState({modalShow: true});
         if(!this.state.modalSaveShow) {
@@ -184,6 +183,7 @@ class ActivityForm extends React.Component {
         let currentTypeActivityOption = this.state.typeActivityOptions.find((element) => {
             return element.title === this.state.typeActivity;
         }); 
+
         for (var typeActivityOption in this.state.typeWorkInActivity) {
             if(typeActivityOption === this.state.typeActivity) {
                 typeActivityExistInDB = true;
@@ -220,12 +220,10 @@ class ActivityForm extends React.Component {
             disabledTypeActivitySelect = true;
         }
 
-        let regex = /^((0\.[5-9])|(([1-9](\.[5-9])?)|(1[0-9](\.[5-9])?)|(2[0-3](\.[5-9])?)|24))$/
-        let hoursInString = this.state.hours + "";
-        let checkHours = regex.test(hoursInString);
-        if(this.state.hours && ((this.state.hours < 25) || (this.state.hours < 0)) && checkHours) {
+        if(this.state.hoursErrorIsHidden && this.state.hours.length > 0) {
             disableSaveButton = false;
         }
+
         let selectDate = moment(this.state.createdAt).format("DD/MM/YYYY");
 
         //Style
@@ -237,7 +235,7 @@ class ActivityForm extends React.Component {
         let buttonStartRemoveActivity = {color: "white", backgroundColor: "#d65b5b", border: "none"};
         let buttonSaveActivity = {color: "white", backgroundColor: "#1c88bf", border: "none"};
 
-        let hoursString = this.state.hours + (this.state.hours > 1 ? " hours" : " hour"); 
+        let hoursString = !this.state.hours.includes(".") ? this.state.hours + (this.state.hours > 1 ? ".0 hours" : ".0 hour") : this.state.hours + (this.state.hours > 1 ? " hours" : " hour")  
         let typeActivityString = this.state.typeActivity.charAt(0).toUpperCase() + this.state.typeActivity.slice(1);
         let typeWorkingInString = this.state.typeWorking === "-" ? "" : "in ";
         let typeWorkingString = (this.state.typeWorking).replace("-", "").toUpperCase();

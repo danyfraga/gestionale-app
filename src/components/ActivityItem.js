@@ -46,13 +46,7 @@ class ActivityItem extends React.Component  {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        typeWorkingOptions: state.typeWorkingOptions
-    };
-}
-
-export default connect(mapStateToProps)(ActivityItem);
+export default connect()(ActivityItem);
     
 
 

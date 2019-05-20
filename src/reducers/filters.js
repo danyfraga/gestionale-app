@@ -12,14 +12,14 @@ const filtersReducer = (state = defaultFilters, action) => {
     switch(action.type) {
         case "SORT_BY_TYPE_WORKING":
             return {
-                    ...state,
-                    sortByTypeWorking: action.typeWorking
-                };
+                ...state,
+                sortByTypeWorking: action.typeWorking
+            };
         case "SORT_BY_ACTIVITY":
-                return {
-                    ...state,
-                    sortByActivity: action.typeActivity
-                };
+            return {
+                ...state,
+                sortByActivity: action.typeActivity
+            };
         case "SET_START_DATE":
             return {
                 ...state,

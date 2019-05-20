@@ -164,69 +164,69 @@ class ActivitiesFilters extends React.Component {
         let containerStyles = {display: "block"};
 
         return (
-                <div className="row d-flex justify-content-center row__filter">
-                    <div className="col-10 col-xl-2 col-lg-2 col-md-6 col-sm-8 form-group ">
-                        <span className="span">Type Activity</span>
-                        <select
-                            value={this.state.filters.sortByActivity}
-                            onChange={this.onSortChangeType}
-                            disabled={showDataInput}
+            <div className="row d-flex justify-content-center row__filter">
+                <div className="col-10 col-xl-2 col-lg-2 col-md-6 col-sm-8 form-group ">
+                    <span className="span">Type Activity</span>
+                    <select
+                        value={this.state.filters.sortByActivity}
+                        onChange={this.onSortChangeType}
+                        disabled={showDataInput}
+                        className="select form-control text-center"
+                    >
+                        {activitiesOptions}
+                    </select>
+                </div>
+                <div className="col-10 col-xl-2 col-lg-2 col-md-6 col-sm-8 form-group">
+                    <span className="span">Type Work Activity</span>
+                    <select
+                            value={this.state.filters.sortByTypeWorking}
+                            onChange={this.onSortChangeTypeWorking}
+                            disabled={disabledTypeWorking}
                             className="select form-control text-center"
                         >
-                            {activitiesOptions}
-                        </select>
-                    </div>
-                    <div className="col-10 col-xl-2 col-lg-2 col-md-6 col-sm-8 form-group">
-                        <span className="span">Type Work Activity</span>
-                        <select
-                                value={this.state.filters.sortByTypeWorking}
-                                onChange={this.onSortChangeTypeWorking}
-                                disabled={disabledTypeWorking}
-                                className="select form-control text-center"
-                            >
-                                {workingOptions}
-                        </select>
-                    </div>
-                    <div className="col-10 col-xl-3 col-lg-3 col-md-6 col-sm-8 form-group">
-                        <span className="span">Choose Date</span>
-                        <DateRangePicker
-                            alwaysShowCalendars 
-                            onApply={this.applyDates}
-                            startDate={this.state.filters.startDate}
-                            endDate={this.state.filters.endDate}
-                            showDropdowns={true}
-                            ranges={ranges}
-                            locale={locale}
-                            onShow={this.onShow}
-                            onHide={this.onHide}
-                            containerStyles={containerStyles}
-                        >
-                            <button className="button buttonDate" style={buttonDateRangerPicker}>{rangeOfDate}</button>
-                        </DateRangePicker>
-                    </div>
-                    <div className="col-10 col-xl-4 col-lg-4 col-md-6 col-sm-8 form-group">
-                        <span className="span">Data View</span>
-                        <label className="label text-center" style={labelStyle}>
-                            <span className="span span__filter" style={spanStyle}>Activities List</span>
-                            <Switch
-                                checked={this.state.filters.switchChecked}
-                                onChange={this.handleChange}
-                                onColor="#86d3ff"
-                                onHandleColor="#2693e6"
-                                handleDiameter={30}
-                                uncheckedIcon={false}
-                                checkedIcon={false}
-                                boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                                activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                                height={20}
-                                width={48}
-                                className="react-switch switch"
-                                id="material-switch"
-                            />
-                            <span className="span span__filter" style={spanStyle}>Activities Table</span>
-                        </label>
-                    </div>
-                </div>            
+                            {workingOptions}
+                    </select>
+                </div>
+                <div className="col-10 col-xl-3 col-lg-3 col-md-6 col-sm-8 form-group">
+                    <span className="span">Choose Date</span>
+                    <DateRangePicker
+                        alwaysShowCalendars 
+                        onApply={this.applyDates}
+                        startDate={this.state.filters.startDate}
+                        endDate={this.state.filters.endDate}
+                        showDropdowns={true}
+                        ranges={ranges}
+                        locale={locale}
+                        onShow={this.onShow}
+                        onHide={this.onHide}
+                        containerStyles={containerStyles}
+                    >
+                        <button className="button buttonDate" style={buttonDateRangerPicker}>{rangeOfDate}</button>
+                    </DateRangePicker>
+                </div>
+                <div className="col-10 col-xl-4 col-lg-4 col-md-6 col-sm-8 form-group">
+                    <span className="span">Data View</span>
+                    <label className="label text-center" style={labelStyle}>
+                        <span className="span span__filter" style={spanStyle}>Activities List</span>
+                        <Switch
+                            checked={this.state.filters.switchChecked}
+                            onChange={this.handleChange}
+                            onColor="#86d3ff"
+                            onHandleColor="#2693e6"
+                            handleDiameter={30}
+                            uncheckedIcon={false}
+                            checkedIcon={false}
+                            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                            height={20}
+                            width={48}
+                            className="react-switch switch"
+                            id="material-switch"
+                        />
+                        <span className="span span__filter" style={spanStyle}>Activities Table</span>
+                    </label>
+                </div> 
+            </div>           
         );
     }
 }

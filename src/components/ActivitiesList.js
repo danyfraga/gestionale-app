@@ -26,7 +26,10 @@ class ActivitiesList extends React.Component {
     constructor (props) {
         super(props);
 
+        // let activities = this.props.activities;
+        
         this.state = {
+            // activities,
             currentPage: 0,
             startDate: this.props.filters.startDate,
             endDate: this.props.filters.endDate,
@@ -39,7 +42,7 @@ class ActivitiesList extends React.Component {
         this.unsubscribe = store.subscribe(watchState((currentVal) => {
             this.setState({ 
                 switchChecked: currentVal.filters.switchChecked,
-
+                // activities: currentVal.activities
             });
         })); 
     }
@@ -112,11 +115,15 @@ class ActivitiesList extends React.Component {
                 return <th key = {date + index} className = "th-table__header ">{date}</th>;
         }).slice(currentPage * pageSize, (currentPage + 1) * pageSize);
     
-        let trRows = [];
         var totalHoursPerActivity = [];
+        let trRows = [];
         for(var key in rows) {
             var countHours = 0;
-            let typeActivity = <th className="th-table__typeActivity text-center">{key.charAt(0).toUpperCase() + key.slice(1)}</th>;
+            let typeActivity = <th className="th-table__typeActivity text-center">
+                    {
+                        key.charAt(0).toUpperCase() + key.slice(1)
+                    }
+                </th>;
             let hours = rows[key].map((hour, i) => {
                 countHours = countHours + hour;
                 if(hour === 0) hour = "-";

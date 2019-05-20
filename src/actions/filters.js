@@ -24,6 +24,7 @@ export const switchCheck = (switchChecked) => ({
     switchChecked
 });
 
+//Metodo utilizzato
 export const setFilters = (filters) => ({
     type: "SET_FILTERS",
     filters
