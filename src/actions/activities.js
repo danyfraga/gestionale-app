@@ -5,7 +5,7 @@ export const addActivity = (activity) => ({
     activity
 });
 
-export const startAddActivity = (activityData = {}) => {
+export const startAddActivity = (activityData) => {
     return (dispatch, getState) => {
         let uid = getState().auth.uid
         const {
@@ -24,16 +24,16 @@ export const startAddActivity = (activityData = {}) => {
     };
 };
 
-export const removeActivity = ({ idActivity } = {}) => ({
+export const removeActivity = (idActivity) => ({
     type: "REMOVE_ACTIVITY",
-    idActivity 
+    idActivity
 });
 
-export const startRemoveActivity = ({ idActivity } = {}) => {
+export const startRemoveActivity = (idActivity, idUser) => {
     return (dispatch, getState) => {
-        let uid = getState().auth.uid
+        let uid = idUser ? idUser : getState().auth.uid
         return database.ref(`users/${uid}/activities/${idActivity}`).remove().then(() => {
-            dispatch(removeActivity({ idActivity }));
+            dispatch(removeActivity(idActivity));
         });
     };
 };
@@ -44,11 +44,11 @@ export const editActivity = (idActivity, updates) => ({
     updates
 });
 
-export const startEditActivity = (idActivity, updates) => {
+export const startEditActivity = (idActivity, idUser, updates) => {
     return (dispatch, getState) => {
-        let uid = getState().auth.uid
+        let uid = idUser ? idUser : getState().auth.uid;
         return database.ref(`users/${uid}/activities/${idActivity}`).update(updates).then(() => {
-            dispatch(editActivity(idActivity, updates))
+            dispatch(editActivity(idActivity, updates));
         });
     };
 };
@@ -74,4 +74,20 @@ export const startSetActivity = (uid) => {
         });  
     }
 };
+
+
+export const startRemoveActivitiesGroup = (activitiesGroup, idUser) => {
+    return (dispatch, getState) => {
+        let uid = getState().auth.uid
+        return activitiesGroup.forEach((idActivity ) => {
+            database.ref(`users/${uid}/activities/${idActivity}`).remove().then(() => {
+                dispatch(removeActivity({idActivity}));
+            });
+        }) 
+    }
+};
+
+
+
+
 

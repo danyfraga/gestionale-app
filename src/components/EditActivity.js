@@ -10,17 +10,17 @@ class EditActivity extends React.Component {
 
     constructor(props) {
         super(props);
-
         let linkPath = this.props.location.state.fromAdmin ? `/user/${this.props.location.state.userId}` : "/dashboard";
 
         this.state = {
+            userId: this.props.location.state.userId,
             modalShow: false,
             linkPath
         };
     }
 
     onSubmit = (activity) => {
-        this.props.startEditActivity(this.props.activity.idActivity, activity);
+        this.props.startEditActivity(this.props.activity.idActivity, this.state.userId, activity);
         this.props.history.push(this.state.linkPath);
     }
 
@@ -28,8 +28,9 @@ class EditActivity extends React.Component {
         this.props.sortByTypeWorking("all");
         this.props.sortByActivity("all"); 
     }
-
+    
     render () {
+        console.log(this.props.activity)
         return (
             <div className="content-container">
                 <div className="row row__createActivity-header">
@@ -41,6 +42,7 @@ class EditActivity extends React.Component {
                     onSubmit={this.onSubmit}
                     linkPath={this.state.linkPath}
                     activityLinkPath={this.props.activityLinkPath}
+                    userId={this.state.userId}
                 />
             </div>
         ); 
@@ -49,14 +51,22 @@ class EditActivity extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+    let prova = state.activities.map((activity) => {
+        console.log(activity.idActivity, props.match.params.id)
+        if(activity.idActivity === props.match.params.id){
+            return activity
+        }
+    })
+    console.log(prova)
     return {
         activityLinkPath: props.match.params.id,
-        activity: state.activities.find((activity) => activity.idActivity === props.match.params.id)
+        activity: state.activities.find((activity) => activity.idActivity === props.match.params.id),
+        allUsers: state.allUsers
     }
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    startEditActivity: (idActivity, updates) => dispatch(startEditActivity(idActivity, updates)),
+    startEditActivity: (idActivity, userId, updates) => dispatch(startEditActivity(idActivity, userId, updates)),
     sortByTypeWorking: (typeWorking) => dispatch(sortByTypeWorking(typeWorking)),
     sortByActivity: (typeActivity) => dispatch(sortByActivity(typeActivity)),
 });

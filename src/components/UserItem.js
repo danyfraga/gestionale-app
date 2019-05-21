@@ -15,7 +15,8 @@ class UserItem extends React.Component {
         this.state = {
             switchChecked: this.props.filters.switchChecked,
             typeWorking: this.props.filters.sortByTypeWorking,
-            typeActivity: this.props.filters.sortByActivity 
+            typeActivity: this.props.filters.sortByActivity,
+            userId: "" 
          };
         this.unsubscribe = store.subscribe(watchState((currentVal) => {
             this.setState({activities: currentVal.activities});
@@ -24,6 +25,7 @@ class UserItem extends React.Component {
     
     componentWillMount() {
         let userId = (this.props.location.pathname).split("/")[2];
+        this.setState({userId})
         this.props.startSetActivity(userId);
     }
 
@@ -33,7 +35,6 @@ class UserItem extends React.Component {
 
     render() {
         let userId = (this.props.location.pathname).split("/")[2];
-
         return (
             <div className="content-container">
                 <UserItemHeader userId={userId}/>

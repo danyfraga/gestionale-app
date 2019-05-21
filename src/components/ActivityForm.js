@@ -49,9 +49,10 @@ class ActivityForm extends React.Component {
             remove: false,
             activities: this.props.activities,
             hoursErrorIsHidden: true,
-            hoursError: ""
+            hoursError: "",
+            userId: this.props.userId
         }
-
+        console.log(this.state.typeActivity, this.state.typeWorking, moment(this.state.createdAt), this.state.hours)
         this.unsubscribe = store.subscribe(watchState((currentVal) => {
             if(this.state.activities !== currentVal.activities) {
                 let currentActivity = currentVal.activities.find((activity) => {
@@ -167,7 +168,7 @@ class ActivityForm extends React.Component {
     }
 
     _startRemoveActivity(){
-        this.props.startRemoveActivity({idActivity: this.props.activity.idActivity});
+        this.props.startRemoveActivity(this.props.activity.idActivity, this.state.userId);
         this.setState({remove: true});
     }
     
@@ -373,7 +374,6 @@ class ActivityForm extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-
     return {
         auth: state.auth,
         typeWorkingOptions: state.typeWorkingOptions,
@@ -383,7 +383,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    startRemoveActivity: (idActivity) => dispatch(startRemoveActivity(idActivity)),
+    startRemoveActivity: (idActivity, idUser) => dispatch(startRemoveActivity(idActivity, idUser)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityForm)

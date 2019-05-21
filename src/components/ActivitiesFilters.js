@@ -8,6 +8,7 @@ import 'bootstrap-daterangepicker/daterangepicker.css';
 import Switch from "react-switch";
 import store from "../store/configureStore";
 import watch from "redux-watch";
+import {setActivitiesGroupToBeRemoved} from "../actions/activitiesGroupToBeRemoved";
 
 let watchState = watch(store.getState);
 
@@ -52,7 +53,8 @@ class ActivitiesFilters extends React.Component {
         tmpFilters.sortByActivity = "all";
         tmpFilters.sortByTypeWorking = "all";
         tmpFilters.switchChecked = !currentSwitchState;
-        this.props.setFilters(tmpFilters)
+        this.props.setFilters(tmpFilters);
+        this.props.setActivitiesGroupToBeRemoved();
     }
 
     onSortChangeTypeWorking = (e) => {
@@ -246,7 +248,8 @@ const mapDispatchToProps = (dispatch) => {
         setStartDate: (startDate) => dispatch(setStartDate(startDate)),
         setEndDate: (endDate) => dispatch(setEndDate(endDate)),
         switchCheck: (switchChecked) => dispatch(switchCheck(switchChecked)),
-        setFilters: (filtersObj) => dispatch(setFilters(filtersObj))
+        setFilters: (filtersObj) => dispatch(setFilters(filtersObj)),
+        setActivitiesGroupToBeRemoved: () => dispatch(setActivitiesGroupToBeRemoved())
     }
 }
 

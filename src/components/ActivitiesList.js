@@ -8,6 +8,7 @@ import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import ActivitySummary from "../components/ActivitySummary";
 import store from "../store/configureStore";
 import watch from "redux-watch";
+import {addAllActivitiesInGroup, setActivitiesGroupToBeRemoved} from "../actions/activitiesGroupToBeRemoved";
 
 let watchState = watch(store.getState);
 
@@ -25,36 +26,43 @@ var enumerateDaysBetweenDates = function(startDate, endDate) {
 class ActivitiesList extends React.Component {
     constructor (props) {
         super(props);
-
-        // let activities = this.props.activities;
         
         this.state = {
-            // activities,
             currentPage: 0,
             startDate: this.props.filters.startDate,
             endDate: this.props.filters.endDate,
             fromAdmin: this.props.fromAdmin,
             userId: this.props.userId,
             typeActivityOptions: this.props.typeActivityOptions,
-            switchChecked: this.props.filters.switchChecked
+            switchChecked: this.props.filters.switchChecked,
+            activitiesGroupToBeRemoved: this.props.activitiesGroupToBeRemoved,
+            allActivitiesAreChecked: false
         };
 
         this.unsubscribe = store.subscribe(watchState((currentVal) => {
             this.setState({ 
                 switchChecked: currentVal.filters.switchChecked,
-                // activities: currentVal.activities
+                activitiesGroupToBeRemoved: currentVal.activitiesGroupToBeRemoved,
             });
         })); 
     }
 
-    //When change startDate or endDate, currentPage go to 0
     componentDidUpdate(prevProps) {
+        //When change startDate or endDate, currentPage go to 0
         if((prevProps.filters.startDate !== this.props.filters.startDate) || (prevProps.filters.endDate !== this.props.filters.endDate)) {
             this.setState({currentPage: 0});
         }
+        if(this.props.filters.switchChecked !== prevProps.filters.switchChecked) {
+            this.setState({allActivitiesAreChecked: false});
+        }
+        if(this.props.activitiesGroupToBeRemoved !== prevProps.activitiesGroupToBeRemoved){
+            if(this.props.activitiesGroupToBeRemoved.length < 1) {
+                this.setState({allActivitiesAreChecked: false});
+            }
+        }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.unsubscribe();
     }
 
@@ -69,6 +77,19 @@ class ActivitiesList extends React.Component {
         this.setState({
             collapse: !this.state.collapse
         });
+    }
+      
+    toggleCheck = () => {
+        this.setState({allActivitiesAreChecked: !this.state.allActivitiesAreChecked});
+        if(this.state.allActivitiesAreChecked) {
+            this.props.setActivitiesGroupToBeRemoved();
+        }
+        else {
+            let idsActivities = this.props.activities.map((activity) => {
+                return activity.idActivity;
+            });
+            this.props.addAllActivitiesInGroup(idsActivities);
+        }
     }
    
    render() {
@@ -141,11 +162,12 @@ class ActivitiesList extends React.Component {
                 {...activity} 
                 fromAdmin={this.state.fromAdmin} 
                 userId={this.state.userId}
+                isChecked={this.state.allActivitiesAreChecked}
             />
         });
-
+       
         let borderBottomList = this.props.activities.length > 5 ? {borderBottom: "#cacccd 1px solid"} : {borderBottom: "none"};
-        
+
         return (
             <div>
                 {
@@ -200,9 +222,16 @@ class ActivitiesList extends React.Component {
                         ) : (
                             <div>
                                 <div className="list-header row row__list-header">
-                                    <div className="show-for-desktop col-4">Date</div>
-                                    <div className="show-for-desktop col-4 text-center">Activity</div>
-                                    <div className="show-for-desktop col-4 text-right">Hours</div>
+                                    <div className="show-for-desktop col-1">
+                                        <span onClick={this.toggleCheck} className="myCheckbox">
+                                            <input type="checkbox" onChange={this.toggleCheck} checked={this.state.allActivitiesAreChecked} value={this.state.allActivitiesAreChecked}/>
+                                            <span></span>
+                                        </span>
+                                    </div>
+                                    <div className="show-for-desktop col-2">Date</div>
+                                    <div className="show-for-desktop text-center col-6">Activity</div>
+                                    <div className="show-for-desktop col-2 text-right">Hours</div>
+                                    <div className="show-for-desktop col-1 text-right">Edit</div>  
                                 </div>
                                 <div className="scroll" style={borderBottomList}>
                                     {activitiesList}
@@ -221,8 +250,16 @@ const mapStateToProps = (state) => {
     return {
         activities: selectActivity(state.activities, state.filters),
         filters: state.filters,
-        typeActivityOptions: state.typeActivityOptions
+        typeActivityOptions: state.typeActivityOptions,
+        activitiesGroupToBeRemoved: state.activitiesGroupToBeRemoved
     };
 }
 
-export default connect(mapStateToProps)(ActivitiesList);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addAllActivitiesInGroup: (idsActivities) => dispatch(addAllActivitiesInGroup(idsActivities)), 
+        setActivitiesGroupToBeRemoved: () => dispatch(setActivitiesGroupToBeRemoved())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActivitiesList);

@@ -38,8 +38,6 @@
     }
 }
 
-
-
 .list-item--message {
     align-items: center;
     justify-content: center;
@@ -72,6 +70,10 @@
         margin: 0;
         padding-left: $s-size;
     }
+}
+
+.list-link {
+    padding: 0;
 }
 
 .noActivities__p {
@@ -109,8 +111,6 @@
     .insertIcon {
         border: none;
         color: #71b34a;
-
-       
     }
 
     button {
@@ -123,3 +123,13 @@
         background-color: white; 
     }
 }
+
+.edit-style {
+    color: #1c88bf;
+    font-size: 1.5em;
+}
+
+.trash-style {
+    margin-left: 10px;
+}
+
