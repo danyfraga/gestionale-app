@@ -54,7 +54,7 @@ class ActivitiesList extends React.Component {
             this.setState({allActivitiesAreChecked: false});
         }
         if(this.props.activitiesGroupToBeRemoved !== prevProps.activitiesGroupToBeRemoved){
-            if(this.props.activitiesGroupToBeRemoved.length < 2) {
+            if(this.props.activitiesGroupToBeRemoved.length < 1) {
                 this.setState({allActivitiesAreChecked: false});
             }
         }

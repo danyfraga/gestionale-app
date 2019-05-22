@@ -4,7 +4,6 @@ import watch from "redux-watch";
 import React from "react";
 import { connect } from "react-redux";
 import { startSetActivity, startRemoveActivitiesGroup } from "../actions/activities";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {setActivitiesGroupToBeRemoved} from "../actions/activitiesGroupToBeRemoved";
 
