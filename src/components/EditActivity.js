@@ -6,21 +6,24 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import  { sortByTypeWorking, sortByActivity } from "../actions/filters";
 
-class EditActivity extends React.Component {
+const queryString = require('query-string');
 
+class EditActivity extends React.Component {
     constructor(props) {
         super(props);
-        let linkPath = this.props.location.state.fromAdmin ? `/user/${this.props.location.state.userId}` : "/dashboard";
+        
+        const parsed = queryString.parse(location.search);
+        let linkPath = (parsed.userID === this.props.auth.uid) && !this.props.location.state.fromAdmin ? "/dashboard" : `/user/${parsed.userID}`;
 
         this.state = {
-            userId: this.props.location.state.userId,
+            userId: parsed.userID,
             modalShow: false,
             linkPath
         };
     }
 
     onSubmit = (activity) => {
-        this.props.startEditActivity(this.props.activity.idActivity, this.state.userId, activity);
+        this.props.startEditActivity(this.props.activityLinkPath, this.state.userId, activity);
         this.props.history.push(this.state.linkPath);
     }
 
@@ -30,7 +33,6 @@ class EditActivity extends React.Component {
     }
     
     render () {
-        console.log(this.props.activity)
         return (
             <div className="content-container">
                 <div className="row row__createActivity-header">
@@ -47,18 +49,11 @@ class EditActivity extends React.Component {
             </div>
         ); 
     }
- 
 }
 
 const mapStateToProps = (state, props) => {
-    let prova = state.activities.map((activity) => {
-        console.log(activity.idActivity, props.match.params.id)
-        if(activity.idActivity === props.match.params.id){
-            return activity
-        }
-    })
-    console.log(prova)
     return {
+        auth: state.auth,
         activityLinkPath: props.match.params.id,
         activity: state.activities.find((activity) => activity.idActivity === props.match.params.id),
         allUsers: state.allUsers

@@ -70,7 +70,7 @@ class ActivityItem extends React.Component  {
                     className="col-1 text-right" 
                     style={linkStyle} 
                     to={{
-                        pathname:`/edit/${this.props.idActivity}`,
+                        pathname:`/edit/${this.props.idActivity}/?userID=${this.state.userId}`,
                         state: {
                             fromAdmin: this.state.fromAdmin,
                             userId: this.state.userId

@@ -6,6 +6,8 @@ import { startSetActivity } from "../actions/activities";
 import watch from "redux-watch";
 import store from "../store/configureStore";
 import UserItemHeader from "../components/UserItemHeader";
+import ButtonsActivities from "../components/ButtonsActivities";
+import ActivitySummary from "../components/ActivitySummary";
 
 let watchState = watch(store.getState);
 
@@ -40,6 +42,8 @@ class UserItem extends React.Component {
                 <UserItemHeader userId={userId}/>
                 <ActivitiesFilters/>
                 <ActivitiesList fromAdmin={true} userId={userId}/>
+                <ButtonsActivities fromAdmin={true} userId={userId}/>
+                <ActivitySummary fromAdmin={true}/>
             </div>
         );
     }

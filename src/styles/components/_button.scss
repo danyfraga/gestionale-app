@@ -17,6 +17,7 @@
     background: #b8e5ff;
     color: $blue;
     font-weight: 500;
+    border: 1px solid $blue;
 }
 
 .button--link {
@@ -31,6 +32,7 @@
     width: 100%;
     text-align: center;
     vertical-align: middle;
+    border: 1px solid $blue;
 }
 
 .buttonDate {
@@ -53,8 +55,9 @@
     background-color: rgb(214, 91, 91);
     color: white;
     &:hover {
-        background-color: #fa62628e;
+        background-color: #fa626261;
         color: rgb(214, 91, 91);
+        border: 1px solid rgb(214, 91, 91);
     }
 }
 

@@ -31,7 +31,7 @@ export const removeActivity = (idActivity) => ({
 
 export const startRemoveActivity = (idActivity, idUser) => {
     return (dispatch, getState) => {
-        let uid = idUser ? idUser : getState().auth.uid
+        let uid = idUser ? idUser : getState().auth.uid;
         return database.ref(`users/${uid}/activities/${idActivity}`).remove().then(() => {
             dispatch(removeActivity(idActivity));
         });
@@ -78,10 +78,10 @@ export const startSetActivity = (uid) => {
 
 export const startRemoveActivitiesGroup = (activitiesGroup, idUser) => {
     return (dispatch, getState) => {
-        let uid = getState().auth.uid
-        return activitiesGroup.forEach((idActivity ) => {
+        let uid = idUser ? idUser : getState().auth.uid;
+        return activitiesGroup.forEach((idActivity) => {
             database.ref(`users/${uid}/activities/${idActivity}`).remove().then(() => {
-                dispatch(removeActivity({idActivity}));
+                dispatch(removeActivity(idActivity));
             });
         }) 
     }

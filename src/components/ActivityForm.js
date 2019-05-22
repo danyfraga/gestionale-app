@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import moment from "moment";
-import { startRemoveActivity } from "../actions/activities";
+import { startRemoveActivity, startSetActivity } from "../actions/activities";
 import { Redirect } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import store from "../store/configureStore";
@@ -29,7 +29,7 @@ class ActivityForm extends React.Component {
         let typeWorking = props.activity ? props.activity.typeWorking : "";
         let createdAt = props.activity ? moment(props.activity.createdAt): moment();
         let hours = props.activity ? props.activity.hours : "";
-        
+
         this.state = {
             typeWorkingOptions: this.props.typeWorkingOptions,
             typeActivityOptions: this.props.typeActivityOptions,
@@ -50,9 +50,9 @@ class ActivityForm extends React.Component {
             activities: this.props.activities,
             hoursErrorIsHidden: true,
             hoursError: "",
-            userId: this.props.userId
+            userId: this.props.userId ? this.props.userId : this.props.auth.uid
         }
-        console.log(this.state.typeActivity, this.state.typeWorking, moment(this.state.createdAt), this.state.hours)
+
         this.unsubscribe = store.subscribe(watchState((currentVal) => {
             if(this.state.activities !== currentVal.activities) {
                 let currentActivity = currentVal.activities.find((activity) => {
@@ -73,6 +73,10 @@ class ActivityForm extends React.Component {
 
     componentWillUnmount(){
         this.unsubscribe();
+    }
+
+    componentDidMount() {
+        this.props.startSetActivity(this.state.userId)
     }
 
     onSubmit = (e) => {
@@ -168,7 +172,7 @@ class ActivityForm extends React.Component {
     }
 
     _startRemoveActivity(){
-        this.props.startRemoveActivity(this.props.activity.idActivity, this.state.userId);
+        this.props.startRemoveActivity(this.props.activityLinkPath, this.state.userId);
         this.setState({remove: true});
     }
     
@@ -373,8 +377,9 @@ class ActivityForm extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
     return {
+        activityLinkPath: props.activityLinkPath,
         auth: state.auth,
         typeWorkingOptions: state.typeWorkingOptions,
         typeActivityOptions: state.typeActivityOptions,
@@ -384,6 +389,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     startRemoveActivity: (idActivity, idUser) => dispatch(startRemoveActivity(idActivity, idUser)),
+    startSetActivity: (uid) => dispatch(startSetActivity(uid))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityForm)

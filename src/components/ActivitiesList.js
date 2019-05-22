@@ -5,7 +5,6 @@ import ActivityItem from "../components/ActivityItem";
 import { Table } from 'reactstrap';
 import moment from "moment";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import ActivitySummary from "../components/ActivitySummary";
 import store from "../store/configureStore";
 import watch from "redux-watch";
 import {addAllActivitiesInGroup, setActivitiesGroupToBeRemoved} from "../actions/activitiesGroupToBeRemoved";
@@ -38,13 +37,12 @@ class ActivitiesList extends React.Component {
             activitiesGroupToBeRemoved: this.props.activitiesGroupToBeRemoved,
             allActivitiesAreChecked: false
         };
-
         this.unsubscribe = store.subscribe(watchState((currentVal) => {
             this.setState({ 
                 switchChecked: currentVal.filters.switchChecked,
                 activitiesGroupToBeRemoved: currentVal.activitiesGroupToBeRemoved,
             });
-        })); 
+        }));
     }
 
     componentDidUpdate(prevProps) {
@@ -56,7 +54,7 @@ class ActivitiesList extends React.Component {
             this.setState({allActivitiesAreChecked: false});
         }
         if(this.props.activitiesGroupToBeRemoved !== prevProps.activitiesGroupToBeRemoved){
-            if(this.props.activitiesGroupToBeRemoved.length < 1) {
+            if(this.props.activitiesGroupToBeRemoved.length < 2) {
                 this.setState({allActivitiesAreChecked: false});
             }
         }
@@ -240,7 +238,6 @@ class ActivitiesList extends React.Component {
                         )
                     )
                 }
-                <ActivitySummary fromAdmin={this.state.fromAdmin}/>
             </div>
         )
     } 
