@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import watch from "redux-watch";
 import store from "../store/configureStore";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import TypeWorkingOptionItem from "../components/TypeWorkingOptionItem";
+import TypeActivityOrWorkingOptionItem from "../components/TypeActivityOrWorkingOptionItem";
 import { startAddOptionActivity } from "../actions/typeActivityOption";
 import { Alert } from 'reactstrap';
 
@@ -59,12 +59,12 @@ class SettingTypeActivity extends React.Component {
                     this.setState({newOption : "", newOptionDescription: ""});
                 }
                 else {
-                    this.setState({typeErrorNewOption: "inputIsEqual", errorNewOption: "Error! Your type working name is already present."});
+                    this.setState({typeErrorNewOption: "inputIsEqual", errorNewOption: "Error! Your type activity name is already present."});
                 }
             }
         }
         else {
-            this.setState({typeErrorNewOption: "emptyInput", errorNewOption: "Error! Your type working input is empty."});
+            this.setState({typeErrorNewOption: "emptyInput", errorNewOption: "Error! Your type activity input is empty."});
         }
     }
 
@@ -87,14 +87,14 @@ class SettingTypeActivity extends React.Component {
         let typeActivityOptions = thisProps.typeActivityOptions;
         var isSingle = false;
         let isTypeActivity = true;
-        let typeActivityOption = typeActivityOptions.map((option, index) => {
+        let typeActivityOptionsItem = typeActivityOptions.map((option, index) => {
             let optionKey = option.key
             let optionTitle = option.title;
             let optionDescription = option.description;
             let optionHasTypeWork = option.hasTypeWork;
             if(typeActivityOptions.length === 1) isSingle = true; 
             return (
-                <TypeWorkingOptionItem 
+                <TypeActivityOrWorkingOptionItem 
                     key={optionTitle + index} 
                     optionTitle={optionTitle} 
                     optionId={optionKey}
@@ -106,7 +106,7 @@ class SettingTypeActivity extends React.Component {
             );
         });
 
-        let borderBottomList = typeActivityOption.length > 5 ? {borderBottom:"#cacccd 1px solid"} : {borderBottom:"none"};
+        let borderBottomList = typeActivityOptionsItem.length > 5 ? {borderBottom:"#cacccd 1px solid"} : {borderBottom:"none"};
         let iconButtonAddTypeActivityStyle = {"backgroundColor":"rgba(0, 0, 0, 0)", "padding":"0", "border":"none"};
         let errorColor = ""; 
         if(this.state.typeErrorNewOption) {errorColor = "danger"}
@@ -122,19 +122,19 @@ class SettingTypeActivity extends React.Component {
                     <div className="show-for-desktop col-1 text-center">Remove</div>
                 </div>
                 <div id="typeWorkingOptions" className="scroll scrollTypeWorkingOptions" style={borderBottomList}>
-                    {typeActivityOption}
+                    {typeActivityOptionsItem}
                 </div>
                 <form className="list-item d-flex justify-content-between insertOptionTW" onSubmit={this.onSubmit}>
                     <div className="show-for-desktop col-5">
                         <input 
-                            placeholder="Insert new type working option"
+                            placeholder="Insert new type activity option"
                             onChange={this.onChangeInputOption}
                             value={this.state.newOption}
                         />                       
                     </div>
                     <div className="show-for-desktop col-6">
                         <input 
-                            placeholder="Insert type working description"
+                            placeholder="Insert type activity description"
                             onChange={this.onChangeInputDescriptionOption}
                             value={this.state.newOptionDescription}
                         /> 

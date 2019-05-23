@@ -11,15 +11,17 @@ const queryString = require('query-string');
 class EditActivity extends React.Component {
     constructor(props) {
         super(props);
-        
         const parsed = queryString.parse(location.search);
         let linkPath = (parsed.userID === this.props.auth.uid) && !this.props.location.state.fromAdmin ? "/dashboard" : `/user/${parsed.userID}`;
+        let activityLinkPath = this.props.location.state.fromAdmin ? this.props.location.pathname : this.props.activityLinkPath;
 
         this.state = {
             userId: parsed.userID,
             modalShow: false,
-            linkPath
+            linkPath,
+            activityLinkPath
         };
+        console.log(activityLinkPath)
     }
 
     onSubmit = (activity) => {
@@ -43,7 +45,7 @@ class EditActivity extends React.Component {
                     activity={this.props.activity}
                     onSubmit={this.onSubmit}
                     linkPath={this.state.linkPath}
-                    activityLinkPath={this.props.activityLinkPath}
+                    activityLinkPath={this.state.activityLinkPath}
                     userId={this.state.userId}
                 />
             </div>

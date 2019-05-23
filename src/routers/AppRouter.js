@@ -11,6 +11,7 @@ import EditActivity from "../components/EditActivity";
 import UsersList from "../components/UsersList";
 import UserItem from "../components/UserItem";
 import SettingsList from "../components/SettingsList";
+import AdminRoute from "./AdminRoute";
 
 export const history = createHistory();
 
@@ -22,9 +23,10 @@ const AppRouter = () => (
                 <PrivateRoute path="/dashboard" component={DashboardPage}/>
                 <PrivateRoute path="/create" component={CreateActivity}/>
                 <PrivateRoute path="/edit/:id" component={EditActivity}/>
-                <PrivateRoute path="/users" component={UsersList}/>
-                <PrivateRoute path="/user/:id" component={UserItem}/>
-                <PrivateRoute path="/settings" component={SettingsList}/>
+                <AdminRoute path="/users" component={UsersList}/>
+                <AdminRoute path="/user/:id" component={UserItem}/>
+                <AdminRoute path="/user/:id/edit/:id" component={EditActivity}/>
+                <AdminRoute path="/settings" component={SettingsList}/>
                 <Route component={NotFoundPage}/>
             </Switch>
         </div> 

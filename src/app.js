@@ -63,7 +63,6 @@ firebase.database().ref("typeActivityOptions").once("value", snapshot => {
 });
 store.dispatch(startSetUserEmailList());
 
-
     firebase.auth().onAuthStateChanged((user) => {
         if(!user) {
             store.dispatch(logout());
@@ -99,7 +98,10 @@ store.dispatch(startSetUserEmailList());
                         store.dispatch(login(user.uid));
                         store.dispatch(startSetActivity(user.uid));
                         store.dispatch(getUserInfo(userData));
-                        store.dispatch(startGetAllUsers());
+                        
+                        if(userData.isAdmin) {
+                            store.dispatch(startGetAllUsers());
+                        }
                         renderApp();
     
                         if((history.location.pathname === "/")) {

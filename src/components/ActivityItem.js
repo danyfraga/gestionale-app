@@ -40,7 +40,9 @@ class ActivityItem extends React.Component  {
 
     render () {
         let linkStyle = {textDecoration: 'none'};
-        
+        console.log(this.state.userId)
+        let pathname = !this.props.fromAdmin ? `/edit/${this.props.idActivity}/?userID=${this.state.userId}` : `/user/${this.state.userId}/edit/${this.props.idActivity}/?userID=${this.state.userId}`;
+        console.log(pathname)
         return (
             <div className="list-item">
                 <div className="show-for-desktop col-1">
@@ -70,7 +72,7 @@ class ActivityItem extends React.Component  {
                     className="col-1 text-right" 
                     style={linkStyle} 
                     to={{
-                        pathname:`/edit/${this.props.idActivity}/?userID=${this.state.userId}`,
+                        pathname: pathname,
                         state: {
                             fromAdmin: this.state.fromAdmin,
                             userId: this.state.userId

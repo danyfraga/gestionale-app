@@ -5,7 +5,7 @@ import { startRemoveOption } from "../actions/typeWorkingOptions";
 import { startEditHasTypeWork, startRemoveOptionActivity } from "../actions/typeActivityOption";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
-class TypeWorkingOptionItem extends React.Component {
+class TypeActivityOrWorkingOptionItem extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
@@ -109,7 +109,7 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-const TypeWorkingOptionItemConnect = connect (undefined, mapDispatchToProps)(TypeWorkingOptionItem);
+const TypeWorkingOptionItemConnect = connect (undefined, mapDispatchToProps)(TypeActivityOrWorkingOptionItem);
 export default TypeWorkingOptionItemConnect;
 
 // Mettere a posto bottone delete option quando è disabilitato

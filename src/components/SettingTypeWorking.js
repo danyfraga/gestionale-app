@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import watch from "redux-watch";
 import store from "../store/configureStore";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import TypeWorkingOptionItem from "../components/TypeWorkingOptionItem";
+import TypeActivityOrWorkingOptionItem from "../components/TypeActivityOrWorkingOptionItem";
 import { startAddOption } from "../actions/typeWorkingOptions";
 import { Alert } from 'reactstrap';
 
@@ -83,13 +83,13 @@ class SettingTypeWorking extends React.Component {
         let thisProps = this.props;
         let typeWorkingOptions = thisProps.typeWorkingOptions;
         var isSingle = false;
-        let typeWorkingOption = typeWorkingOptions.map((option) => {
+        let typeWorkingOptionsItem = typeWorkingOptions.map((option) => {
             let optionKey = option.key;
             let optionTitle = option.title;
             let optionDescription = option.description;
             if(typeWorkingOptions.length === 1) isSingle = true; 
             return (
-                <TypeWorkingOptionItem 
+                <TypeActivityOrWorkingOptionItem 
                     key={optionTitle} 
                     optionTitle={optionTitle} 
                     optionId={optionKey}
@@ -99,7 +99,7 @@ class SettingTypeWorking extends React.Component {
             );
         });
 
-        let borderBottomList = typeWorkingOption.length > 5 ? {borderBottom:"#cacccd 1px solid"} : {borderBottom: "none"};
+        let borderBottomList = typeWorkingOptionsItem.length > 5 ? {borderBottom:"#cacccd 1px solid"} : {borderBottom: "none"};
         let iconButtonAddTypeActivityStyle = {"backgroundColor":"rgba(0, 0, 0, 0)", "padding":"0", "border":"none"}; 
         let errorColor = ""; 
         if(this.state.typeErrorNewOption) {errorColor = "danger"};
@@ -114,7 +114,7 @@ class SettingTypeWorking extends React.Component {
                     <div className="show-for-desktop col-1 text-center">Remove</div>
                 </div>
                 <div id="typeWorkingOptions" className="scroll scrollTypeWorkingOptions" style={borderBottomList}>
-                    {typeWorkingOption}
+                    {typeWorkingOptionsItem}
                 </div>
                 <form className="list-item d-flex justify-content-between insertOptionTW" onSubmit={this.onSubmit}>
                     <div className="show-for-desktop col-5">
