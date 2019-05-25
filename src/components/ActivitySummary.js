@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import  selectActivity from "../selectors/activities";
 import store from "../store/configureStore";
 import watch from "redux-watch";
-
+//prova
 let watchState = watch(store.getState);
 
 class ActivitySummary extends React.Component {
@@ -123,7 +123,7 @@ class ActivitySummary extends React.Component {
                 <Collapse isOpen={this.state.collapse} className="collapse__container">
                     <Card className="card-activitySummary">
                         <CardBody >
-                            {
+                            { 
                                 dataLengthArray > 0 ? (
                                     <div className="row justify-content-center">
                                         <div className={graphicCol}>
