@@ -26,3 +26,4 @@
 14) Su terminale -> git remote -v
 15) Su terminale -> git push -u origin master 
 16) Su github.com -> si dovrebbe vedere tutto il progetto importato.
+# gestionale-app-test
