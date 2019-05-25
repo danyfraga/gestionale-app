@@ -8,7 +8,7 @@ import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import store from "../store/configureStore";
 import watch from "redux-watch";
 import {addAllActivitiesInGroup, setActivitiesGroupToBeRemoved} from "../actions/activitiesGroupToBeRemoved";
-
+//prova
 let watchState = watch(store.getState);
 
 var enumerateDaysBetweenDates = function(startDate, endDate) {
