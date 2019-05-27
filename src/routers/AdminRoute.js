@@ -7,15 +7,14 @@ export const AdminRoute = ({
     isAuthenticated,
     isAdmin, 
     component: Component,
+    path,
     ...rest
 }) => {
-    console.log("sono dentro")
     return (
         <Route {...rest} component={(props) => (
             isAuthenticated && isAdmin ? (
                 <div>
                     <Header/>
-                    {console.log("sono dentro 2")}
                     <Component {...props}/>
                 </div>
             ) : (

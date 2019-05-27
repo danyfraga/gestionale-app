@@ -24,8 +24,8 @@ const AppRouter = () => (
                 <PrivateRoute path="/create" component={CreateActivity}/>
                 <PrivateRoute path="/edit/:id" component={EditActivity}/>
                 <AdminRoute path="/users" component={UsersList}/>
-                <AdminRoute path="/user/:id" component={UserItem}/>
                 <AdminRoute path="/user/:id/edit/:id" component={EditActivity}/>
+                <AdminRoute path="/user/:id" component={UserItem}/>
                 <AdminRoute path="/settings" component={SettingsList}/>
                 <Route component={NotFoundPage}/>
             </Switch>

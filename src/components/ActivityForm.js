@@ -16,7 +16,6 @@ class ActivityForm extends React.Component {
         super(props);
 
         this._startRemoveActivity = this._startRemoveActivity.bind(this);
-
         let typeWorkInActivity = [];
         this.props.typeActivityOptions.map((typeActivityOption) => {
             return typeWorkInActivity[typeActivityOption.title] = typeActivityOption.hasTypeWork ? (this.props.typeWorkingOptions.map((typeWorkingOption) => {
@@ -67,6 +66,7 @@ class ActivityForm extends React.Component {
                         hours: currentActivity.hours
                     });
                 }
+                
             }
         })); 
     }

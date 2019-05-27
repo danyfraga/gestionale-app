@@ -40,9 +40,7 @@ class ActivityItem extends React.Component  {
 
     render () {
         let linkStyle = {textDecoration: 'none'};
-        console.log(this.state.userId)
-        let pathname = !this.props.fromAdmin ? `/edit/${this.props.idActivity}/?userID=${this.state.userId}` : `/user/${this.state.userId}/edit/${this.props.idActivity}/?userID=${this.state.userId}`;
-        console.log(pathname)
+        let pathname = !this.props.fromAdmin ? `/edit/${this.props.idActivity}` : `/user/${this.state.userId}/edit/${this.props.idActivity}`;
         return (
             <div className="list-item">
                 <div className="show-for-desktop col-1">
@@ -72,10 +70,11 @@ class ActivityItem extends React.Component  {
                     className="col-1 text-right" 
                     style={linkStyle} 
                     to={{
-                        pathname: pathname,
+                        pathname,
                         state: {
                             fromAdmin: this.state.fromAdmin,
-                            userId: this.state.userId
+                            userId: this.state.userId,
+                            idActivity: this.state.idActivity
                         }
                     }}>
                     <FontAwesomeIcon icon="edit" className="edit-style" size="2x"/>

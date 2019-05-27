@@ -6,22 +6,19 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import  { sortByTypeWorking, sortByActivity } from "../actions/filters";
 
-const queryString = require('query-string');
-
 class EditActivity extends React.Component {
     constructor(props) {
         super(props);
-        const parsed = queryString.parse(location.search);
-        let linkPath = (parsed.userID === this.props.auth.uid) && !this.props.location.state.fromAdmin ? "/dashboard" : `/user/${parsed.userID}`;
-        let activityLinkPath = this.props.location.state.fromAdmin ? this.props.location.pathname : this.props.activityLinkPath;
-
+        let pathSplit = window.location.pathname.split("/");
+        let userId = this.props.location.state.fromAdmin ? pathSplit[2] : (this.props.auth.uid)
+        let linkPath = (userId === this.props.auth.uid) && (!this.props.location.state.fromAdmin) ? "/dashboard" : `/user/${userId}`;
+   
         this.state = {
-            userId: parsed.userID,
+            userId,
             modalShow: false,
             linkPath,
-            activityLinkPath
+            activityLinkPath: this.props.activityLinkPath
         };
-        console.log(activityLinkPath)
     }
 
     onSubmit = (activity) => {
@@ -42,7 +39,7 @@ class EditActivity extends React.Component {
                     <h1 className="createActivity__title">Edit Activity</h1>
                 </div>
                 <ActivityForm 
-                    activity={this.props.activity}
+                    activity={this.state.activity}
                     onSubmit={this.onSubmit}
                     linkPath={this.state.linkPath}
                     activityLinkPath={this.state.activityLinkPath}
@@ -57,8 +54,9 @@ const mapStateToProps = (state, props) => {
     return {
         auth: state.auth,
         activityLinkPath: props.match.params.id,
-        activity: state.activities.find((activity) => activity.idActivity === props.match.params.id),
-        allUsers: state.allUsers
+        allUsers: state.allUsers,
+        activities: state.activities,
+        activity: state.activities.find((activity) => activity.idActivity === props.match.params.id)
     }
 };
 

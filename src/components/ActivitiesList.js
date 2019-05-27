@@ -25,7 +25,6 @@ var enumerateDaysBetweenDates = function(startDate, endDate) {
 class ActivitiesList extends React.Component {
     constructor (props) {
         super(props);
-        
         this.state = {
             currentPage: 0,
             startDate: this.props.filters.startDate,
