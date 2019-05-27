@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import  selectActivity from "../selectors/activities";
 import store from "../store/configureStore";
 import watch from "redux-watch";
-//prova
+
 let watchState = watch(store.getState);
 
 class ActivitySummary extends React.Component {
@@ -47,16 +47,10 @@ class ActivitySummary extends React.Component {
     render() { 
 
         let typeActivityTitles = [];
+        let currentHours = 0;
         this.state.activities.map((activity, index) => {
             if(activity.typeActivity !== typeActivityTitles[index-1]) {
-                typeActivityTitles[activity.typeActivity] = 0;
-            }
-        });
-        this.state.activities.map((activity) => {
-            for (var title in typeActivityTitles) {
-                if(title === activity.typeActivity) {
-                    typeActivityTitles[activity.typeActivity] = typeActivityTitles[activity.typeActivity] + parseFloat(activity.hours);
-                }
+                typeActivityTitles[activity.typeActivity] = currentHours + parseFloat(activity.hours);
             }
         });
 
